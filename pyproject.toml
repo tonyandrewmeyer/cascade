@@ -1,0 +1,199 @@
+[project]
+name = "cascade"
+version = "1.0.0a1"
+description = "A shell for debugging containers, particularly bare rocks, using Pebble"
+readme = "README.md"
+requires-python = ">=3.11"  # This should probably be 3.10, need to adjust shimmer as well.
+license = {text = "MIT"}
+authors = [
+    {name = "Tony Meyer", email = "cascade@aotearoa.dev"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "ops>=2.0.0,<4",
+    "rich~=13.7",
+    "pebble-shimmer",
+    "typer~=0.16",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "ruff>=0.1.0",
+    "pyright>=1.1.0",
+    "tox>=4.0.0",
+    "pre-commit>=3.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/tonyandrewmeyer/cascade"
+Repository = "https://github.com/tonyandrewmeyer/cascade"
+Issues = "https://github.com/tonyandrewmeyer/cascade/issues"
+
+[project.scripts]
+cascade = "pebble_shell.shell:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pebble_shell"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/README.md",
+    "/pyproject.toml",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+src = ["src", "tests"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=src/pebble_shell",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+markers = [
+    "unit: Unit tests",
+    "integration: Integration tests",
+    "slow: Slow tests",
+]
+
+[tool.coverage.run]
+source = ["src/pebble_shell"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if False:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+]
+
+[tool.ruff.lint]
+select = [
+    # Pyflakes
+    "F",
+    # Pycodestyle
+    "E",
+    "W",
+    # isort
+    "I001",
+    # pep8-naming
+    "N",
+    # flake8-builtins
+    "A",
+    # pyupgrade
+    "UP",
+    # flake8-2020
+    "YTT",
+    # flake8-bandit
+    "S",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # Ruff specific
+    "RUF",
+    # Perflint
+    "PERF",
+    # pyflakes-docstrings
+    "D",
+    # flake8-future-annotations
+    "FA",
+    # flake8-type-checking
+    "TC",
+]
+ignore = [
+    # Use a single `with` statement with multiple contexts instead of nested `with` statements
+    "SIM117",
+
+    # Missing docstring in magic method
+    "D105",
+    # Missing docstring in `__init__`
+    "D107",
+
+    # Manual dict comprehension.
+    "PERF403",
+
+    # Use of assert detected (we use this to make the static type checkers happy).
+    "S101",
+
+    "E501", # line too long (handled by formatter)
+
+    "PLR0913", # too many arguments
+    "PLR2004", # magic value used in comparison
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    # All documentation linting.
+    "D",
+
+    # Hard-coded password string.
+    "S105",
+    # Hard-coded password function argument.
+    "S106",
+
+    # Use of assert detected (common in tests).
+    "S101",
+
+    # "Useless" expression.
+    "B018"
+]
+"scripts/*" = [
+    # All documentation linting.
+    "D",
+
+    # Probable insecure usage of temporary file (demo scripts).
+    "S108",
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-builtins]
+builtins-ignorelist = ["id", "min", "map", "range", "type", "TimeoutError", "ConnectionError", "Warning", "input", "format"]
