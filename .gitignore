@@ -68,7 +68,6 @@ venv.bak/
 
 # UV
 .venv/
-uv.lock
 
 # IDE
 .vscode/
