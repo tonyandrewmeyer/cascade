@@ -12,8 +12,6 @@
 from . import (  # noqa: F401
     advanced_utils,
     builtin,
-    busybox,
-    busybox_utils,
     compression,
     data_processing,
     exec_commands,
@@ -22,6 +20,7 @@ from . import (  # noqa: F401
     filesystem_write,
     monitoring,
     network,
+    other_utils,
     pebble_cli,
     pebble_top,
     script,
@@ -93,13 +92,11 @@ from .builtin import (
     YqCommand,
     ZcatCommand,
 )
-from .busybox import (
+from .other_utils import (
     CpioCommand,
     IpcsCommand,
     NmeterCommand,
     PipeProgressCommand,
-)
-from .busybox_utils import (
     ArCommand,
     BasenameCommand,
     CatvCommand,
@@ -109,9 +106,6 @@ from .busybox_utils import (
     FgrepCommand,
     GetoptCommand,
     LzmacatCommand,
-    LzopcatCommand,
-    LzopCommand,
-    MakemimeCommand,
     ReformineCommand,
     ResetCommand,
     SedCommand,
