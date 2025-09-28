@@ -27,7 +27,7 @@ from rich.table import Table
 from rich.text import Text
 
 from . import commands
-from .commands.base import Command
+from .commands._base import Command
 from .utils import (
     PipelineExecutor,
     format_error,
