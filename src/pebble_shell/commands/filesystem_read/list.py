@@ -31,7 +31,7 @@ class ListCommand(Command):
     ):
         """Execute ls command with rich table output, relative times, icons/emojis, -h for human sizes, -a for dot files, and -l for long listing."""
         # We can't support -h for --help, because -h is for human-readable sizes.
-        if handle_help_flag(self, args):
+        if "--help" in args:
             self.show_help()
             return 0
 
