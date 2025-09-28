@@ -20,6 +20,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class MkpasswdCommand(Command):
     """Command for generating password hashes."""
+
     name = "mkpasswd"
     help = "Generate password hash"
     category = "Built-in Commands"

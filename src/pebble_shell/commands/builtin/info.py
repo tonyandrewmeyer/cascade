@@ -18,6 +18,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class InfoCommand(Command):
     """Command for displaying system and shell information."""
+
     name = "info"
     help = "Show system information"
     category = "Built-in Commands"

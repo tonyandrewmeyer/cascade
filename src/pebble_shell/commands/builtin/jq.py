@@ -24,6 +24,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class JqCommand(Command):
     """Command for pretty-printing JSON files with optional keypath filtering."""
+
     name = "jq"
     help = "Pretty-print JSON files with optional jq-like keypath filtering. Usage: jq <file> [.foo.bar]"
     category = "Built-in Commands"

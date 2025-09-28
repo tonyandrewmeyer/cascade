@@ -19,6 +19,7 @@ from ...utils.theme import (
     create_dark_theme,
     create_light_theme,
     create_minimal_theme,
+    create_white_theme,
     get_theme,
     set_theme,
 )
@@ -109,6 +110,7 @@ class ThemeCommand(Command):
             ("default", "Standard theme with balanced colors"),
             ("dark", "High contrast theme optimized for dark terminals"),
             ("light", "Theme optimized for light backgrounds"),
+            ("white", "Theme optimized for white terminal backgrounds"),
             ("minimal", "Monochrome theme using only white colors"),
         ]
 
@@ -148,6 +150,8 @@ class ThemeCommand(Command):
             set_theme(create_dark_theme())
         elif theme_name == "light":
             set_theme(create_light_theme())
+        elif theme_name == "white":
+            set_theme(create_white_theme())
         elif theme_name == "minimal":
             set_theme(create_minimal_theme())
         else:
@@ -185,6 +189,9 @@ class ThemeCommand(Command):
         elif theme_name == "light":
             preview_theme = create_light_theme()
             display_name = "Light"
+        elif theme_name == "white":
+            preview_theme = create_white_theme()
+            display_name = "White"
         elif theme_name == "minimal":
             preview_theme = create_minimal_theme()
             display_name = "Minimal"

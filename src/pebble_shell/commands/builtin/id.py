@@ -24,6 +24,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class IdCommand(Command):
     """Command for displaying user and group IDs."""
+
     name = "id"
     help = "Show user and group IDs"
     category = "Built-in Commands"

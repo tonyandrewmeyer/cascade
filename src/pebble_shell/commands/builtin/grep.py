@@ -24,6 +24,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class GrepCommand(Command):
     """Command for searching patterns in files using regex or string matching."""
+
     name = "grep"
     help = "Search for pattern in files"
     category = "Filesystem Commands"

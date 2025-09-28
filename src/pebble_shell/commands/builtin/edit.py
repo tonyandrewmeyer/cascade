@@ -24,6 +24,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class EditCommand(Command):
     """Command for editing remote files locally with automatic sync."""
+
     name = "edit"
     help = "Edit a remote file locally and push changes back. Usage: edit REMOTE_PATH"
     category = "Built-in Commands"

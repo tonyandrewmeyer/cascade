@@ -22,6 +22,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class UlimitCommand(Command):
     """Command for displaying system resource limits."""
+
     name = "ulimit"
     help = "Show resource limits"
     category = "Built-in Commands"

@@ -21,6 +21,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class LsofCommand(Command):
     """Command for listing open files."""
+
     name = "lsof"
     help = "List open files. Usage: lsof"
     category = "Built-in Commands"

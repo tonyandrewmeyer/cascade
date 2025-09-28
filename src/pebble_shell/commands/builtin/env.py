@@ -21,6 +21,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class EnvCommand(Command):
     """Command for displaying environment variables from process files."""
+
     name = "env"
     help = "Show environment variables"
     category = "Built-in Commands"

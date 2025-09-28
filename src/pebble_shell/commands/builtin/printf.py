@@ -19,6 +19,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class PrintfCommand(Command):
     """Command for formatting and printing data."""
+
     name = "printf"
     help = "Format and print data"
     category = "Built-in Commands"

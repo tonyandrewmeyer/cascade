@@ -20,6 +20,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class PrintenvCommand(Command):
     """Command for printing environment variables."""
+
     name = "printenv"
     help = "Print environment variables"
     category = "Built-in Commands"

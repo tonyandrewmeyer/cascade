@@ -24,6 +24,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class WcCommand(Command):
     """Command for counting lines, words, and characters in files."""
+
     name = "wc"
     help = "Count lines, words, and characters in files"
     category = "Filesystem Commands"

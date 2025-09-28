@@ -416,6 +416,10 @@ class PipelineExecutor:
 
     def _show_help(self, output: CommandOutput, group: str | None = None):
         """Show help information with rich formatting and gaps between groups. If group is given, only show that group (case-insensitive, partial match)."""
+        from .theme import get_theme
+
+        theme = get_theme()
+
         # Group commands by category.
         categories: dict[str, list[tuple[str, str]]] = {}
 
@@ -459,12 +463,12 @@ class PipelineExecutor:
                     table = Table(
                         title=category,
                         show_header=True,
-                        header_style="bold magenta",
+                        header_style=theme.header,
                         box=None,
                         expand=False,
                     )
-                    table.add_column("Command", style="bold cyan", no_wrap=True)
-                    table.add_column("Description", style="white")
+                    table.add_column("Command", style=theme.primary, no_wrap=True)
+                    table.add_column("Description", style=theme.data)
                     for cmd_name, help_text in sorted(categories[category]):
                         table.add_row(cmd_name, help_text)
                     help_tables.append(table)
@@ -481,12 +485,12 @@ class PipelineExecutor:
                     table = Table(
                         title=category,
                         show_header=True,
-                        header_style="bold magenta",
+                        header_style=theme.header,
                         box=None,
                         expand=False,
                     )
-                    table.add_column("Command", style="bold cyan", no_wrap=True)
-                    table.add_column("Description", style="white")
+                    table.add_column("Command", style=theme.primary, no_wrap=True)
+                    table.add_column("Description", style=theme.data)
                     for cmd_name, help_text in sorted(categories[category]):
                         table.add_row(cmd_name, help_text)
                     help_tables.append(table)
@@ -498,12 +502,12 @@ class PipelineExecutor:
                     table = Table(
                         title=category,
                         show_header=True,
-                        header_style="bold magenta",
+                        header_style=theme.header,
                         box=None,
                         expand=False,
                     )
-                    table.add_column("Command", style="bold cyan", no_wrap=True)
-                    table.add_column("Description", style="white")
+                    table.add_column("Command", style=theme.primary, no_wrap=True)
+                    table.add_column("Description", style=theme.data)
                     for cmd_name, help_text in sorted(commands):
                         table.add_row(cmd_name, help_text)
                     help_tables.append(table)
@@ -513,12 +517,12 @@ class PipelineExecutor:
             general_table = Table(
                 title="General Commands",
                 show_header=True,
-                header_style="bold magenta",
+                header_style=theme.header,
                 box=None,
                 expand=False,
             )
-            general_table.add_column("Command", style="bold cyan", no_wrap=True)
-            general_table.add_column("Description", style="white")
+            general_table.add_column("Command", style=theme.primary, no_wrap=True)
+            general_table.add_column("Description", style=theme.data)
             general_table.add_row("help", "Show this help")
             general_table.add_row("exit", "Exit the shell")
             help_tables.append(general_table)

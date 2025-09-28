@@ -335,6 +335,26 @@ def create_minimal_theme() -> ThemeManager:
     return ThemeManager(ThemeConfig(colors=minimal_colors))
 
 
+def create_white_theme() -> ThemeManager:
+    """Create a theme optimized for white terminal backgrounds."""
+    white_colors = ColorScheme(
+        primary="navy_blue",  # Navy blue for identifiers - excellent contrast
+        secondary="grey23",  # Very dark grey for metadata - high contrast
+        data="black",  # Black for main content - maximum contrast and readability
+        numeric="dark_red",  # Dark red for numbers - stands out well
+        status="dark_orange",  # Dark orange for status indicators
+        success="dark_green",  # Dark green for success messages
+        warning="orange3",  # Darker orange for warnings
+        error="red3",  # Strong red for errors
+        info="blue4",  # Dark blue for informational messages
+        highlight="purple4",  # Dark purple for headers and emphasis
+        muted="grey46",  # Dark grey for less important text but still readable
+        header="bold purple4",  # Bold dark purple for table headers
+        border="grey23",  # Very dark grey for borders
+    )
+    return ThemeManager(ThemeConfig(colors=white_colors))
+
+
 # Common styling functions using the global theme.
 def primary(text: str) -> str:
     """Format text with primary styling using global theme."""

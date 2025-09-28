@@ -33,10 +33,17 @@ def validate_min_args(
 ) -> bool:
     """Validate minimum argument count and show usage if needed."""
     if len(args) < min_count:
+        from .theme import get_theme
+
+        theme = get_theme()
         if usage_msg:
-            shell.console.print(f"Usage: {usage_msg}")
+            shell.console.print(
+                f"{theme.highlight_text('Usage:')} {theme.primary_text(usage_msg)}"
+            )
         else:
-            shell.console.print(f"Error: At least {min_count} argument(s) required")
+            shell.console.print(
+                theme.error_text(f"Error: At least {min_count} argument(s) required")
+            )
         return False
     return True
 
@@ -92,15 +99,25 @@ def parse_flags(
                         if len(flag_chars) > 1:
                             # Can't combine non-bool flags with others
                             if shell:
+                                from .theme import get_theme
+
+                                theme = get_theme()
                                 shell.console.print(
-                                    f"Error: Flag -{flag_char} cannot be combined with other flags"
+                                    theme.error_text(
+                                        f"Error: Flag -{flag_char} cannot be combined with other flags"
+                                    )
                                 )
                             return None
 
                         if i + 1 >= len(args):
                             if shell:
+                                from .theme import get_theme
+
+                                theme = get_theme()
                                 shell.console.print(
-                                    f"Error: Flag -{flag_char} requires an argument"
+                                    theme.error_text(
+                                        f"Error: Flag -{flag_char} requires an argument"
+                                    )
                                 )
                             return None
 
@@ -110,8 +127,13 @@ def parse_flags(
                                 flags[flag_char] = int(value)
                             except ValueError:
                                 if shell:
+                                    from .theme import get_theme
+
+                                    theme = get_theme()
                                     shell.console.print(
-                                        f"Error: Flag -{flag_char} requires an integer argument"
+                                        theme.error_text(
+                                            f"Error: Flag -{flag_char} requires an integer argument"
+                                        )
                                     )
                                 return None
                         else:
@@ -120,7 +142,12 @@ def parse_flags(
                         break  # Only one non-bool flag allowed
                 else:
                     if shell:
-                        shell.console.print(f"Error: Invalid option -{flag_char}")
+                        from .theme import get_theme
+
+                        theme = get_theme()
+                        shell.console.print(
+                            theme.error_text(f"Error: Invalid option -{flag_char}")
+                        )
                     return None
         else:
             remaining.append(arg)

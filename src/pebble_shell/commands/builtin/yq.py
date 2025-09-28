@@ -24,6 +24,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class YqCommand(Command):
     """Command for pretty-printing YAML files with optional keypath filtering."""
+
     name = "yq"
     help = "Pretty-print YAML files with optional jq-like keypath filtering. Usage: yq <file> [.foo.bar]"
     category = "Built-in Commands"

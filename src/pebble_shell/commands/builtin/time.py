@@ -19,6 +19,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class TimeCommand(Command):
     """Command for timing the execution of other commands."""
+
     name = "time"
     help = "Time the execution of a command. Usage: time COMMAND [ARGS...]"
     category = "Built-in Commands"
@@ -37,7 +38,7 @@ class TimeCommand(Command):
             process = client.exec(args)
             process.wait_output()
             rc = 0
-        except ops.pebble.ExecError[str] as e:
+        except ops.pebble.ExecError as e:
             if e.stdout:
                 self.console.print(e.stdout, end="")
             if e.stderr:

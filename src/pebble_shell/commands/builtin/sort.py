@@ -24,6 +24,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class SortCommand(Command):
     """Command for sorting lines in files."""
+
     name = "sort"
     help = "Sort lines in files"
     category = "Filesystem Commands"

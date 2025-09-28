@@ -18,6 +18,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class TimeoutCommand(Command):
     """Command for running other commands with a time limit."""
+
     name = "timeout"
     help = "Run a command with a time limit. Usage: timeout SECONDS COMMAND [ARGS...]"
     category = "Built-in Commands"
@@ -56,9 +57,12 @@ class TimeoutCommand(Command):
             if stderr:
                 self.console.print(stderr, end="")
             return 0
+        except ops.pebble.ChangeError:
+            # This is expected when timeout occurs - return standard timeout exit code
+            return 124
         except ops.pebble.TimeoutError:
             return 124
-        except ops.pebble.ExecError[str] as e:
+        except ops.pebble.ExecError as e:
             if e.stdout:
                 self.console.print(e.stdout, end="")
             if e.stderr:

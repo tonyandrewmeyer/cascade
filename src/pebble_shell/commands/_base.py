@@ -5,6 +5,9 @@ from __future__ import annotations
 import abc
 from typing import TYPE_CHECKING, ClassVar
 
+from ..utils.theme import get_theme
+
+
 if TYPE_CHECKING:
     import ops
     import shimmer
@@ -69,19 +72,27 @@ class Command(abc.ABC, metaclass=CommandMeta):
         Returns:
             True if arguments are valid, False otherwise
         """
+        theme = get_theme()
+
         if len(args) < min_args:
             self.console.print(
-                f"Error: This command requires at least {min_args} argument(s)"
+                theme.error_text(
+                    f"Error: This command requires at least {min_args} argument(s)"
+                )
             )
             return False
 
         if max_args == 0 and len(args) > 0:
-            self.console.print("Error: This command does not accept any arguments")
+            self.console.print(
+                theme.error_text("Error: This command does not accept any arguments")
+            )
             return False
 
         if max_args is not None and len(args) > max_args:
             self.console.print(
-                f"Error: This command accepts at most {max_args} argument(s)"
+                theme.error_text(
+                    f"Error: This command accepts at most {max_args} argument(s)"
+                )
             )
             return False
 
@@ -89,8 +100,13 @@ class Command(abc.ABC, metaclass=CommandMeta):
 
     def show_help(self):
         """Display help for this command."""
-        self.console.print(f"\nUsage: {self.name}")
-        self.console.print(f"{self.help}\n")
+        from ..utils.theme import get_theme
+
+        theme = get_theme()
+        self.console.print(
+            f"\n{theme.highlight_text('Usage:')} {theme.primary_text(self.name)}"
+        )
+        self.console.print(f"{theme.data_text(self.help)}\n")
 
     @classmethod
     def get_all_commands(cls) -> dict[str, type[Command]]:

@@ -21,6 +21,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class HistoryCommand(Command):
     """Command for managing and displaying shell command history."""
+
     name = "history"
     help = "Show command history (supports !!, !n, !string, ^old^new)"
     category = "Built-in Commands"

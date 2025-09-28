@@ -22,6 +22,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class UniqCommand(Command):
     """Command for reporting or filtering repeated lines in files."""
+
     name = "uniq"
     help = "Report or filter repeated lines. Usage: uniq [-c] [-d] [-u] [file]"
     category = "Built-in Commands"

@@ -23,6 +23,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class WhoamiCommand(Command):
     """Command for displaying the current user."""
+
     name = "whoami"
     help = "Show current user"
     category = "Built-in Commands"

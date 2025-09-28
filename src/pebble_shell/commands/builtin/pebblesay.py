@@ -26,6 +26,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 class PebblesayCommand(Command):
     """Command for displaying ASCII art with speech bubbles."""
+
     name = "pebblesay"
     help = "Display ASCII art with a speech bubble. Usage: pebblesay MESSAGE"
     category = "Built-in Commands"

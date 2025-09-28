@@ -22,6 +22,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 # TODO: Probably this would be better in the text category?
 class MarkdownCommand(Command):
     """Command for pretty-printing Markdown files with formatting."""
+
     name = "md"
     help = "Pretty-print Markdown files with syntax highlighting and formatting"
     category = "Built-in Commands"
