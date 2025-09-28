@@ -36,9 +36,7 @@ def run_exec_demo():
 
     commands = [
         ("System Information", "info"),
-        ("Discover Remote Commands", "remote -c"),
-        ("Show Available Categories", "remote"),
-        ("Basic Remote Execution", "exec uname -a"),
+        ("Basic Remote Execution", "exec uname"),
         ("Process List", "exec ps aux"),
         ("Memory Information", "exec free -h"),
         ("Disk Usage", "exec df -h"),
