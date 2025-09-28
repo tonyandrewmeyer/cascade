@@ -6,8 +6,9 @@ from typing import TYPE_CHECKING, Union
 
 import ops
 
-from .._base import Command
 from pebble_shell.commands.builtin import GrepCommand
+
+from .._base import Command
 
 if TYPE_CHECKING:
     import shimmer

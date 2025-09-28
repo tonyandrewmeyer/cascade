@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Union
 from rich.panel import Panel
 
 from ...utils.command_helpers import handle_help_flag
-from ...utils.proc_reader import ProcReadError, parse_proc_route
+from ...utils.proc_reader import parse_proc_route
 from ...utils.table_builder import create_standard_table
 from ...utils.theme import get_theme
 from .._base import Command

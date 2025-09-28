@@ -12,9 +12,9 @@ if TYPE_CHECKING:
     from ..commands import AliasCommand, Command
     from ..shell import PebbleShell
 
-from .enhanced_completer import EnhancedCompleter
-
 import readline
+
+from .enhanced_completer import EnhancedCompleter
 
 
 class ReadlineWrapper:

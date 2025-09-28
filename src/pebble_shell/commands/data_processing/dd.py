@@ -8,15 +8,13 @@ from typing import TYPE_CHECKING, Union
 
 import ops
 
-from ...utils.command_helpers import safe_read_file
-from ...utils.command_helpers import handle_help_flag
+from ...utils.command_helpers import handle_help_flag, safe_read_file
 from ...utils.theme import get_theme
 from .._base import Command
 
 if TYPE_CHECKING:
     import shimmer
 
-    from pebble_shell.shell import PebbleShell
 
 
 # TODO: Use the prototype from Shimmer.

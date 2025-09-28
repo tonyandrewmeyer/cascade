@@ -13,7 +13,6 @@ from .._base import Command
 if TYPE_CHECKING:
     import shimmer
 
-    from pebble_shell.shell import PebbleShell
 
 # Standard Unix shadow file values
 LOCKED_ACCOUNT_HASH = "!"  # Standard indicator for locked/disabled account

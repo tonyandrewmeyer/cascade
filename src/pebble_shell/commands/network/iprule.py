@@ -11,7 +11,6 @@ if TYPE_CHECKING:
     import ops
     import shimmer
 
-    from pebble_shell.shell import PebbleShell
 
 # TODO: Use the prototype from Shimmer.
 ClientType = Union["ops.pebble.Client", "shimmer.PebbleCliClient"]

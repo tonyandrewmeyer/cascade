@@ -15,7 +15,6 @@ from .exceptions import SystemInfoError
 if TYPE_CHECKING:
     import shimmer
 
-    from pebble_shell.shell import PebbleShell
 
 
 # TODO: Use the prototype from Shimmer.

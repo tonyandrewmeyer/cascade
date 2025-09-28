@@ -7,8 +7,9 @@ from typing import TYPE_CHECKING, Union
 
 import ops
 
-from .._base import Command
 from pebble_shell.utils.command_helpers import safe_read_file
+
+from .._base import Command
 
 if TYPE_CHECKING:
     import shimmer
