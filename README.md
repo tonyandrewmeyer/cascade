@@ -1,4 +1,4 @@
-![Cascade Logo](logo.JPG)
+![Cascade Logo](logo.jpg)
 
 # Cascade - commands flowing over bare rocks
 
