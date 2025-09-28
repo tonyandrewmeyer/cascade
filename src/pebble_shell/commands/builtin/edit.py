@@ -55,7 +55,7 @@ class EditCommand(Command):
                 shutil.copyfileobj(io.BytesIO(remote_f), tmp)
         editor = os.environ.get("EDITOR", "pico")
         before = os.stat(tmp_path).st_mtime
-        subprocess.run([editor, tmp_path], check=True)
+        subprocess.run([editor, tmp_path], check=True)  # noqa: S603
         after = os.stat(tmp_path).st_mtime
         if after != before:
             with open(tmp_path, "rb") as f:

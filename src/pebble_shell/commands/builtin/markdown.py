@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+import os
 from typing import TYPE_CHECKING, Union
 
 import ops
+from rich.markdown import Markdown
 from rich.panel import Panel
 
 from ...utils.command_helpers import handle_help_flag

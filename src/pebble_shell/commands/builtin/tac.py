@@ -6,7 +6,12 @@ from typing import TYPE_CHECKING, Union
 
 import ops
 
-from ...utils.command_helpers import handle_help_flag, safe_read_file, validate_min_args
+from ...utils.command_helpers import (
+    handle_help_flag,
+    process_file_arguments,
+    safe_read_file,
+    validate_min_args,
+)
 from .._base import Command
 
 if TYPE_CHECKING:

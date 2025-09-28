@@ -9,6 +9,7 @@ from rich.panel import Panel
 from rich.table import Table
 
 from ...utils.command_helpers import handle_help_flag
+from ...utils.history import get_shell_history
 from .._base import Command
 
 if TYPE_CHECKING:

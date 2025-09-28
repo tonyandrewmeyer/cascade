@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import pwd
 from typing import TYPE_CHECKING, Union
 
 import ops

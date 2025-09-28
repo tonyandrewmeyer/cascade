@@ -2,14 +2,18 @@
 
 from __future__ import annotations
 
+import random
 from typing import TYPE_CHECKING, Union
 
 import ops
+from rich.text import Text
 
 from ...utils.command_helpers import handle_help_flag
 from .._base import Command
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     import shimmer
 
 # TODO: Use the prototype from Shimmer.
@@ -139,16 +143,16 @@ class PebblesayCommand(Command):
                     row, col, height, width
                 )
 
-                if random.random() < pebble_probability:
-                    char, style = random.choice(pebble_chars)
+                if random.random() < pebble_probability:  # noqa: S311
+                    char, style = random.choice(pebble_chars)  # noqa: S311
                     line.append(char, style=style)
                 else:
                     # Create water with wave effects
                     is_wave = any(pattern(row, col) for pattern in wave_patterns)
                     if is_wave:
-                        char, style = random.choice(water_chars[:3])
+                        char, style = random.choice(water_chars[:3])  # noqa: S311
                     else:
-                        char, style = random.choice(
+                        char, style = random.choice(  # noqa: S311
                             water_chars[3:]
                         )  # Use space-like chars
                     line.append(char, style=style)

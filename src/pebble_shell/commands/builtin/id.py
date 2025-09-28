@@ -7,7 +7,12 @@ from typing import TYPE_CHECKING, Union
 import ops
 
 from ...utils.command_helpers import handle_help_flag
-from ...utils.proc_reader import ProcReadError
+from ...utils.proc_reader import (
+    ProcReadError,
+    get_group_name_for_gid,
+    get_user_name_for_uid,
+    read_proc_status_fields,
+)
 from .._base import Command
 
 if TYPE_CHECKING:

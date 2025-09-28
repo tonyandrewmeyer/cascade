@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Union
 import ops
 
 from ...utils.command_helpers import handle_help_flag, parse_flags
+from ...utils.theme import get_theme
 from .._base import Command
 
 if TYPE_CHECKING:
