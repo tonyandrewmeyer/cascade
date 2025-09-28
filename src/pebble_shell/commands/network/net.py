@@ -59,5 +59,5 @@ class NetworkCommand(Command):
                 str(interface_data["tx_packets"]),
             )
 
-        self.shell.console.print(table)
+        self.shell.console.print(table.build())
         return 0
