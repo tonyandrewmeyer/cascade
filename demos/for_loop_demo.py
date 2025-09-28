@@ -17,7 +17,9 @@ def demo_for_loops():
     """Demonstrate for loop functionality."""
     print("=== Cascade Shell For Loop Demo ===\n")
 
-    socket_path = os.getenv("PEBBLE_SOCKET", os.path.join(tempfile.gettempdir(), ".pebble-demo.socket"))
+    socket_path = os.getenv(
+        "PEBBLE_SOCKET", os.path.join(tempfile.gettempdir(), ".pebble-demo.socket")
+    )
     shell = PebbleShell(ops.pebble.Client(socket_path=socket_path))
 
     print("1. Simple for loop with space-separated values:")

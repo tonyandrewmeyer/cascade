@@ -19,6 +19,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 # TODO: This isn't as pretty as I'd like. Maybe the "pebbles in a stream" idea is
 # a bad one, and we should think of something else?
 
+
 class PebblesayCommand(Command):
     name = "pebblesay"
     help = "Display ASCII art with a speech bubble. Usage: pebblesay MESSAGE"

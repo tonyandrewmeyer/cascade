@@ -18,7 +18,9 @@ def run_builtin_demo():
     """Run a demo of built-in commands."""
     print("=== Pebble Debug Shell - Built-in Commands Demo ===\n")
 
-    socket_path = os.getenv("PEBBLE_SOCKET", os.path.join(tempfile.gettempdir(), ".pebble-demo.socket"))
+    socket_path = os.getenv(
+        "PEBBLE_SOCKET", os.path.join(tempfile.gettempdir(), ".pebble-demo.socket")
+    )
     shell = PebbleShell(ops.pebble.Client(socket_path=socket_path))
 
     print(f"Connecting to Pebble at {socket_path}...")

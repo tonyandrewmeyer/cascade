@@ -69,7 +69,9 @@ def main():
     print("   • Dashboard updates every 2 seconds")
     print()
 
-    socket_path = os.getenv("PEBBLE_SOCKET", os.path.join(tempfile.gettempdir(), ".pebble-demo.socket"))
+    socket_path = os.getenv(
+        "PEBBLE_SOCKET", os.path.join(tempfile.gettempdir(), ".pebble-demo.socket")
+    )
     shell = PebbleShell(ops.pebble.Client(socket_path=socket_path))
 
     if not shell.connect():

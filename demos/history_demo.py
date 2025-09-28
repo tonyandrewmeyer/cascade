@@ -18,13 +18,17 @@ def run_history_demo(tmp_dir: pathlib.Path):
     """Run a demo of shell history and alias features."""
     print("=== Pebble Debug Shell - History & Alias Demo ===\n")
 
-    socket_path = os.getenv("PEBBLE_SOCKET", os.path.join(tempfile.gettempdir(), ".pebble-demo.socket"))
+    socket_path = os.getenv(
+        "PEBBLE_SOCKET", os.path.join(tempfile.gettempdir(), ".pebble-demo.socket")
+    )
     shell = PebbleShell(ops.pebble.Client(socket_path=socket_path))
 
     print(f"Connecting to Pebble at {socket_path}...")
     if not shell.connect():
         print("Failed to connect to Pebble. Make sure Pebble is running.")
-        print("To start Pebble server for demo: pebble run --socket /tmp/.pebble-demo.socket")
+        print(
+            "To start Pebble server for demo: pebble run --socket /tmp/.pebble-demo.socket"
+        )
         return 1
 
     print("Connected successfully!\n")

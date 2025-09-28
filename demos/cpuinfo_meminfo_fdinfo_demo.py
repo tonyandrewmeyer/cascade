@@ -18,7 +18,9 @@ def run_demo():
     print("Cascade System Commands Demo")
     print("=" * 50)
 
-    socket_path = os.getenv("PEBBLE_SOCKET", os.path.join(tempfile.gettempdir(), ".pebble-demo.socket"))
+    socket_path = os.getenv(
+        "PEBBLE_SOCKET", os.path.join(tempfile.gettempdir(), ".pebble-demo.socket")
+    )
     shell = PebbleShell(ops.pebble.Client(socket_path=socket_path))
     print(f"Note: Start Pebble server with: pebble run --socket {socket_path}\n")
 

@@ -73,7 +73,9 @@ class PebbleShell:
         try:
             with self.client.pull("/proc/self/status") as f:
                 content = f.read()
-            assert isinstance(content, str)  # TODO: I think shimmer has a bug that makes this required (same elsewhere).
+            assert isinstance(
+                content, str
+            )  # TODO: I think shimmer has a bug that makes this required (same elsewhere).
         except ops.pebble.PathError:
             return "?"
         for line in content.splitlines():
