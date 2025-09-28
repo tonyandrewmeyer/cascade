@@ -338,19 +338,19 @@ def create_minimal_theme() -> ThemeManager:
 def create_white_theme() -> ThemeManager:
     """Create a theme optimized for white terminal backgrounds."""
     white_colors = ColorScheme(
-        primary="navy_blue",  # Navy blue for identifiers - excellent contrast
-        secondary="grey23",  # Very dark grey for metadata - high contrast
+        primary="blue",  # Blue for identifiers - excellent contrast
+        secondary="grey37",  # Dark grey for metadata - high contrast
         data="black",  # Black for main content - maximum contrast and readability
         numeric="dark_red",  # Dark red for numbers - stands out well
         status="dark_orange",  # Dark orange for status indicators
         success="dark_green",  # Dark green for success messages
         warning="orange3",  # Darker orange for warnings
         error="red3",  # Strong red for errors
-        info="blue4",  # Dark blue for informational messages
-        highlight="purple4",  # Dark purple for headers and emphasis
-        muted="grey46",  # Dark grey for less important text but still readable
-        header="bold purple4",  # Bold dark purple for table headers
-        border="grey23",  # Very dark grey for borders
+        info="dark_blue",  # Dark blue for informational messages
+        highlight="purple",  # Purple for headers and emphasis
+        muted="grey50",  # Grey for less important text but still readable
+        header="bold purple",  # Bold purple for table headers
+        border="grey37",  # Dark grey for borders
     )
     return ThemeManager(ThemeConfig(colors=white_colors))
 
