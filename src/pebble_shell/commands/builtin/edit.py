@@ -52,8 +52,7 @@ class EditCommand(Command):
         with tempfile.NamedTemporaryFile(delete=False, mode="wb") as tmp:
             tmp_path = tmp.name
             with client.pull(remote_path, encoding=None) as remote_f:
-                assert isinstance(remote_f, bytes)
-                shutil.copyfileobj(io.BytesIO(remote_f), tmp)
+                shutil.copyfileobj(remote_f, tmp)
         editor = os.environ.get("EDITOR", "pico")
         before = os.stat(tmp_path).st_mtime
         subprocess.run([editor, tmp_path], check=True)  # noqa: S603
