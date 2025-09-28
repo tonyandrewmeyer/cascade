@@ -25,7 +25,7 @@ class SocketStatsCommand(Command):
 
     name = "ss"
     help = "Show socket statistics"
-    category = "Network Commands"
+    category = "Network"
 
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]

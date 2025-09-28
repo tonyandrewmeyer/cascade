@@ -25,7 +25,7 @@ class ArpCommand(Command):
 
     name = "arp"
     help = "Show ARP table"
-    category = "Network Commands"
+    category = "Network"
 
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]

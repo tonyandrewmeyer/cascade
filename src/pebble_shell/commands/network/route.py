@@ -25,7 +25,7 @@ class RouteCommand(Command):
 
     name = "route"
     help = "Show routing table"
-    category = "Network Commands"
+    category = "Network"
 
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]

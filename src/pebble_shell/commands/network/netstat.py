@@ -25,7 +25,7 @@ class NetstatCommand(Command):
 
     name = "netstat"
     help = "Show network connections (default: tcp)"
-    category = "Network Commands"
+    category = "Network"
 
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]

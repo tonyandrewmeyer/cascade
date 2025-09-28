@@ -23,7 +23,7 @@ class NetworkCommand(Command):
 
     name = "net"
     help = "Show network interface statistics"
-    category = "Network Commands"
+    category = "Network"
 
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
