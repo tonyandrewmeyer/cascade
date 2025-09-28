@@ -23,6 +23,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class SortCommand(Command):
+    """Command for sorting lines in files."""
     name = "sort"
     help = "Sort lines in files"
     category = "Filesystem Commands"
@@ -30,6 +31,7 @@ class SortCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the sort command to sort lines in files."""
         if handle_help_flag(self, args):
             return 0
 

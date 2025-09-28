@@ -19,6 +19,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class LsofCommand(Command):
+    """Command for listing open files."""
     name = "lsof"
     help = "List open files. Usage: lsof"
     category = "Built-in Commands"
@@ -26,6 +27,7 @@ class LsofCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the lsof command to list open files."""
         if handle_help_flag(self, args):
             return 0
         console = self.console

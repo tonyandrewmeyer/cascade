@@ -18,6 +18,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class MkpasswdCommand(Command):
+    """Command for generating password hashes."""
     name = "mkpasswd"
     help = "Generate password hash"
     category = "Built-in Commands"
@@ -25,6 +26,7 @@ class MkpasswdCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ) -> int:
+        """Execute the mkpasswd command to generate password hashes."""
         if handle_help_flag(self, args):
             return 0
 

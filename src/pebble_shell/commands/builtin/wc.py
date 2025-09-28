@@ -23,6 +23,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class WcCommand(Command):
+    """Command for counting lines, words, and characters in files."""
     name = "wc"
     help = "Count lines, words, and characters in files"
     category = "Filesystem Commands"
@@ -30,6 +31,7 @@ class WcCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the wc command to count text statistics in files."""
         if handle_help_flag(self, args):
             return 0
 

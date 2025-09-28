@@ -17,6 +17,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class TacCommand(Command):
+    """Command for concatenating and printing files in reverse line order."""
     name = "tac"
     help = "Concatenate and print files in reverse"
     category = "Built-in Commands"
@@ -24,6 +25,7 @@ class TacCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the tac command to display files in reverse line order."""
         if handle_help_flag(self, args):
             return 0
 

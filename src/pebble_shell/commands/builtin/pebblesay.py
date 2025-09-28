@@ -21,6 +21,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class PebblesayCommand(Command):
+    """Command for displaying ASCII art with speech bubbles."""
     name = "pebblesay"
     help = "Display ASCII art with a speech bubble. Usage: pebblesay MESSAGE"
     category = "Built-in Commands"
@@ -28,6 +29,7 @@ class PebblesayCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the pebblesay command to display ASCII art with messages."""
         if handle_help_flag(self, args):
             return 0
         console = self.console

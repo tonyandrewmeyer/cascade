@@ -17,6 +17,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class InfoCommand(Command):
+    """Command for displaying system and shell information."""
     name = "info"
     help = "Show system information"
     category = "Built-in Commands"
@@ -24,6 +25,7 @@ class InfoCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the info command to display system information."""
         if handle_help_flag(self, args):
             return 0
         self.console.print("=== Cascade System Information ===")

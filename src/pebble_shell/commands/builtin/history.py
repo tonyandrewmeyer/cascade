@@ -19,6 +19,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class HistoryCommand(Command):
+    """Command for managing and displaying shell command history."""
     name = "history"
     help = "Show command history (supports !!, !n, !string, ^old^new)"
     category = "Built-in Commands"
@@ -26,6 +27,7 @@ class HistoryCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the history command to show or manage command history."""
         history = get_shell_history()
         console = self.console
 

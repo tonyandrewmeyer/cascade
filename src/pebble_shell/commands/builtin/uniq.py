@@ -21,6 +21,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class UniqCommand(Command):
+    """Command for reporting or filtering repeated lines in files."""
     name = "uniq"
     help = "Report or filter repeated lines. Usage: uniq [-c] [-d] [-u] [file]"
     category = "Built-in Commands"
@@ -28,6 +29,7 @@ class UniqCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the uniq command to filter or count repeated lines."""
         if handle_help_flag(self, args):
             return 0
         count = False

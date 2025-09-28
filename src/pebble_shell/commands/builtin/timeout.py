@@ -17,6 +17,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class TimeoutCommand(Command):
+    """Command for running other commands with a time limit."""
     name = "timeout"
     help = "Run a command with a time limit. Usage: timeout SECONDS COMMAND [ARGS...]"
     category = "Built-in Commands"
@@ -24,6 +25,7 @@ class TimeoutCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the timeout command to run commands with time constraints."""
         if handle_help_flag(self, args):
             return 0
         if not args or len(args) < 3:

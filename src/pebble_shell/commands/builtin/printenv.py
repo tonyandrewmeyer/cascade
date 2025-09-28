@@ -17,6 +17,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class PrintenvCommand(Command):
+    """Command for printing environment variables."""
     name = "printenv"
     help = "Print environment variables"
     category = "Built-in Commands"
@@ -24,6 +25,7 @@ class PrintenvCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ) -> int:
+        """Execute the printenv command to display environment variables."""
         if handle_help_flag(self, args):
             return 0
 

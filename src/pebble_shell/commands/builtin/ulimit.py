@@ -21,6 +21,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class UlimitCommand(Command):
+    """Command for displaying system resource limits."""
     name = "ulimit"
     help = "Show resource limits"
     category = "Built-in Commands"
@@ -28,6 +29,7 @@ class UlimitCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the ulimit command to show resource limits."""
         if handle_help_flag(self, args):
             return 0
 

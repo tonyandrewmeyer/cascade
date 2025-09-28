@@ -23,6 +23,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class GrepCommand(Command):
+    """Command for searching patterns in files using regex or string matching."""
     name = "grep"
     help = "Search for pattern in files"
     category = "Filesystem Commands"
@@ -30,6 +31,7 @@ class GrepCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the grep command to search for patterns in files."""
         if handle_help_flag(self, args):
             return 0
 

@@ -22,6 +22,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class WhoamiCommand(Command):
+    """Command for displaying the current user."""
     name = "whoami"
     help = "Show current user"
     category = "Built-in Commands"
@@ -29,6 +30,7 @@ class WhoamiCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the whoami command to display current user information."""
         if handle_help_flag(self, args):
             return 0
 

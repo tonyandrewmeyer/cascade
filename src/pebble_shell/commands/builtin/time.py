@@ -18,6 +18,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class TimeCommand(Command):
+    """Command for timing the execution of other commands."""
     name = "time"
     help = "Time the execution of a command. Usage: time COMMAND [ARGS...]"
     category = "Built-in Commands"
@@ -25,6 +26,7 @@ class TimeCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
+        """Execute the time command to measure command execution time."""
         if handle_help_flag(self, args):
             return 0
         if not args:

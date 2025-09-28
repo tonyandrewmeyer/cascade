@@ -17,6 +17,7 @@ ClientType = Union[ops.pebble.Client, "shimmer.PebbleCliClient"]
 
 
 class PrintfCommand(Command):
+    """Command for formatting and printing data."""
     name = "printf"
     help = "Format and print data"
     category = "Built-in Commands"
@@ -24,6 +25,7 @@ class PrintfCommand(Command):
     def execute(
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ) -> int:
+        """Execute the printf command to format and print data."""
         if handle_help_flag(self, args):
             return 0
 
