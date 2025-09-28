@@ -20,7 +20,7 @@ def command(shell: pebble_shell.shell.PebbleShell):
 
 
 def test_name(command: pebble_shell.commands.ExecCommand):
-    assert command.name == "exec <command> [args...]"
+    assert command.name == "exec"
 
 
 def test_category(command: pebble_shell.commands.ExecCommand):
@@ -33,7 +33,7 @@ def test_help(command: pebble_shell.commands.ExecCommand):
     assert "Execute commands remotely" in capture.get()
 
 
-@pytest.mark.parametrize("args", [["-h"], ["--help"]])
+@pytest.mark.parametrize("args", [["--help"]])
 def test_execute_help(
     client: ops.pebble.Client,
     command: pebble_shell.commands.ExecCommand,
@@ -43,6 +43,18 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     assert "Execute commands remotely" in capture.get()
+
+
+def test_execute_dash_h_not_help(
+    client: ops.pebble.Client,
+    command: pebble_shell.commands.ExecCommand,
+):
+    """Test that -h is not treated as help flag and gets passed through to command."""
+    with command.shell.console.capture() as capture:
+        result = command.execute(client=client, args=["-h"])
+    # Should fail because no actual command is specified after -h
+    assert result == 1
+    assert "exec: no command specified" in capture.get()
 
 
 def test_execute_no_args(

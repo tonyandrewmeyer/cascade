@@ -32,7 +32,8 @@ class ExecCommand(Command):
         self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
     ):
         """Execute exec command."""
-        if handle_help_flag(self, args):
+        if "--help" in args:
+            self.show_help()
             return 0
 
         if not args:
