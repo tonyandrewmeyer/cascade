@@ -1,6 +1,6 @@
 [project]
 name = "pebble-cascade"
-version = "1.0.0a3"
+version = "1.0.0a4"
 description = "A shell for debugging containers, particularly bare rocks, using Pebble"
 readme = "README.md"
 requires-python = ">=3.11"  # This should probably be 3.10, need to adjust shimmer as well.
