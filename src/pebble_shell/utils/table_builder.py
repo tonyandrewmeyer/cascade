@@ -67,6 +67,10 @@ class TableBuilder:
         """Return the configured Rich table."""
         return self._table
 
+    def __rich_console__(self, console, options):
+        """Rich console protocol for rendering the table."""
+        yield from self._table.__rich_console__(console, options)
+
 
 def create_standard_table(title: str | None = None) -> TableBuilder:
     """Create a table with standard Cascade styling (most common pattern).
