@@ -141,9 +141,12 @@ class ProcessCommand(Command):
                 if show_no_tty and not show_all and status_info["tty"] != "?":
                     continue
 
-                # Truncate command if too long
-                if len(cmdline) > 30:
+                # Truncate command if too long (but not when showing environment)
+                if not show_env and len(cmdline) > 30:
                     cmdline = cmdline[:27] + "..."
+                elif show_env and not show_full_env and len(cmdline) > 100:
+                    # With environment, allow more space but still truncate
+                    cmdline = cmdline[:97] + "..."
 
                 # Use Text objects to avoid Rich markup interpretation issues
                 from rich.text import Text
@@ -163,8 +166,11 @@ class ProcessCommand(Command):
                 )
             else:
                 # Simple format
-                if len(cmdline) > 50:
+                if not show_env and len(cmdline) > 50:
                     cmdline = cmdline[:47] + "..."
+                elif show_env and not show_full_env and len(cmdline) > 150:
+                    # With environment, allow more space but still truncate
+                    cmdline = cmdline[:147] + "..."
                 # Use Text objects to avoid Rich markup interpretation
                 from rich.text import Text
 
@@ -286,17 +292,8 @@ class ProcessCommand(Command):
             # Format as KEY=VALUE pairs
             env_pairs = [f"{k}={v}" for k, v in env_vars.items()]
 
-            if full:
-                # Show full environment (eww)
-                return " ".join(env_pairs)
-            else:
-                # Show abbreviated environment (e) - limit length
-                env_str = " ".join(env_pairs)
-                # Truncate if too long (similar to standard ps e behavior)
-                max_len = 200
-                if len(env_str) > max_len:
-                    env_str = env_str[:max_len] + "..."
-                return env_str
+            # Return formatted environment - truncation happens in display code
+            return " ".join(env_pairs)
 
         except ProcReadError:
             return ""
