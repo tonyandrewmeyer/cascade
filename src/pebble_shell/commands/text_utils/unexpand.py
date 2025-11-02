@@ -52,7 +52,7 @@ class UnexpandCommand(Command):
             return 1
         flags, positional_args = parse_result
 
-        tab_stops = flags.get("t", "8")
+        tab_stops = flags.get("t") or "8"
         convert_all = flags.get("a", False)
         first_only = flags.get("first-only", not convert_all)
 

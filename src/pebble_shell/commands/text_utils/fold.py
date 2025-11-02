@@ -52,7 +52,7 @@ class FoldCommand(Command):
             return 1
         flags, positional_args = parse_result
 
-        width = int(flags.get("w", "80"))
+        width = int(flags.get("w") or "80")
         count_bytes = flags.get("b", False)
         break_at_spaces = flags.get("s", False)
 

@@ -81,7 +81,7 @@ Examples:
             return 1
         flags, positional_args = parse_result
 
-        profile_file = flags.get("p", "/proc/profile")
+        profile_file = flags.get("p") or "/proc/profile"
         show_info = flags.get("i", False)
         verbose = flags.get("v", False)
         show_all = flags.get("a", False)

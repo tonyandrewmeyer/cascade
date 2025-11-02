@@ -44,7 +44,7 @@ class PipeProgressCommand(Command):
         flags, positional_args = result
 
         expected_size = flags.get("s")
-        title = flags.get("t", "Progress")
+        title = flags.get("t") or "Progress"
 
         try:
             # TODO: Implement real pipe progress

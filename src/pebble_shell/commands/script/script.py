@@ -105,7 +105,7 @@ Examples:
         flush_output = flags.get("f", False) or flags.get("flush", False)
         output_limit = flags.get("o") or flags.get("output-limit")
         quiet = flags.get("q", False) or flags.get("quiet", False)
-        timing_file = flags.get("t", "timing")
+        timing_file = flags.get("t") or "timing"
         timing_format = flags.get("timing-format", "classic")
 
         try:

@@ -83,7 +83,7 @@ Examples:
         flags, positional_args = parse_result
 
         address_radix = flags.get("A", "o")  # octal default
-        format_type = flags.get("t", "o2")  # octal 2-byte default
+        format_type = flags.get("t") or "o2"  # octal 2-byte default
         limit_bytes = int(flags.get("N", 0)) if flags.get("N") else 0
         skip_bytes = int(flags.get("S", 0)) if flags.get("S") else 0
         width = int(flags.get("w", 16)) if flags.get("w") else 16

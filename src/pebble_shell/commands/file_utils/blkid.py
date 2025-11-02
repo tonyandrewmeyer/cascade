@@ -72,7 +72,7 @@ Examples:
         label_search = flags.get("L")
         uuid_search = flags.get("U")
         tag_filter = flags.get("s")
-        output_format = flags.get("o", "full")
+        output_format = flags.get("o") or "full"
         devices = positional_args
 
         try:

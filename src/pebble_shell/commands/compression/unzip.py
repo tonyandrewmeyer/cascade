@@ -61,7 +61,7 @@ class UnzipCommand(Command):
         list_contents = flags.get("l", False)
         force = flags.get("f", False)
         verbose = flags.get("v", False)
-        extract_dir = flags.get("d", ".")
+        extract_dir = flags.get("d") or "."
 
         try:
             if list_contents:

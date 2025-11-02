@@ -71,7 +71,7 @@ Examples:
             return 1
         flags, positional_args = parse_result
 
-        strip_count = flags.get("p", 0)
+        strip_count = flags.get("p") or 0
         reverse = flags.get("R", False) or flags.get("reverse", False)
         output_file = flags.get("o")
         patch_file = flags.get("i")

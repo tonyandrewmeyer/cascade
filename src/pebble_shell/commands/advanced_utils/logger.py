@@ -81,7 +81,7 @@ Examples:
         flags.get(
             "p", "user.notice"
         )  # priority - not implemented in this simple version
-        tag = flags.get("t", "logger")
+        tag = flags.get("t") or "logger"
         include_pid = flags.get("i", False)
         also_stderr = flags.get("s", False)
         message_file = flags.get("f")

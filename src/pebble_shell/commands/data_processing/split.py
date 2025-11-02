@@ -79,10 +79,10 @@ Examples:
             return 1
         flags, positional_args = parse_result
 
-        suffix_length = int(flags.get("a", 2))
-        bytes_per_file = self._parse_size(flags.get("b", None))
-        bytes_per_line = self._parse_size(flags.get("C", None))
-        lines_per_file = int(flags.get("l", 1000)) if flags.get("l") else 1000
+        suffix_length = int(flags.get("a") or 2)
+        bytes_per_file = self._parse_size(flags.get("b"))
+        bytes_per_line = self._parse_size(flags.get("C"))
+        lines_per_file = int(flags.get("l") or 1000)
         numeric_suffix = flags.get("d", False)
         verbose = flags.get("verbose", False)
 
