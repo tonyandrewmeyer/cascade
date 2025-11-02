@@ -109,10 +109,14 @@ class ProcessCommand(Command):
             table.add_column("START", style="white", no_wrap=True)
             table.add_column("TIME", style="white", no_wrap=True)
             table.add_column("COMMAND", style="green")
+            if show_env:
+                table.add_column("ENV", style="yellow")
         else:
             table = create_enhanced_table()
             table.add_column("PID", style="cyan", no_wrap=True)
             table.add_column("CMD", style="green")
+            if show_env:
+                table.add_column("ENV", style="yellow")
 
         for pid in sorted(proc_dirs, key=int):
             cmdline = read_proc_cmdline(client, pid)
@@ -123,11 +127,10 @@ class ProcessCommand(Command):
                 except ProcReadError:
                     continue
 
-            # Add environment variables if requested
+            # Get environment variables if requested (but don't append to cmdline)
+            env_str = ""
             if show_env:
                 env_str = self._format_environment(client, pid, show_full_env)
-                if env_str:
-                    cmdline = f"{cmdline} {env_str}"
 
             # Get status info for user format
             if user_format:
@@ -141,17 +144,18 @@ class ProcessCommand(Command):
                 if show_no_tty and not show_all and status_info["tty"] != "?":
                     continue
 
-                # Truncate command if too long (but not when showing environment)
-                if not show_env and len(cmdline) > 30:
+                # Truncate command if too long
+                if len(cmdline) > 30:
                     cmdline = cmdline[:27] + "..."
-                elif show_env and not show_full_env and len(cmdline) > 100:
-                    # With environment, allow more space but still truncate
-                    cmdline = cmdline[:97] + "..."
+
+                # Truncate environment if needed
+                if show_env and not show_full_env and len(env_str) > 100:
+                    env_str = env_str[:97] + "..."
 
                 # Use Text objects to avoid Rich markup interpretation issues
                 from rich.text import Text
 
-                table.add_row(
+                row_data = [
                     Text(status_info["user"], style="cyan"),
                     Text(pid, style="cyan"),
                     Text(f"{status_info['cpu_percent']:.1f}", style="yellow"),
@@ -163,20 +167,29 @@ class ProcessCommand(Command):
                     status_info["start"],
                     status_info["time"],
                     Text(cmdline, style="green"),
-                )
+                ]
+                if show_env:
+                    row_data.append(Text(env_str, style="yellow"))
+                table.add_row(*row_data)
             else:
                 # Simple format
-                if not show_env and len(cmdline) > 50:
+                if len(cmdline) > 50:
                     cmdline = cmdline[:47] + "..."
-                elif show_env and not show_full_env and len(cmdline) > 150:
-                    # With environment, allow more space but still truncate
-                    cmdline = cmdline[:147] + "..."
+
+                # Truncate environment if needed
+                if show_env and not show_full_env and len(env_str) > 150:
+                    env_str = env_str[:147] + "..."
+
                 # Use Text objects to avoid Rich markup interpretation
                 from rich.text import Text
 
-                pid_text = Text(pid, style="cyan")
-                cmd_text = Text(cmdline, style="green")
-                table.add_row(pid_text, cmd_text)
+                row_data = [
+                    Text(pid, style="cyan"),
+                    Text(cmdline, style="green"),
+                ]
+                if show_env:
+                    row_data.append(Text(env_str, style="yellow"))
+                table.add_row(*row_data)
 
         self.console.print(table.build())
         return 0
