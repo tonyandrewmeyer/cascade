@@ -498,9 +498,9 @@ class PebbleShell:
             try:
                 current_dir = self.current_directory
                 if hasattr(self, "last_exit_code") and self.last_exit_code == 0:
-                    status = "\033[32m✔\033[0m"  # Green check
+                    status_text = Text("✔", style="green")
                 else:
-                    status = "\033[31m✖\033[0m"  # Red cross
+                    status_text = Text("✖", style="red")
 
                 # Show ~ in prompt when relevant:
                 if current_dir == self.home_dir:
@@ -511,14 +511,17 @@ class PebbleShell:
                     display_dir = current_dir
 
                 if display_dir == "/":
-                    prompt = f"{status} cascade:/> "
+                    prompt_text = Text.assemble(status_text, " cascade:/> ")
                 else:
-                    prompt = f"{status} cascade:{display_dir}> "
+                    prompt_text = Text.assemble(status_text, f" cascade:{display_dir}> ")
+
+                # Render the prompt using Rich's console to handle color support
+                prompt = self.console.render_str(prompt_text)
 
                 if self.readline_wrapper:
                     command_line = self.readline_wrapper.input_with_prompt(prompt)
                 else:
-                    command_line = self.console.input(prompt)
+                    command_line = self.console.input(prompt_text)
 
                 if self.readline_wrapper and command_line.strip():
                     self.readline_wrapper.add_history(command_line)
