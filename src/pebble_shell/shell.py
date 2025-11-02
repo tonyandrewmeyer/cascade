@@ -515,8 +515,11 @@ class PebbleShell:
                 else:
                     prompt_text = Text.assemble(status_text, f" cascade:{display_dir}> ")
 
-                # Render the prompt using Rich's console to handle color support
-                prompt = self.console.render_str(prompt_text)
+                # Render the prompt to a string with ANSI codes (or without if not supported)
+                # Using Rich's segments to render, which respects color_system
+                with self.console.capture() as capture:
+                    self.console.print(prompt_text, end="")
+                prompt = capture.get()
 
                 if self.readline_wrapper:
                     command_line = self.readline_wrapper.input_with_prompt(prompt)
