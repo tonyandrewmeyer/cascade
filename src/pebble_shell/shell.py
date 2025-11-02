@@ -521,7 +521,7 @@ class PebbleShell:
                 if self.readline_wrapper:
                     command_line = self.readline_wrapper.input_with_prompt(prompt)
                 else:
-                    command_line = self.console.input(prompt_text)
+                    command_line = self.console.input(prompt)
 
                 if self.readline_wrapper and command_line.strip():
                     self.readline_wrapper.add_history(command_line)
