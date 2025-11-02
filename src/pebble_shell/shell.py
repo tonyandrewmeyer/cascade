@@ -510,16 +510,33 @@ class PebbleShell:
                 else:
                     display_dir = current_dir
 
-                if display_dir == "/":
-                    prompt_text = Text.assemble(status_text, " cascade:/> ")
-                else:
-                    prompt_text = Text.assemble(status_text, f" cascade:{display_dir}> ")
+                # Build prompt - check if we should use colors
+                # Only use colors if TERM is set and stdout is a TTY
+                import os
+                import sys
+                use_colors = (
+                    sys.stdout.isatty() and
+                    os.environ.get("TERM") not in (None, "", "dumb") and
+                    self.console.color_system is not None
+                )
 
-                # Render the prompt to a string with ANSI codes (or without if not supported)
-                # Using Rich's segments to render, which respects color_system
-                with self.console.capture() as capture:
-                    self.console.print(prompt_text, end="")
-                prompt = capture.get()
+                if use_colors:
+                    # Terminal supports colors, use Rich Text rendering
+                    if display_dir == "/":
+                        prompt_text = Text.assemble(status_text, " cascade:/> ")
+                    else:
+                        prompt_text = Text.assemble(status_text, f" cascade:{display_dir}> ")
+
+                    with self.console.capture() as capture:
+                        self.console.print(prompt_text, end="")
+                    prompt = capture.get()
+                else:
+                    # No color support, use plain text
+                    status_symbol = "✔" if (hasattr(self, "last_exit_code") and self.last_exit_code == 0) else "✖"
+                    if display_dir == "/":
+                        prompt = f"{status_symbol} cascade:/> "
+                    else:
+                        prompt = f"{status_symbol} cascade:{display_dir}> "
 
                 if self.readline_wrapper:
                     command_line = self.readline_wrapper.input_with_prompt(prompt)
