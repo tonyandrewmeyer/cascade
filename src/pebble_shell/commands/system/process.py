@@ -15,6 +15,7 @@ from ...utils.proc_reader import (
     get_user_name_for_uid,
     parse_proc_stat,
     read_proc_cmdline,
+    read_proc_environ,
     read_proc_file,
     read_proc_status_fields,
 )
@@ -29,7 +30,7 @@ class ProcessCommand(Command):
     """Show process information."""
 
     name = "ps"
-    help = "Show running processes"
+    help = "Show running processes (supports -aux, e, eww for environment)"
     category = "System"
 
     def execute(
@@ -42,6 +43,8 @@ class ProcessCommand(Command):
         show_all = False
         user_format = False
         show_no_tty = False
+        show_env = False
+        show_full_env = False
 
         # Handle -aux as a special case
         if "-aux" in args:
@@ -57,14 +60,31 @@ class ProcessCommand(Command):
             show_no_tty = True
             args = [arg for arg in args if arg != "aux"]
 
-        # Parse individual flags
+        # Parse individual flags (including 'e' for environment)
+        remaining_args = []
         for arg in args:
-            if arg == "-a":
-                show_all = True
-            elif arg == "-u":
-                user_format = True
-            elif arg == "-x":
-                show_no_tty = True
+            if arg.startswith("-"):
+                # Handle combined flags like -aux, -ae, etc.
+                flags = arg[1:]
+                if "a" in flags:
+                    show_all = True
+                if "u" in flags:
+                    user_format = True
+                if "x" in flags:
+                    show_no_tty = True
+                if "e" in flags:
+                    show_env = True
+            elif arg == "e":
+                # Single 'e' flag without dash
+                show_env = True
+            elif arg == "eww":
+                # 'eww' shows full environment
+                show_env = True
+                show_full_env = True
+            else:
+                remaining_args.append(arg)
+
+        args = remaining_args
 
         proc_dirs: list[str] = []
         files = client.list_files("/proc")
@@ -102,6 +122,12 @@ class ProcessCommand(Command):
                     cmdline = f"[{comm.strip()}]"
                 except ProcReadError:
                     continue
+
+            # Add environment variables if requested
+            if show_env:
+                env_str = self._format_environment(client, pid, show_full_env)
+                if env_str:
+                    cmdline = f"{cmdline} {env_str}"
 
             # Get status info for user format
             if user_format:
@@ -238,3 +264,39 @@ class ProcessCommand(Command):
             return get_process_tty(client, pid)
         except ProcReadError:
             return "?"
+
+    def _format_environment(
+        self, client: ops.pebble.Client | shimmer.PebbleCliClient, pid: str, full: bool
+    ) -> str:
+        """Format environment variables for display with command.
+
+        Args:
+            client: Pebble client
+            pid: Process ID
+            full: If True, show full environment (eww). If False, show abbreviated (e)
+
+        Returns:
+            Formatted environment string
+        """
+        try:
+            env_vars = read_proc_environ(client, pid)
+            if not env_vars:
+                return ""
+
+            # Format as KEY=VALUE pairs
+            env_pairs = [f"{k}={v}" for k, v in env_vars.items()]
+
+            if full:
+                # Show full environment (eww)
+                return " ".join(env_pairs)
+            else:
+                # Show abbreviated environment (e) - limit length
+                env_str = " ".join(env_pairs)
+                # Truncate if too long (similar to standard ps e behavior)
+                max_len = 200
+                if len(env_str) > max_len:
+                    env_str = env_str[:max_len] + "..."
+                return env_str
+
+        except ProcReadError:
+            return ""
