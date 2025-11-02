@@ -15,8 +15,8 @@ from .._base import Command
 class PullCommand(Command):
     """Pull files and directories from the remote container."""
 
-    name = "pebble-pull"
-    help = "Pull files and directories from the remote container. Usage: pebble-pull <source> <dest>"
+    name = "pull"
+    help = "Pull files and directories from the remote container. Usage: pebble pull <source> <dest>"
     category = "Pebble Management"
 
     def execute(
@@ -27,7 +27,7 @@ class PullCommand(Command):
             return 0
 
         if not validate_min_args(
-            self.shell, args, 2, "Usage: pebble-pull <source> <dest>"
+            self.shell, args, 2, "Usage: pebble pull <source> <dest>"
         ):
             return 1
 

@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 class TasksCommand(Command):
     """List tasks for a change."""
 
-    name = "pebble-tasks"
+    name = "tasks"
     help = "List tasks for a specific change"
     category = "Pebble Management"
 

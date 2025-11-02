@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 class CheckCommand(Command):
     """Get details of a specific health check."""
 
-    name = "pebble-check"
+    name = "check"
     help = "Get details of a specific health check"
     category = "Pebble Management"
 

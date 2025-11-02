@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 class ServicesCommand(Command):
     """List services and their status."""
 
-    name = "pebble-services"
+    name = "services"
     help = "List all services and their status"
     category = "Pebble Management"
 

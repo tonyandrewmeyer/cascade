@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 class HealthCommand(Command):
     """Show overall health status."""
 
-    name = "pebble-health"
+    name = "health"
     help = "Show overall health status of all checks"
     category = "Pebble Management"
 

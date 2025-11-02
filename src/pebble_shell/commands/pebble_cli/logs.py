@@ -15,8 +15,8 @@ from .._base import Command
 class LogsCommand(Command):
     """Show service logs from the remote container."""
 
-    name = "pebble-logs"
-    help = "Show service logs from the remote container. Usage: pebble-logs [service] [options]"
+    name = "logs"
+    help = "Show service logs from the remote container. Usage: pebble logs [service] [options]"
     category = "Pebble Management"
 
     def execute(

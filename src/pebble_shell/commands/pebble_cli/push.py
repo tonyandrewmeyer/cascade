@@ -15,8 +15,8 @@ from .._base import Command
 class PushCommand(Command):
     """Push files and directories to the remote container."""
 
-    name = "pebble-push"
-    help = "Push files and directories to the remote container. Usage: pebble-push <source> <dest>"
+    name = "push"
+    help = "Push files and directories to the remote container. Usage: pebble push <source> <dest>"
     category = "Pebble Management"
 
     def execute(
@@ -27,7 +27,7 @@ class PushCommand(Command):
             return 0
 
         if not validate_min_args(
-            self.shell, args, 2, "Usage: pebble-push <source> <dest>"
+            self.shell, args, 2, "Usage: pebble push <source> <dest>"
         ):
             return 1
 

@@ -22,8 +22,8 @@ if TYPE_CHECKING:
 class PlanCommand(Command):
     """Show or manage service plans."""
 
-    name = "pebble-plan"
-    help = "Show the current plan configuration. Usage: pebble-plan [--format json|yaml|table]"
+    name = "plan"
+    help = "Show the current plan configuration. Usage: pebble plan [--format json|yaml|table]"
     category = "Pebble Management"
 
     def execute(
