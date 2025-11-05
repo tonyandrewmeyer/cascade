@@ -249,6 +249,7 @@ class PipelineExecutor:
                     if pipe_input and cmd.command in ["grep", "wc", "sort", "cut"]:
                         # Special handling for text processing commands
                         self._handle_piped_text_command(cmd, pipe_input, output)
+                        return 0
                     else:
                         # Regular command execution
                         return command_instance.execute(self.client, args)
