@@ -58,8 +58,11 @@ def test_execute_no_args(
 def test_execute_nonexistent_file(
     client: ops.pebble.Client,
     command: pebble_shell.commands.EditCommand,
+    monkeypatch: pytest.MonkeyPatch,
 ):
+    # Mock editor to avoid interactive prompt
+    monkeypatch.setenv("EDITOR", "true")
     with command.shell.console.capture() as _:
         result = command.execute(client=client, args=["/nonexistent/file.txt"])
-    # Should fail for nonexistent file
-    assert result == 1
+    # Should succeed - creates new file
+    assert result == 0
