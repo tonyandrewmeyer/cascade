@@ -510,7 +510,7 @@ class PebbleShell:
                 else:
                     display_dir = current_dir
 
-                prompt = f"{status_symbol} cascade:{display_dir}> "
+                prompt = f"{status_text} cascade:{display_dir}> "
 
                 if self.readline_wrapper:
                     command_line = self.readline_wrapper.input_with_prompt(prompt)
