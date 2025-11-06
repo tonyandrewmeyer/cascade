@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import io
+import os
 import tarfile
 from typing import TYPE_CHECKING, Union
 
@@ -75,6 +76,17 @@ class TarCommand(Command):
         if not archive_filename:
             self.console.print("[red]tar: must specify archive filename with -f[/red]")
             return 1
+
+        # Convert relative paths to absolute paths
+        cwd = self.shell.current_directory
+        if not os.path.isabs(archive_filename):
+            archive_filename = os.path.normpath(os.path.join(cwd, archive_filename))
+
+        # Convert file paths to absolute paths
+        positional_args = [
+            os.path.normpath(os.path.join(cwd, path)) if not os.path.isabs(path) else path
+            for path in positional_args
+        ]
 
         try:
             if create:

@@ -63,6 +63,13 @@ class UnzipCommand(Command):
         verbose = flags.get("v", False)
         extract_dir = flags.get("d") or "."
 
+        # Convert relative paths to absolute paths
+        cwd = self.shell.current_directory
+        if not os.path.isabs(zip_file_path):
+            zip_file_path = os.path.normpath(os.path.join(cwd, zip_file_path))
+        if not os.path.isabs(extract_dir):
+            extract_dir = os.path.normpath(os.path.join(cwd, extract_dir))
+
         try:
             if list_contents:
                 return self._list_zip(client, zip_file_path, verbose)
