@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-import os
 from typing import TYPE_CHECKING, Union
 
 import ops
 from rich.markdown import Markdown
 from rich.panel import Panel
 
+from ...utils import resolve_path
 from ...utils.command_helpers import handle_help_flag
 from .._base import Command
 
@@ -45,11 +45,11 @@ class MarkdownCommand(Command):
             return 1
 
         file_path = args[0]
-        cwd = self.shell.current_directory
 
         # Resolve path
-        if not os.path.isabs(file_path):
-            file_path = os.path.normpath(os.path.join(cwd, file_path))
+        file_path = resolve_path(
+            self.shell.current_directory, file_path, self.shell.home_dir
+        )
 
         try:
             with client.pull(file_path) as file:

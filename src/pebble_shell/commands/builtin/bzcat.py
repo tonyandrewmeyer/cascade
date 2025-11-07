@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import bz2
 import io
-import os
 from typing import TYPE_CHECKING, Union
 
 import ops
 
+from ...utils import resolve_path
 from ...utils.command_helpers import handle_help_flag, validate_min_args
 from .._base import Command
 
@@ -33,11 +33,12 @@ class BzcatCommand(Command):
         """Execute bzcat command."""
         if handle_help_flag(self, args):
             return 0
-        cwd = self.shell.current_directory
         if validate_min_args(self.shell, args, 1, "bzcat file [file2...]"):
             return 1
         for filename in args:
-            path = filename if os.path.isabs(filename) else os.path.join(cwd, filename)
+            path = resolve_path(
+                self.shell.current_directory, filename, self.shell.home_dir
+            )
             try:
                 with client.pull(path, encoding=None) as f:
                     compressed_data = f.read()

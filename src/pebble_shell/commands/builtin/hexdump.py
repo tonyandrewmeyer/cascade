@@ -3,11 +3,11 @@
 from __future__ import annotations
 
 import io
-import os
 from typing import TYPE_CHECKING, BinaryIO, Union
 
 import ops
 
+from ...utils import resolve_path
 from ...utils.command_helpers import handle_help_flag
 from .._base import Command
 
@@ -41,10 +41,11 @@ class HexdumpCommand(Command):
         if not files:
             self.console.print("hexdump: no files specified")
             return 1
-        cwd = self.shell.current_directory
         exit_code = 0
         for filename in files:
-            path = filename if os.path.isabs(filename) else os.path.join(cwd, filename)
+            path = resolve_path(
+                self.shell.current_directory, filename, self.shell.home_dir
+            )
             try:
                 with client.pull(path, encoding=None) as f:
                     assert isinstance(f, bytes)

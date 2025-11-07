@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-import os
 import sys
 from typing import TYPE_CHECKING, Any, Union, cast
 
@@ -48,17 +47,16 @@ class JqCommand(Command):
 
         file_path = args[0]
         keypath = args[1] if len(args) > 1 else None
-        cwd = self.shell.current_directory
 
         # Resolve path
         if file_path == "-":
             # Read from stdin
             content = sys.stdin.read()
         else:
-            if not os.path.isabs(file_path):
-                file_path = os.path.normpath(os.path.join(cwd, file_path))
             try:
-                resolved_path = resolve_path(cwd, file_path, self.shell.home_dir)
+                resolved_path = resolve_path(
+                    self.shell.current_directory, file_path, self.shell.home_dir
+                )
                 with client.pull(resolved_path) as file:
                     content = file.read()
                     if isinstance(content, bytes):

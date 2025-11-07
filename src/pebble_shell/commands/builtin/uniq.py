@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-import os
 from typing import TYPE_CHECKING, Union
 
 import ops
 
+from ...utils import resolve_path
 from ...utils.command_helpers import (
     handle_help_flag,
     safe_read_file,
@@ -58,10 +58,8 @@ class UniqCommand(Command):
             return 1
 
         lines = []
-        file_path = (
-            files[0]
-            if os.path.isabs(files[0])
-            else os.path.join(self.shell.current_directory, files[0])
+        file_path = resolve_path(
+            self.shell.current_directory, files[0], self.shell.home_dir
         )
         content = safe_read_file(client, self.shell.error_console, file_path)
         if content is None:

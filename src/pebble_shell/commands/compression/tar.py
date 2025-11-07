@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import io
-import os
 import tarfile
 from typing import TYPE_CHECKING, Union
 
 import ops
 
+from ...utils import resolve_path
 from ...utils.command_helpers import handle_help_flag, parse_flags
 from .._base import Command
 from .exceptions import CompressionError
@@ -78,13 +78,13 @@ class TarCommand(Command):
             return 1
 
         # Convert relative paths to absolute paths
-        cwd = self.shell.current_directory
-        if not os.path.isabs(archive_filename):
-            archive_filename = os.path.normpath(os.path.join(cwd, archive_filename))
+        archive_filename = resolve_path(
+            self.shell.current_directory, archive_filename, self.shell.home_dir
+        )
 
         # Convert file paths to absolute paths
         positional_args = [
-            os.path.normpath(os.path.join(cwd, path)) if not os.path.isabs(path) else path
+            resolve_path(self.shell.current_directory, path, self.shell.home_dir)
             for path in positional_args
         ]
 

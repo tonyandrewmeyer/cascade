@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import io
-import os
 import zipfile
 from typing import TYPE_CHECKING, Union
 
 import ops
 
+from ...utils import resolve_path
 from ...utils.command_helpers import handle_help_flag, parse_flags, validate_min_args
 from .._base import Command
 from .exceptions import CompressionError
@@ -64,11 +64,12 @@ class UnzipCommand(Command):
         extract_dir = flags.get("d") or "."
 
         # Convert relative paths to absolute paths
-        cwd = self.shell.current_directory
-        if not os.path.isabs(zip_file_path):
-            zip_file_path = os.path.normpath(os.path.join(cwd, zip_file_path))
-        if not os.path.isabs(extract_dir):
-            extract_dir = os.path.normpath(os.path.join(cwd, extract_dir))
+        zip_file_path = resolve_path(
+            self.shell.current_directory, zip_file_path, self.shell.home_dir
+        )
+        extract_dir = resolve_path(
+            self.shell.current_directory, extract_dir, self.shell.home_dir
+        )
 
         try:
             if list_contents:

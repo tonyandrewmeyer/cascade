@@ -9,6 +9,7 @@ if TYPE_CHECKING:
 
 import ops
 
+from ...utils import resolve_path
 from ...utils.command_helpers import handle_help_flag, parse_flags, validate_min_args
 from .._base import Command
 
@@ -43,6 +44,10 @@ class DiffCommand(Command):
 
         file1, file2 = remaining_args[0], remaining_args[1]
         recursive = flags["r"]
+
+        # Resolve paths
+        file1 = resolve_path(self.shell.current_directory, file1, self.shell.home_dir)
+        file2 = resolve_path(self.shell.current_directory, file2, self.shell.home_dir)
 
         # Check if files exist
         try:

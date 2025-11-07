@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import io
-import os
 import shutil
 import subprocess
 import tempfile
@@ -12,6 +11,7 @@ from typing import TYPE_CHECKING, Union
 import ops
 from rich.panel import Panel
 
+from ...utils import resolve_path
 from ...utils.command_helpers import handle_help_flag
 from .._base import Command
 
@@ -46,9 +46,9 @@ class EditCommand(Command):
             )
             return 1
         remote_path = args[0]
-        cwd = self.shell.current_directory
-        if not os.path.isabs(remote_path):
-            remote_path = os.path.normpath(os.path.join(cwd, remote_path))
+        remote_path = resolve_path(
+            self.shell.current_directory, remote_path, self.shell.home_dir
+        )
         with tempfile.NamedTemporaryFile(delete=False, mode="wb") as tmp:
             tmp_path = tmp.name
             try:

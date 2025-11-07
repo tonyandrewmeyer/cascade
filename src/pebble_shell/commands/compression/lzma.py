@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import io
 import lzma
-import os
 from typing import TYPE_CHECKING, Union
 
 import ops
 
+from ...utils import resolve_path
 from ...utils.command_helpers import handle_help_flag, parse_flags, validate_min_args
 from .._base import Command
 from .exceptions import CompressionError
@@ -65,9 +65,9 @@ class LzmaCommand(Command):
         # Process each file
         for file_path in positional_args:
             # Convert relative paths to absolute paths
-            cwd = self.shell.current_directory
-            if not os.path.isabs(file_path):
-                file_path = os.path.normpath(os.path.join(cwd, file_path))
+            file_path = resolve_path(
+                self.shell.current_directory, file_path, self.shell.home_dir
+            )
 
             try:
                 if decompress:
