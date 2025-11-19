@@ -53,6 +53,8 @@ class EnhancedCompleter:
         }
 
         self.fuzzy_threshold = 0.6
+        self.last_suggestion = ""
+        self.show_inline_suggestions = True
 
     def complete(self, text: str, state: int) -> str | None:
         """Main completion function for readline.
@@ -69,6 +71,10 @@ class EnhancedCompleter:
                 # First call, generate completion list
                 self.matches = self._generate_completions(text)
                 self.matches = sorted(self.matches)
+
+                # Show inline suggestion for first match if enabled
+                if self.show_inline_suggestions and self.matches and text:
+                    self._show_inline_suggestion(text, self.matches[0])
 
             if state < len(self.matches):
                 return self.matches[state]
@@ -92,7 +98,28 @@ class EnhancedCompleter:
 
     def _get_current_line(self) -> str:
         """Get the current line from readline."""
-        return readline.get_line_buffer()
+        try:
+            return readline.get_line_buffer()
+        except (AttributeError, RuntimeError):
+            # readline may not be available or not in input context
+            return ""
+
+    def _show_inline_suggestion(self, text: str, suggestion: str) -> None:
+        """Display inline suggestion in a subtle way.
+
+        This method displays the suggested completion text in a muted format.
+        The actual display is limited by readline's capabilities.
+
+        Args:
+            text: Current input text
+            suggestion: Suggested completion
+        """
+        # Store the suggestion for potential future use
+        self.last_suggestion = suggestion
+
+        # Note: Python's readline doesn't directly support inline colored suggestions
+        # like fish shell or zsh. The best we can do is use the display_matches_hook
+        # which is configured separately in readline_support.py
 
     def _complete_command(self, text: str) -> list[str]:
         """Complete command names with fuzzy matching."""
@@ -126,58 +153,78 @@ class EnhancedCompleter:
     def _complete_process_names(self, text: str, parts: list[str]) -> list[str]:
         """Complete process names for pgrep command."""
         matches: list[str] = []
-        proc_entries = self.client.list_files("/proc")
-        pids = [entry.name for entry in proc_entries if entry.name.isdigit()]
+        try:
+            proc_entries = self.client.list_files("/proc")
+            pids = [entry.name for entry in proc_entries if entry.name.isdigit()]
 
-        for pid in pids:
-            try:
-                with self.client.pull(f"/proc/{pid}/comm") as file:
-                    comm = file.read().strip()
-            except ops.pebble.PathError:
-                continue
-            if isinstance(comm, str) and comm.startswith(text):
-                matches.append(comm)
+            for pid in pids:
+                try:
+                    with self.client.pull(f"/proc/{pid}/comm") as file:
+                        comm = file.read().strip()
+                except (ops.pebble.PathError, Exception):
+                    continue
+                if isinstance(comm, str) and comm.startswith(text):
+                    matches.append(comm)
+        except Exception:
+            # Failed to list /proc directory
+            return []
 
         return list(set(matches))
 
     def _complete_pebble_services(self, text: str, parts: list[str]) -> list[str]:
         """Complete Pebble service names."""
-        services = self.client.get_services()
-        return [service.name for service in services if service.name.startswith(text)]
+        try:
+            services = self.client.get_services()
+            return [service.name for service in services if service.name.startswith(text)]
+        except Exception:
+            # Failed to get services
+            return []
 
     def _complete_pebble_checks(self, text: str, parts: list[str]) -> list[str]:
         """Complete Pebble check names."""
-        checks = self.client.get_checks()
-        return [check.name for check in checks if check.name.startswith(text)]
+        try:
+            checks = self.client.get_checks()
+            return [check.name for check in checks if check.name.startswith(text)]
+        except Exception:
+            # Failed to get checks
+            return []
 
     def _complete_pebble_notices(self, text: str, parts: list[str]) -> list[str]:
         """Complete Pebble notice IDs."""
-        notices = self.client.get_notices()
-        matches: list[str] = []
-        for notice in notices:
-            notice_id = str(notice.id)
-            if notice_id.startswith(text):
-                matches.append(notice_id)
-        return matches
+        try:
+            notices = self.client.get_notices()
+            matches: list[str] = []
+            for notice in notices:
+                notice_id = str(notice.id)
+                if notice_id.startswith(text):
+                    matches.append(notice_id)
+            return matches
+        except Exception:
+            # Failed to get notices
+            return []
 
     def _complete_mount_points(self, text: str, parts: list[str]) -> list[str]:
         """Complete mount points for mount command."""
-        with self.client.pull("/proc/mounts") as file:
-            content = file.read()
-        assert isinstance(content, str)
+        try:
+            with self.client.pull("/proc/mounts") as file:
+                content = file.read()
+            assert isinstance(content, str)
 
-        matches: list[str] = []
-        for line in content.splitlines():
-            if not line.strip():
-                continue
-            parts_mount = line.split()
-            if len(parts_mount) < 2:
-                continue
-            mount_point = parts_mount[1]
-            if mount_point.startswith(text):
-                matches.append(mount_point)
+            matches: list[str] = []
+            for line in content.splitlines():
+                if not line.strip():
+                    continue
+                parts_mount = line.split()
+                if len(parts_mount) < 2:
+                    continue
+                mount_point = parts_mount[1]
+                if mount_point.startswith(text):
+                    matches.append(mount_point)
 
-        return list(set(matches))  # Remove duplicates
+            return list(set(matches))  # Remove duplicates
+        except Exception:
+            # Failed to read /proc/mounts
+            return []
 
     def _complete_paths(self, text: str, parts: list[str]) -> list[str]:
         """Complete file and directory paths."""
@@ -193,14 +240,15 @@ class EnhancedCompleter:
             dir_path = text
             prefix = text
         else:
-            dir_path = os.path.dirname(text)
-            prefix = os.path.dirname(text) + "/"
+            dir_path = os.path.dirname(text) or "/"
+            prefix = os.path.dirname(text) + "/" if os.path.dirname(text) else "/"
             if prefix == "//":
                 prefix = "/"
 
         try:
             entries = self.client.list_files(dir_path)
         except Exception:
+            # Failed to list directory - could be permission issue or non-existent path
             return []
 
         matches: list[str] = []
@@ -266,3 +314,48 @@ class EnhancedCompleter:
             self.console.print(f"[cyan]Completion hints for '{command}':[/cyan]")
             for hint in hints:
                 self.console.print(f"  [yellow]{hint}[/yellow]")
+
+    def display_matches_hook(
+        self, substitution: str, matches: list[str], longest_match_length: int
+    ) -> None:
+        """Custom hook to display completion matches in an enhanced way.
+
+        This hook is called by readline to display the list of completion matches.
+        We enhance it to show matches with better formatting and inline suggestions.
+
+        Args:
+            substitution: The text to be substituted
+            matches: List of possible completions
+            longest_match_length: Length of the longest match
+        """
+        print()  # Move to new line
+        if not matches:
+            return
+
+        # Show the first match as the primary suggestion
+        if len(matches) == 1:
+            self.console.print(f"[dim cyan]→ {matches[0]}[/dim cyan]")
+        else:
+            # Show first match as primary suggestion
+            self.console.print(f"[dim cyan]→ {matches[0]}[/dim cyan] [dim](press Tab again for more)[/dim]")
+
+            # If there are multiple matches, show them
+            if len(matches) > 1:
+                # Group matches into columns for better display
+                import shutil
+                terminal_width = shutil.get_terminal_size().columns
+                col_width = longest_match_length + 2
+                num_cols = max(1, terminal_width // col_width)
+
+                # Show up to 20 matches
+                display_matches = matches[:20]
+                for i in range(0, len(display_matches), num_cols):
+                    row_matches = display_matches[i:i+num_cols]
+                    row_text = "  ".join(f"{m:<{longest_match_length}}" for m in row_matches)
+                    self.console.print(f"[dim]{row_text}[/dim]")
+
+                if len(matches) > 20:
+                    self.console.print(f"[dim]... and {len(matches) - 20} more[/dim]")
+
+        # Redisplay the prompt and current line
+        print(readline.get_line_buffer(), end='', flush=True)

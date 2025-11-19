@@ -116,31 +116,21 @@ class TestEnhancedCompleter:
 
     def test_get_current_line_no_readline(self) -> None:
         """Test getting current line when readline is not available."""
-        with patch(
-            "builtins.__import__", side_effect=ImportError("No module named 'readline'")
-        ):
+        with patch('pebble_shell.utils.enhanced_completer.readline.get_line_buffer', side_effect=RuntimeError("readline not available")):
             result = self.completer._get_current_line()
             assert result == ""
 
-    @patch("builtins.__import__")
-    def test_get_current_line_with_readline(self, mock_import: Mock) -> None:
+    def test_get_current_line_with_readline(self) -> None:
         """Test getting current line with readline."""
-        mock_readline = Mock()
-        mock_readline.get_line_buffer.return_value = "test command"
-        mock_import.return_value = mock_readline
+        with patch('pebble_shell.utils.enhanced_completer.readline.get_line_buffer', return_value="test command"):
+            result = self.completer._get_current_line()
+            assert result == "test command"
 
-        result = self.completer._get_current_line()
-        assert result == "test command"
-
-    @patch("builtins.__import__")
-    def test_get_current_line_exception(self, mock_import: Mock) -> None:
+    def test_get_current_line_exception(self) -> None:
         """Test handling AttributeError in _get_current_line."""
-        mock_readline = Mock()
-        mock_readline.get_line_buffer.side_effect = AttributeError()
-        mock_import.return_value = mock_readline
-
-        result = self.completer._get_current_line()
-        assert result == ""
+        with patch('pebble_shell.utils.enhanced_completer.readline.get_line_buffer', side_effect=AttributeError()):
+            result = self.completer._get_current_line()
+            assert result == ""
 
     def test_complete_command_exact_matches(self) -> None:
         """Test command completion with exact matches."""
