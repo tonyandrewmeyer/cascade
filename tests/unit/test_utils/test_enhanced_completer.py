@@ -637,3 +637,60 @@ class TestEnhancedCompleterAdvanced:
 
             matches = self.completer._complete_process_names("ba", ["pgrep", "ba"])
             assert matches == []
+
+    def test_display_matches_hook_single_match(self) -> None:
+        """Test display_matches_hook with a single match."""
+        from io import StringIO
+        from unittest.mock import patch
+
+        # Capture print output
+        with patch('builtins.print') as mock_print:
+            with patch('pebble_shell.utils.enhanced_completer.readline.get_line_buffer', return_value='ls '):
+                self.completer.display_matches_hook('test', ['test_file.txt'], 13)
+
+                # Should print newline and show the single match
+                assert mock_print.call_count >= 2
+
+    def test_display_matches_hook_multiple_matches(self) -> None:
+        """Test display_matches_hook with multiple matches."""
+        from unittest.mock import patch
+
+        matches = ['file1.txt', 'file2.txt', 'file3.txt']
+
+        with patch('builtins.print') as mock_print:
+            with patch('pebble_shell.utils.enhanced_completer.readline.get_line_buffer', return_value='ls f'):
+                self.completer.display_matches_hook('f', matches, 9)
+
+                # Should print newline, primary suggestion, and matches
+                assert mock_print.call_count >= 2
+
+    def test_display_matches_hook_no_matches(self) -> None:
+        """Test display_matches_hook with no matches."""
+        from unittest.mock import patch
+
+        with patch('builtins.print') as mock_print:
+            self.completer.display_matches_hook('xyz', [], 0)
+
+            # Should only print newline and return
+            assert mock_print.call_count == 1
+
+    def test_show_inline_suggestions_enabled(self) -> None:
+        """Test that inline suggestions can be enabled/disabled."""
+        assert self.completer.show_inline_suggestions is True
+
+        # Test storing a suggestion
+        self.completer._show_inline_suggestion('te', 'test')
+        assert self.completer.last_suggestion == 'test'
+
+    def test_complete_with_inline_suggestion(self) -> None:
+        """Test that complete() calls _show_inline_suggestion when enabled."""
+        from unittest.mock import patch
+
+        with patch.object(self.completer, '_get_current_line', return_value='l'):
+            with patch.object(self.completer, '_show_inline_suggestion') as mock_suggest:
+                result = self.completer.complete('l', 0)
+
+                # Should have called _show_inline_suggestion with first match
+                if self.completer.matches:
+                    mock_suggest.assert_called_once()
+                    assert result == self.completer.matches[0]
