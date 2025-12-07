@@ -3,6 +3,7 @@
 from .brackettest import BracketTestCommand
 from .doublebrackettest import DoubleBracketTestCommand
 from .hostid import HostidCommand
+from .hoy import HoyCommand
 from .less import LessCommand
 from .logger import LoggerCommand
 from .more import MoreCommand
@@ -19,6 +20,7 @@ __all__ = [
     "BracketTestCommand",
     "DoubleBracketTestCommand",
     "HostidCommand",
+    "HoyCommand",
     "LessCommand",
     "LoggerCommand",
     "MoreCommand",
