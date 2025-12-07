@@ -31,6 +31,7 @@ These commands have been implemented in Cascade:
 | `uppered` | Convert string to uppercase | Text Utilities |
 | `lowered` | Convert string to lowercase | Text Utilities |
 | `nato` | Convert letters to NATO phonetic alphabet | Text Utilities |
+| `url` | Parse URL and display components | Text Utilities |
 
 ### Date/Time
 
@@ -130,7 +131,6 @@ Requires: `pip install pebble-cascade[clipboard]`
 ### Already Covered or Low Value
 - `running` - Process lookup (already have `ps`)
 - `catbin` - Shows command source (local PATH)
-- `url` - URL parser (less useful in container context)
 - `snippets` - Retrieves stored snippets (would need container-side config)
 
 ### Complex/Marginal Value
@@ -147,11 +147,11 @@ Requires: `pip install pebble-cascade[clipboard]`
 
 ## Summary
 
-**Implemented:** 21 commands
-- Text Utilities: 8
+**Implemented:** 22 commands
+- Text Utilities: 9 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url)
 - System Utilities: 3
 - Reference: 2
 - Built-in Commands: 4 (mkcd, tempe, mksh, serveit)
 - Clipboard: 4
 
-**Skipped:** ~29 commands (audio/video, system control, etc.)
+**Skipped:** ~28 commands (audio/video, system control, etc.)
