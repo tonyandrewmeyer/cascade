@@ -5,6 +5,7 @@ from .expand import ExpandCommand
 from .fold import FoldCommand
 from .jsonformat import JsonformatCommand
 from .length import LengthCommand
+from .line import LineCommand
 from .lowered import LoweredCommand
 from .seq import SeqCommand
 from .uppered import UpperedCommand
@@ -18,6 +19,7 @@ __all__ = [
     "FoldCommand",
     "JsonformatCommand",
     "LengthCommand",
+    "LineCommand",
     "LoweredCommand",
     "SeqCommand",
     "TrCommand",
