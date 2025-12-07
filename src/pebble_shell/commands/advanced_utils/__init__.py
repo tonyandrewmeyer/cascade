@@ -11,6 +11,7 @@ from .pidof import PidofCommand
 from .pstrace import PstraceCommand
 from .tee import TeeCommand
 from .test import TestCommand
+from .uuid import UuidCommand
 from .xargs import XargsCommand
 from .yes import YesCommand
 
@@ -26,6 +27,7 @@ __all__ = [
     "PstraceCommand",
     "TeeCommand",
     "TestCommand",
+    "UuidCommand",
     "XargsCommand",
     "YesCommand",
 ]
