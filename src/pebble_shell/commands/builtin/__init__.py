@@ -21,8 +21,11 @@ from .jq import JqCommand
 from .lsof import LsofCommand
 from .markdown import MarkdownCommand
 from .md5sum import Md5sumCommand
+from .mkcd import MkcdCommand
 from .mkpasswd import MkpasswdCommand
+from .mksh import MkshCommand
 from .pebblesay import PebblesayCommand
+from .tempe import TempeCommand
 from .printenv import PrintenvCommand
 from .printf import PrintfCommand
 from .pwd import PwdCommand
@@ -66,8 +69,11 @@ __all__ = [
     "LsofCommand",
     "MarkdownCommand",
     "Md5sumCommand",
+    "MkcdCommand",
     "MkpasswdCommand",
+    "MkshCommand",
     "PebblesayCommand",
+    "TempeCommand",
     "PrintenvCommand",
     "PrintfCommand",
     "PwdCommand",

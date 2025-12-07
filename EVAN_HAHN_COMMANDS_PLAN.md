@@ -8,68 +8,82 @@ Cascade is a Pebble shell for interacting with containers/workloads. It has:
 - Filesystem read/write access to containers via Pebble client
 - Exec capability for running commands in containers
 - Rich terminal output via the Rich library
-- **No local system access** (clipboard, audio, video, GUI, etc.)
+- Access to the **local** clipboard via optional `pyperclip` dependency
+- Ability to open local editors for remote file editing (like `edit` command)
 
 This context is crucial for evaluating which scripts are feasible.
 
 ---
 
-## Commands to Implement
+## Commands Implemented
 
-These commands can be implemented using Python and filesystem/exec capabilities:
+These commands have been implemented in Cascade:
 
 ### Text Processing
 
-| Command | Description | Implementation Notes |
-|---------|-------------|---------------------|
-| `line` | Extract specific line number from stdin | Pure text processing, read from stdin |
-| `straightquote` | Convert smart quotes to straight quotes | String replacement |
-| `markdownquote` | Add `>` prefix to each line | Text transformation |
-| `length` | Return character count of argument | Simple `len()` |
-| `jsonformat` | Pretty-print JSON from stdin | Use Python's `json` module |
-| `uppered` | Convert string to uppercase | `str.upper()` |
-| `lowered` | Convert string to lowercase | `str.lower()` |
-| `nato` | Convert letters to NATO phonetic alphabet | Static lookup table |
+| Command | Description | Category |
+|---------|-------------|----------|
+| `line` | Extract specific line number from stdin | Text Utilities |
+| `straightquote` | Convert smart quotes to straight quotes | Text Utilities |
+| `markdownquote` | Add `>` prefix to each line | Text Utilities |
+| `length` | Return character count of argument | Text Utilities |
+| `jsonformat` | Pretty-print JSON from stdin | Text Utilities |
+| `uppered` | Convert string to uppercase | Text Utilities |
+| `lowered` | Convert string to lowercase | Text Utilities |
+| `nato` | Convert letters to NATO phonetic alphabet | Text Utilities |
 
 ### Date/Time
 
-| Command | Description | Implementation Notes |
-|---------|-------------|---------------------|
-| `hoy` | Print current date in ISO format (YYYY-MM-DD) | Use existing date infrastructure |
+| Command | Description | Category |
+|---------|-------------|----------|
+| `hoy` | Print current date in ISO format (YYYY-MM-DD) | System Utilities |
 
 ### Reference/Lookup
 
-| Command | Description | Implementation Notes |
-|---------|-------------|---------------------|
-| `httpstatus` | Display HTTP status code descriptions | Static data lookup |
-| `alphabet` | Print English alphabet | Trivial static output |
+| Command | Description | Category |
+|---------|-------------|----------|
+| `httpstatus` | Display HTTP status code descriptions | Reference |
+| `alphabet` | Print English alphabet | Reference |
 
 ### System/Utilities
 
-| Command | Description | Implementation Notes |
-|---------|-------------|---------------------|
-| `uuid` | Generate v4 UUID | Python's `uuid` module |
-| `prettypath` | Display PATH with newlines | Read from container environment |
+| Command | Description | Category |
+|---------|-------------|----------|
+| `uuid` | Generate v4 UUID | System Utilities |
+| `prettypath` | Display PATH with newlines | System Utilities |
+
+### Directory/File Management
+
+| Command | Description | Category |
+|---------|-------------|----------|
+| `mkcd` | Create directory and cd into it | Built-in Commands |
+| `tempe` | Create temp directory and cd into it | Built-in Commands |
+| `mksh` | Create executable shell script and edit | Built-in Commands |
+
+### Clipboard (Optional Dependency)
+
+Requires: `pip install pebble-cascade[clipboard]`
+
+| Command | Description | Category |
+|---------|-------------|----------|
+| `copy` | Copy stdin or arguments to clipboard | Clipboard |
+| `pasta` | Output clipboard contents to stdout | Clipboard |
+| `cpwd` | Copy current working directory to clipboard | Clipboard |
+| `pastas` | Monitor clipboard and print changes | Clipboard |
 
 ---
 
 ## Commands to Skip
 
-### Clipboard Commands (No local system access)
-- `copy` - Pipes output to system clipboard
-- `pasta` - Retrieves clipboard contents
-- `pastas` - Monitors clipboard changes
-- `cpwd` - Copies current directory to clipboard
+### Local Editor Buffer
+- `scratch` - Opens temporary Vim buffer for quick notes
 
-**Reason:** Require access to the local system's clipboard, which is not available when operating on remote containers.
+**Reason:** While we could implement this similarly to `edit`, the use case of a scratch buffer for quick notes doesn't translate well to the container context. Users can use `mksh` or `edit` for similar functionality.
 
-### Local Editor/Terminal Commands
-- `mkcd` - Creates directory and `cd` into it
-- `tempe` - `cd` to temporary directory
-- `mksh` - Creates shell script and opens in Vim
-- `scratch` - Opens temporary Vim buffer
+### File Management
+- `trash` - Moves files to trash instead of deletion
 
-**Reason:** These change local directory or open local editors. The container doesn't have an interactive editor session.
+**Reason:** Containers don't have a trash/recycle bin concept. Files should be deleted directly or backed up before removal.
 
 ### Audio/Video/Media (No local media access)
 - `boop` - Plays success/failure sounds
@@ -112,7 +126,6 @@ These commands can be implemented using Python and filesystem/exec capabilities:
 - `running` - Process lookup (already have `ps`)
 - `catbin` - Shows command source (local PATH)
 - `url` - URL parser (less useful in container context)
-- `trash` - Moves to trash (container doesn't have trash)
 - `snippets` - Retrieves stored snippets (would need container-side config)
 
 ### Complex/Marginal Value
@@ -127,29 +140,13 @@ These commands can be implemented using Python and filesystem/exec capabilities:
 
 ---
 
-## Implementation Order
+## Summary
 
-Priority based on usefulness and simplicity:
+**Implemented:** 20 commands
+- Text Utilities: 8
+- System Utilities: 3
+- Reference: 2
+- Built-in Commands: 3
+- Clipboard: 4
 
-1. **`uuid`** - Very simple, immediately useful
-2. **`hoy`** - Simple date formatting
-3. **`httpstatus`** - Useful reference tool
-4. **`alphabet`** - Trivial to implement
-5. **`length`** - Simple utility
-6. **`uppered`/`lowered`** - Simple text transforms
-7. **`jsonformat`** - Useful for inspecting JSON files
-8. **`line`** - Useful for text processing
-9. **`straightquote`** - Text cleanup utility
-10. **`markdownquote`** - Text formatting utility
-11. **`nato`** - Fun reference tool
-12. **`prettypath`** - Debugging utility
-
----
-
-## Category Assignment
-
-These commands will be placed in the following categories:
-
-- **Text Utilities**: `line`, `straightquote`, `markdownquote`, `length`, `jsonformat`, `uppered`, `lowered`, `nato`
-- **System Utilities**: `uuid`, `hoy`, `prettypath`
-- **Reference**: `httpstatus`, `alphabet`
+**Skipped:** ~30 commands (audio/video, system control, etc.)
