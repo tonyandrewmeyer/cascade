@@ -39,6 +39,7 @@ These commands have been implemented in Cascade:
 | Command | Description | Category |
 |---------|-------------|----------|
 | `hoy` | Print current date in ISO format (YYYY-MM-DD) | System Utilities |
+| `rn` | Display current time, date, and calendar | Built-in Commands |
 
 ### Reference/Lookup
 
@@ -137,17 +138,16 @@ Requires: `pip install pebble-cascade[clipboard]`
 - `tryna`/`trynafail` - Retry commands (complex, limited use)
 - `each` - Alternative to xargs (complex piping)
 - `emoji` - Emoji lookup (needs emoji database)
-- `rn` - Time with calendar (already have `date` and `cal`)
 
 ---
 
 ## Summary
 
-**Implemented:** 24 commands
+**Implemented:** 25 commands
 - Text Utilities: 10 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url, u+)
 - System Utilities: 3
 - Reference: 2
-- Built-in Commands: 5 (mkcd, tempe, mksh, scratch, serveit)
+- Built-in Commands: 6 (mkcd, tempe, mksh, scratch, serveit, rn)
 - Clipboard: 4
 
-**Skipped:** ~26 commands (audio/video, system control, etc.)
+**Skipped:** ~25 commands (audio/video, system control, etc.)

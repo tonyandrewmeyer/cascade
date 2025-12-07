@@ -31,6 +31,7 @@ from .tempe import TempeCommand
 from .printenv import PrintenvCommand
 from .printf import PrintfCommand
 from .pwd import PwdCommand
+from .rn import RnCommand
 from .sha1sum import Sha1sumCommand
 from .sha256sum import Sha256sumCommand
 from .sha512sum import Sha512sumCommand
@@ -81,6 +82,7 @@ __all__ = [
     "PrintenvCommand",
     "PrintfCommand",
     "PwdCommand",
+    "RnCommand",
     "Sha1sumCommand",
     "Sha256sumCommand",
     "Sha512sumCommand",
