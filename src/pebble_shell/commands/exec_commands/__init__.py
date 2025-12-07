@@ -1,6 +1,7 @@
 """Execution and process management commands."""
 
 from .catbin import CatbinCommand
+from .each import EachCommand
 from .envdir import EnvdirCommand
 from .exec import ExecCommand
 from .local import LocalCommand
@@ -11,6 +12,7 @@ from .which import WhichCommand
 
 __all__ = [
     "CatbinCommand",
+    "EachCommand",
     "EnvdirCommand",
     "ExecCommand",
     "LocalCommand",

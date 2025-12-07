@@ -56,6 +56,7 @@ These commands have been implemented in Cascade:
 | `uuid` | Generate v4 UUID | System Utilities |
 | `prettypath` | Display PATH with newlines | System Utilities |
 | `catbin` | Display source of command in remote PATH | Remote Execution |
+| `each` | Run command for each line of input | Remote Execution |
 
 ### Directory/File Management
 
@@ -137,18 +138,17 @@ Requires: `pip install pebble-cascade[clipboard]`
 - `waitfor` - Wait for process exit (limited use in container)
 - `bb` - Run command in background (exec model doesn't support well)
 - `tryna`/`trynafail` - Retry commands (complex, limited use)
-- `each` - Alternative to xargs (complex piping)
 
 ---
 
 ## Summary
 
-**Implemented:** 27 commands
+**Implemented:** 28 commands
 - Text Utilities: 10 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url, u+)
-- System Utilities: 3 (uuid, prettypath, catbin)
+- System Utilities: 4 (uuid, prettypath, catbin, each)
 - Reference: 3 (httpstatus, alphabet, emoji)
 - Built-in Commands: 6 (mkcd, tempe, mksh, scratch, serveit, rn)
 - Clipboard: 4
 - Date/Time: 1 (hoy)
 
-**Skipped:** ~23 commands (audio/video, system control, etc.)
+**Skipped:** ~22 commands (audio/video, system control, etc.)
