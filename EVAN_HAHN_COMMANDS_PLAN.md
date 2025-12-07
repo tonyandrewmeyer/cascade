@@ -47,6 +47,7 @@ These commands have been implemented in Cascade:
 |---------|-------------|----------|
 | `httpstatus` | Display HTTP status code descriptions | Reference |
 | `alphabet` | Print English alphabet | Reference |
+| `emoji` | Search for emojis by name (optional dependency) | Reference |
 
 ### System/Utilities
 
@@ -137,18 +138,17 @@ Requires: `pip install pebble-cascade[clipboard]`
 - `bb` - Run command in background (exec model doesn't support well)
 - `tryna`/`trynafail` - Retry commands (complex, limited use)
 - `each` - Alternative to xargs (complex piping)
-- `emoji` - Emoji lookup (needs emoji database)
 
 ---
 
 ## Summary
 
-**Implemented:** 26 commands
+**Implemented:** 27 commands
 - Text Utilities: 10 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url, u+)
 - System Utilities: 3 (uuid, prettypath, catbin)
-- Reference: 2
+- Reference: 3 (httpstatus, alphabet, emoji)
 - Built-in Commands: 6 (mkcd, tempe, mksh, scratch, serveit, rn)
 - Clipboard: 4
 - Date/Time: 1 (hoy)
 
-**Skipped:** ~24 commands (audio/video, system control, etc.)
+**Skipped:** ~23 commands (audio/video, system control, etc.)

@@ -3,6 +3,7 @@
 from .alphabet import AlphabetCommand
 from .brackettest import BracketTestCommand
 from .doublebrackettest import DoubleBracketTestCommand
+from .emoji import EmojiCommand
 from .hostid import HostidCommand
 from .hoy import HoyCommand
 from .httpstatus import HttpstatusCommand
@@ -23,6 +24,7 @@ __all__ = [
     "AlphabetCommand",
     "BracketTestCommand",
     "DoubleBracketTestCommand",
+    "EmojiCommand",
     "HostidCommand",
     "HoyCommand",
     "HttpstatusCommand",
