@@ -4,7 +4,9 @@ from .dos2unix import Dos2unixCommand
 from .expand import ExpandCommand
 from .fold import FoldCommand
 from .length import LengthCommand
+from .lowered import LoweredCommand
 from .seq import SeqCommand
+from .uppered import UpperedCommand
 from .tr import TrCommand
 from .unexpand import UnexpandCommand
 from .unix2dos import Unix2dosCommand
@@ -14,8 +16,10 @@ __all__ = [
     "ExpandCommand",
     "FoldCommand",
     "LengthCommand",
+    "LoweredCommand",
     "SeqCommand",
     "TrCommand",
     "UnexpandCommand",
     "Unix2dosCommand",
+    "UpperedCommand",
 ]
