@@ -59,6 +59,7 @@ These commands have been implemented in Cascade:
 | `each` | Run command for each line of input | Remote Execution |
 | `running` | Show processes matching a pattern | System |
 | `waitfor` | Wait for a process to exit | System |
+| `bb` | Run command in background | Remote Execution |
 
 ### Directory/File Management
 
@@ -136,19 +137,18 @@ Requires: `pip install pebble-cascade[clipboard]`
 
 ### Complex/Marginal Value
 - `murder` - Graceful process termination (would need signals support)
-- `bb` - Run command in background (exec model doesn't support well)
 - `tryna`/`trynafail` - Retry commands (complex, limited use)
 
 ---
 
 ## Summary
 
-**Implemented:** 30 commands
+**Implemented:** 31 commands
 - Text Utilities: 10 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url, u+)
-- System Utilities: 6 (uuid, prettypath, catbin, each, running, waitfor)
+- System Utilities: 7 (uuid, prettypath, catbin, each, running, waitfor, bb)
 - Reference: 3 (httpstatus, alphabet, emoji)
 - Built-in Commands: 6 (mkcd, tempe, mksh, scratch, serveit, rn)
 - Clipboard: 4
 - Date/Time: 1 (hoy)
 
-**Skipped:** ~20 commands (audio/video, system control, etc.)
+**Skipped:** ~19 commands (audio/video, system control, etc.)
