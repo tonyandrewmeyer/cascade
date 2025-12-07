@@ -7,7 +7,9 @@ from .jsonformat import JsonformatCommand
 from .length import LengthCommand
 from .line import LineCommand
 from .lowered import LoweredCommand
+from .markdownquote import MarkdownquoteCommand
 from .seq import SeqCommand
+from .straightquote import StraightquoteCommand
 from .uppered import UpperedCommand
 from .tr import TrCommand
 from .unexpand import UnexpandCommand
@@ -21,7 +23,9 @@ __all__ = [
     "LengthCommand",
     "LineCommand",
     "LoweredCommand",
+    "MarkdownquoteCommand",
     "SeqCommand",
+    "StraightquoteCommand",
     "TrCommand",
     "UnexpandCommand",
     "Unix2dosCommand",
