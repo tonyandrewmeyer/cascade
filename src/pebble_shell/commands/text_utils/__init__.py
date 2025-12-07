@@ -3,6 +3,7 @@
 from .dos2unix import Dos2unixCommand
 from .expand import ExpandCommand
 from .fold import FoldCommand
+from .length import LengthCommand
 from .seq import SeqCommand
 from .tr import TrCommand
 from .unexpand import UnexpandCommand
@@ -12,6 +13,7 @@ __all__ = [
     "Dos2unixCommand",
     "ExpandCommand",
     "FoldCommand",
+    "LengthCommand",
     "SeqCommand",
     "TrCommand",
     "UnexpandCommand",
