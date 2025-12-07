@@ -12,6 +12,7 @@ from .nato import NatoCommand
 from .seq import SeqCommand
 from .straightquote import StraightquoteCommand
 from .uppered import UpperedCommand
+from .uplus import UplusCommand
 from .url import UrlCommand
 from .tr import TrCommand
 from .unexpand import UnexpandCommand
@@ -33,5 +34,6 @@ __all__ = [
     "UnexpandCommand",
     "Unix2dosCommand",
     "UpperedCommand",
+    "UplusCommand",
     "UrlCommand",
 ]

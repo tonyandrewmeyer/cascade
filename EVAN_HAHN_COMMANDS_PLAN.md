@@ -32,6 +32,7 @@ These commands have been implemented in Cascade:
 | `lowered` | Convert string to lowercase | Text Utilities |
 | `nato` | Convert letters to NATO phonetic alphabet | Text Utilities |
 | `url` | Parse URL and display components | Text Utilities |
+| `u+` | Look up Unicode characters by code point | Text Utilities |
 
 ### Date/Time
 
@@ -135,7 +136,6 @@ Requires: `pip install pebble-cascade[clipboard]`
 - `bb` - Run command in background (exec model doesn't support well)
 - `tryna`/`trynafail` - Retry commands (complex, limited use)
 - `each` - Alternative to xargs (complex piping)
-- `u+` - Unicode lookup (needs Unicode database)
 - `emoji` - Emoji lookup (needs emoji database)
 - `rn` - Time with calendar (already have `date` and `cal`)
 
@@ -143,11 +143,11 @@ Requires: `pip install pebble-cascade[clipboard]`
 
 ## Summary
 
-**Implemented:** 23 commands
-- Text Utilities: 9 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url)
+**Implemented:** 24 commands
+- Text Utilities: 10 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url, u+)
 - System Utilities: 3
 - Reference: 2
 - Built-in Commands: 5 (mkcd, tempe, mksh, scratch, serveit)
 - Clipboard: 4
 
-**Skipped:** ~27 commands (audio/video, system control, etc.)
+**Skipped:** ~26 commands (audio/video, system control, etc.)
