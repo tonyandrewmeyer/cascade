@@ -60,6 +60,12 @@ These commands have been implemented in Cascade:
 | `tempe` | Create temp directory and cd into it | Built-in Commands |
 | `mksh` | Create executable shell script and edit | Built-in Commands |
 
+### Network
+
+| Command | Description | Category |
+|---------|-------------|----------|
+| `serveit` | Start simple HTTP server for local files | Built-in Commands |
+
 ### Clipboard (Optional Dependency)
 
 Requires: `pip install pebble-cascade[clipboard]`
@@ -110,12 +116,11 @@ Requires: `pip install pebble-cascade[clipboard]`
 **Reason:** Control local system features not applicable to container environments.
 
 ### Network/Download Tools
-- `serveit` - Starts local file server
 - `getsong` - Downloads from YouTube/SoundCloud
 - `getpod` - Downloads video for podcasts
 - `getsubs` - Downloads subtitles
 
-**Reason:** Require `yt-dlp` or start servers on local machine. Not applicable to container inspection.
+**Reason:** Require `yt-dlp` to download media. Not applicable to container inspection.
 
 ### REPLs
 - `iclj`, `ijs`, `iphp`, `ipy`, `isql` - Language REPLs
@@ -142,11 +147,11 @@ Requires: `pip install pebble-cascade[clipboard]`
 
 ## Summary
 
-**Implemented:** 20 commands
+**Implemented:** 21 commands
 - Text Utilities: 8
 - System Utilities: 3
 - Reference: 2
-- Built-in Commands: 3
+- Built-in Commands: 4 (mkcd, tempe, mksh, serveit)
 - Clipboard: 4
 
-**Skipped:** ~30 commands (audio/video, system control, etc.)
+**Skipped:** ~29 commands (audio/video, system control, etc.)

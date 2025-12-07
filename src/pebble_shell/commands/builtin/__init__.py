@@ -25,6 +25,7 @@ from .mkcd import MkcdCommand
 from .mkpasswd import MkpasswdCommand
 from .mksh import MkshCommand
 from .pebblesay import PebblesayCommand
+from .serveit import ServeitCommand
 from .tempe import TempeCommand
 from .printenv import PrintenvCommand
 from .printf import PrintfCommand
@@ -73,6 +74,7 @@ __all__ = [
     "MkpasswdCommand",
     "MkshCommand",
     "PebblesayCommand",
+    "ServeitCommand",
     "TempeCommand",
     "PrintenvCommand",
     "PrintfCommand",
