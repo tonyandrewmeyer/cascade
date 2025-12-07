@@ -57,6 +57,7 @@ These commands have been implemented in Cascade:
 | `prettypath` | Display PATH with newlines | System Utilities |
 | `catbin` | Display source of command in remote PATH | Remote Execution |
 | `each` | Run command for each line of input | Remote Execution |
+| `running` | Show processes matching a pattern | System |
 
 ### Directory/File Management
 
@@ -130,7 +131,6 @@ Requires: `pip install pebble-cascade[clipboard]`
 **Reason:** While technically possible via exec, interactive REPLs don't fit Cascade's command model well.
 
 ### Already Covered or Low Value
-- `running` - Process lookup (already have `ps`)
 - `snippets` - Retrieves stored snippets (would need container-side config)
 
 ### Complex/Marginal Value
@@ -143,12 +143,12 @@ Requires: `pip install pebble-cascade[clipboard]`
 
 ## Summary
 
-**Implemented:** 28 commands
+**Implemented:** 29 commands
 - Text Utilities: 10 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url, u+)
-- System Utilities: 4 (uuid, prettypath, catbin, each)
+- System Utilities: 5 (uuid, prettypath, catbin, each, running)
 - Reference: 3 (httpstatus, alphabet, emoji)
 - Built-in Commands: 6 (mkcd, tempe, mksh, scratch, serveit, rn)
 - Clipboard: 4
 - Date/Time: 1 (hoy)
 
-**Skipped:** ~22 commands (audio/video, system control, etc.)
+**Skipped:** ~21 commands (audio/video, system control, etc.)

@@ -14,6 +14,7 @@ from .patch import PatchCommand
 from .pidof import PidofCommand
 from .prettypath import PrettypathCommand
 from .pstrace import PstraceCommand
+from .running import RunningCommand
 from .tee import TeeCommand
 from .test import TestCommand
 from .uuid import UuidCommand
@@ -35,6 +36,7 @@ __all__ = [
     "PidofCommand",
     "PrettypathCommand",
     "PstraceCommand",
+    "RunningCommand",
     "TeeCommand",
     "TestCommand",
     "UuidCommand",
