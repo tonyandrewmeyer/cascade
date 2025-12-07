@@ -31,6 +31,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.optional-dependencies]
+clipboard = [
+    "pyperclip>=1.8.0",
+]
 dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
