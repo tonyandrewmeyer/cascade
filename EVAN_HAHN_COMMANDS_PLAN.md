@@ -60,6 +60,7 @@ These commands have been implemented in Cascade:
 | `running` | Show processes matching a pattern | System |
 | `waitfor` | Wait for a process to exit | System |
 | `bb` | Run command in background | Remote Execution |
+| `sfx` | Play sound effects from ~/.cascade/sounds/ | Built-in Commands |
 
 ### Directory/File Management
 
@@ -98,7 +99,6 @@ Requires: `pip install pebble-cascade[clipboard]`
 
 ### Audio/Video/Media (No local media access)
 - `boop` - Plays success/failure sounds
-- `sfx` - Plays sound files
 - `tunes` - Audio player
 - `pix` - Image viewer
 - `radio` - Internet radio
@@ -143,12 +143,12 @@ Requires: `pip install pebble-cascade[clipboard]`
 
 ## Summary
 
-**Implemented:** 31 commands
+**Implemented:** 32 commands
 - Text Utilities: 10 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url, u+)
 - System Utilities: 7 (uuid, prettypath, catbin, each, running, waitfor, bb)
 - Reference: 3 (httpstatus, alphabet, emoji)
-- Built-in Commands: 6 (mkcd, tempe, mksh, scratch, serveit, rn)
+- Built-in Commands: 7 (mkcd, tempe, mksh, scratch, serveit, rn, sfx)
 - Clipboard: 4
 - Date/Time: 1 (hoy)
 
-**Skipped:** ~19 commands (audio/video, system control, etc.)
+**Skipped:** ~18 commands (audio/video, system control, etc.)

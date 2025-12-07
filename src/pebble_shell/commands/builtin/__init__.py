@@ -27,6 +27,7 @@ from .mksh import MkshCommand
 from .pebblesay import PebblesayCommand
 from .scratch import ScratchCommand
 from .serveit import ServeitCommand
+from .sfx import SfxCommand
 from .tempe import TempeCommand
 from .printenv import PrintenvCommand
 from .printf import PrintfCommand
@@ -78,6 +79,7 @@ __all__ = [
     "PebblesayCommand",
     "ScratchCommand",
     "ServeitCommand",
+    "SfxCommand",
     "TempeCommand",
     "PrintenvCommand",
     "PrintfCommand",
