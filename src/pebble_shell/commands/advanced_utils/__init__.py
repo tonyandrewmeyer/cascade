@@ -18,6 +18,7 @@ from .running import RunningCommand
 from .tee import TeeCommand
 from .test import TestCommand
 from .uuid import UuidCommand
+from .waitfor import WaitforCommand
 from .xargs import XargsCommand
 from .yes import YesCommand
 
@@ -40,6 +41,7 @@ __all__ = [
     "TeeCommand",
     "TestCommand",
     "UuidCommand",
+    "WaitforCommand",
     "XargsCommand",
     "YesCommand",
 ]
