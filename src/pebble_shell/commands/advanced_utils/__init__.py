@@ -11,6 +11,7 @@ from .logger import LoggerCommand
 from .more import MoreCommand
 from .patch import PatchCommand
 from .pidof import PidofCommand
+from .prettypath import PrettypathCommand
 from .pstrace import PstraceCommand
 from .tee import TeeCommand
 from .test import TestCommand
@@ -30,6 +31,7 @@ __all__ = [
     "MoreCommand",
     "PatchCommand",
     "PidofCommand",
+    "PrettypathCommand",
     "PstraceCommand",
     "TeeCommand",
     "TestCommand",
