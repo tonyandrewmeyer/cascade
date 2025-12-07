@@ -8,6 +8,7 @@ from .length import LengthCommand
 from .line import LineCommand
 from .lowered import LoweredCommand
 from .markdownquote import MarkdownquoteCommand
+from .nato import NatoCommand
 from .seq import SeqCommand
 from .straightquote import StraightquoteCommand
 from .uppered import UpperedCommand
@@ -24,6 +25,7 @@ __all__ = [
     "LineCommand",
     "LoweredCommand",
     "MarkdownquoteCommand",
+    "NatoCommand",
     "SeqCommand",
     "StraightquoteCommand",
     "TrCommand",
