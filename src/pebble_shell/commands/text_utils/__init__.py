@@ -3,6 +3,7 @@
 from .dos2unix import Dos2unixCommand
 from .expand import ExpandCommand
 from .fold import FoldCommand
+from .jsonformat import JsonformatCommand
 from .length import LengthCommand
 from .lowered import LoweredCommand
 from .seq import SeqCommand
@@ -15,6 +16,7 @@ __all__ = [
     "Dos2unixCommand",
     "ExpandCommand",
     "FoldCommand",
+    "JsonformatCommand",
     "LengthCommand",
     "LoweredCommand",
     "SeqCommand",
