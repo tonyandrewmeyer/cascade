@@ -1,5 +1,6 @@
 """Advanced utility commands for Cascade."""
 
+from .alphabet import AlphabetCommand
 from .brackettest import BracketTestCommand
 from .doublebrackettest import DoubleBracketTestCommand
 from .hostid import HostidCommand
@@ -18,6 +19,7 @@ from .xargs import XargsCommand
 from .yes import YesCommand
 
 __all__ = [
+    "AlphabetCommand",
     "BracketTestCommand",
     "DoubleBracketTestCommand",
     "HostidCommand",
