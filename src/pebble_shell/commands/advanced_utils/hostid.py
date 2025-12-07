@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Union
+import socket
+import struct
 
 import ops
 
@@ -28,10 +30,7 @@ class HostidCommand(Command):
 
     name = "hostid"
     help = "Display the numeric identifier of the host"
-    category = "Advanced Utilities"
-
-    def __init__(self, shell: PebbleShell) -> None:
-        super().__init__(shell)
+    category = "System Utilities"
 
     def show_help(self):
         """Show command help."""
@@ -94,6 +93,26 @@ Examples:
             self.console.print(hostid)
             return 0
 
-        except Exception as e:
-            self.console.print(f"[red]hostid: {e}[/red]")
+        except OSError as e:
+            self.console.print(f"[red]hostid: cannot retrieve host identifier: {e}[/red]")
             return 1
+        except Exception as e:
+            self.console.print(f"[red]hostid: unexpected error: {e}[/red]")
+            return 1
+    
+    def _hostname_to_hostid(self, hostname: str) -> str:
+        """Convert hostname to hostid using IPv4 address like gethostid()."""
+        try:
+            # Try to resolve hostname to IPv4 address
+            addr_info = socket.getaddrinfo(hostname, None, socket.AF_INET)
+            if addr_info:
+                ipv4_addr = addr_info[0][4][0]
+                # Convert IPv4 address to 32-bit integer
+                ip_int = struct.unpack("!I", socket.inet_aton(ipv4_addr))[0]
+                return f"{ip_int:08x}"
+        except (socket.gaierror, socket.error, OSError):
+            pass
+        
+        # Fallback: use hash of hostname (similar to original but more consistent)
+        hostname_hash = abs(hash(hostname)) & 0xFFFFFFFF
+        return f"{hostname_hash:08x}"

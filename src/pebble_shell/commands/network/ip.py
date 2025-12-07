@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Union
 
-from ...utils.command_helpers import handle_help_flag
+from ...utils.command_helpers import parse_flags
 from ...utils.proc_reader import ProcReadError, read_proc_file
 from .._base import Command
 
@@ -22,7 +22,7 @@ class IpCommand(Command):
 
     name = "ip"
     help = "Display IP routing, network devices, policy routing and tunnels"
-    category = "Network"
+    category = "Network Commands"
 
     def show_help(self):
         """Show command help."""
@@ -56,7 +56,9 @@ Examples:
 
     def execute(self, client: ClientType, args: list[str]) -> int:
         """Execute the ip command."""
-        if handle_help_flag(self, args):
+        # Basic argument parsing - use first argument as object
+        if "-h" in args or "--help" in args:
+            self.show_help()
             return 0
 
         if not args:

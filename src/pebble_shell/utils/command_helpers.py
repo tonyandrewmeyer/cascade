@@ -58,13 +58,14 @@ def parse_flags(
     Args:
         args: Command line arguments
         valid_flags: Dict mapping flag names to their types (bool, str, int)
+                    Supports both short (-l) and long (--help) flags
         shell: Shell instance for error reporting
 
     Returns:
         Tuple of (flags_dict, remaining_args) or None if parsing failed
 
     Example:
-        flags, files = parse_flags(args, {"l": bool, "h": bool}, shell)
+        flags, files = parse_flags(args, {"l": bool, "help": bool, "verbose": bool}, shell)
         if flags is None:
             return 1
     """
@@ -84,8 +85,66 @@ def parse_flags(
     while i < len(args):
         arg = args[i]
 
-        if arg.startswith("-") and len(arg) > 1:
-            # Handle combined flags like "-la" or single flags like "-l"
+        if arg.startswith("--") and len(arg) > 2:
+            # Handle long flags like "--help", "--verbose"
+            long_flag = arg[2:]  # Remove the "--"
+            
+            # Handle flags with = syntax like "--output=file"
+            if "=" in long_flag:
+                long_flag, value = long_flag.split("=", 1)
+            else:
+                value = None
+            
+            if long_flag in valid_flags:
+                flag_type = valid_flags[long_flag]
+                
+                if flag_type is bool:
+                    if value is not None:
+                        if shell:
+                            from .theme import get_theme
+                            theme = get_theme()
+                            shell.console.print(
+                                theme.error_text(f"Error: Flag --{long_flag} doesn't accept arguments")
+                            )
+                        return None
+                    flags[long_flag] = True
+                elif flag_type in (str, int):
+                    if value is None:
+                        if i + 1 >= len(args):
+                            if shell:
+                                from .theme import get_theme
+                                theme = get_theme()
+                                shell.console.print(
+                                    theme.error_text(f"Error: Flag --{long_flag} requires an argument")
+                                )
+                            return None
+                        value = args[i + 1]
+                        i += 1  # Skip the flag argument
+                    
+                    if flag_type is int:
+                        try:
+                            flags[long_flag] = int(value)
+                        except ValueError:
+                            if shell:
+                                from .theme import get_theme
+                                theme = get_theme()
+                                shell.console.print(
+                                    theme.error_text(f"Error: Flag --{long_flag} requires an integer argument")
+                                )
+                            return None
+                    else:
+                        flags[long_flag] = value
+            else:
+                if shell:
+                    from .theme import get_theme
+                    theme = get_theme()
+                    shell.console.print(
+                        theme.error_text(f"Error: Invalid option --{long_flag}")
+                    )
+                return None
+                
+        elif arg.startswith("-") and len(arg) > 1:
+            # Handle short flags like "-l", "-la" (combined)
             flag_chars = arg[1:]  # Remove the dash
 
             for flag_char in flag_chars:
@@ -100,7 +159,6 @@ def parse_flags(
                             # Can't combine non-bool flags with others
                             if shell:
                                 from .theme import get_theme
-
                                 theme = get_theme()
                                 shell.console.print(
                                     theme.error_text(
@@ -112,7 +170,6 @@ def parse_flags(
                         if i + 1 >= len(args):
                             if shell:
                                 from .theme import get_theme
-
                                 theme = get_theme()
                                 shell.console.print(
                                     theme.error_text(
@@ -128,7 +185,6 @@ def parse_flags(
                             except ValueError:
                                 if shell:
                                     from .theme import get_theme
-
                                     theme = get_theme()
                                     shell.console.print(
                                         theme.error_text(
@@ -143,7 +199,6 @@ def parse_flags(
                 else:
                     if shell:
                         from .theme import get_theme
-
                         theme = get_theme()
                         shell.console.print(
                             theme.error_text(f"Error: Invalid option -{flag_char}")
