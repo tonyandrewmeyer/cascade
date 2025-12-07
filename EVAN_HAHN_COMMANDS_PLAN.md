@@ -60,6 +60,7 @@ These commands have been implemented in Cascade:
 | `mkcd` | Create directory and cd into it | Built-in Commands |
 | `tempe` | Create temp directory and cd into it | Built-in Commands |
 | `mksh` | Create executable shell script and edit | Built-in Commands |
+| `scratch` | Open scratch buffer and push to remote | Built-in Commands |
 
 ### Network
 
@@ -81,11 +82,6 @@ Requires: `pip install pebble-cascade[clipboard]`
 ---
 
 ## Commands to Skip
-
-### Local Editor Buffer
-- `scratch` - Opens temporary Vim buffer for quick notes
-
-**Reason:** While we could implement this similarly to `edit`, the use case of a scratch buffer for quick notes doesn't translate well to the container context. Users can use `mksh` or `edit` for similar functionality.
 
 ### File Management
 - `trash` - Moves files to trash instead of deletion
@@ -147,11 +143,11 @@ Requires: `pip install pebble-cascade[clipboard]`
 
 ## Summary
 
-**Implemented:** 22 commands
+**Implemented:** 23 commands
 - Text Utilities: 9 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url)
 - System Utilities: 3
 - Reference: 2
-- Built-in Commands: 4 (mkcd, tempe, mksh, serveit)
+- Built-in Commands: 5 (mkcd, tempe, mksh, scratch, serveit)
 - Clipboard: 4
 
-**Skipped:** ~28 commands (audio/video, system control, etc.)
+**Skipped:** ~27 commands (audio/video, system control, etc.)
