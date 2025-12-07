@@ -51,7 +51,7 @@ class ExpandCommand(Command):
             return 1
         flags, positional_args = parse_result
 
-        tab_stops = flags.get("t", "8")
+        tab_stops = flags.get("t") or "8"
         initial_only = flags.get("i", False)
 
         try:

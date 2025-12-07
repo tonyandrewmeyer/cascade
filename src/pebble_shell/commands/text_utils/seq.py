@@ -68,7 +68,7 @@ Options:
         flags, positional_args = result
 
         format_str = flags.get("f")
-        separator = flags.get("s", "\n")
+        separator = flags.get("s") or "\n"  # Use "\n" if None or empty
         equal_width = flags.get("w", False)
 
         # Parse positional arguments

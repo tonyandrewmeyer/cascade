@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class SignalCommand(Command):
     """Send a signal to a service."""
 
-    name = "pebble-signal"
+    name = "signal"
     help = "Send a signal to services"
     category = "Pebble Management"
 

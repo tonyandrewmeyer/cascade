@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-import crypt
+try:
+    import crypt
+except ImportError:
+    crypt = None
 import getpass
 from typing import TYPE_CHECKING, Union
 
@@ -27,6 +30,8 @@ class CryptpwCommand(Command):
 
     def execute(self, client: ClientType, args: list[str]) -> int:
         """Execute the cryptpw command."""
+        if crypt is None:
+            return 1
         return self._execute_cryptpw(client, args)
 
     def _execute_cryptpw(self, client: ClientType, args: list[str]) -> int:

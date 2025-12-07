@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import bz2
 import io
+import os
 from typing import TYPE_CHECKING, Union
 
 import ops
@@ -67,6 +68,11 @@ class BzipCommand(Command):
 
         # Process each file
         for file_path in positional_args:
+            # Convert relative paths to absolute paths
+            cwd = self.shell.current_directory
+            if not os.path.isabs(file_path):
+                file_path = os.path.normpath(os.path.join(cwd, file_path))
+
             try:
                 if decompress:
                     success = self._decompress_bzip2(

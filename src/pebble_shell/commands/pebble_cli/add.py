@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 class AddCommand(Command):
     """Add a layer to the plan."""
 
-    name = "pebble-add"
+    name = "add"
     help = "Add a layer to the plan. Usage: add <layer-name> [options]"
     category = "Pebble Management"
 

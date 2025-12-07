@@ -51,8 +51,12 @@ class EditCommand(Command):
             remote_path = os.path.normpath(os.path.join(cwd, remote_path))
         with tempfile.NamedTemporaryFile(delete=False, mode="wb") as tmp:
             tmp_path = tmp.name
-            with client.pull(remote_path, encoding=None) as remote_f:
-                shutil.copyfileobj(remote_f, tmp)
+            try:
+                with client.pull(remote_path, encoding=None) as remote_f:
+                    shutil.copyfileobj(remote_f, tmp)
+            except Exception:
+                # File doesn't exist - that's fine, we'll create it
+                pass
         editor = os.environ.get("EDITOR", "pico")
         before = os.stat(tmp_path).st_mtime
         subprocess.run([editor, tmp_path], check=True)  # noqa: S603

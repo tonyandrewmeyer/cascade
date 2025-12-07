@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import io
 import lzma
+import os
 from typing import TYPE_CHECKING, Union
 
 import ops
@@ -63,6 +64,11 @@ class LzmaCommand(Command):
 
         # Process each file
         for file_path in positional_args:
+            # Convert relative paths to absolute paths
+            cwd = self.shell.current_directory
+            if not os.path.isabs(file_path):
+                file_path = os.path.normpath(os.path.join(cwd, file_path))
+
             try:
                 if decompress:
                     success = self._decompress_lzma(

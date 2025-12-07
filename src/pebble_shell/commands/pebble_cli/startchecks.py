@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class StartChecksCommand(Command):
     """Start health checks."""
 
-    name = "pebble-start-checks"
+    name = "start-checks"
     help = "Start one or more health checks"
     category = "Pebble Management"
 

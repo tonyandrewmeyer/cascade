@@ -19,7 +19,7 @@ if TYPE_CHECKING:
 class NotifyCommand(Command):
     """Send a notice."""
 
-    name = "pebble-notify"
+    name = "notify"
     help = "Send a notice. Usage: notify <type> <key> [--file <file.json|file.yaml>] [key=value...]"
     category = "Pebble Management"
 

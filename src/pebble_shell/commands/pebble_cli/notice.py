@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 class NoticeCommand(Command):
     """Get details of a specific notice."""
 
-    name = "pebble-notice"
+    name = "notice"
     help = "Get details of a specific notice"
     category = "Pebble Management"
 

@@ -53,6 +53,7 @@ class HistoryCommand(Command):
         if args[0].startswith("-"):
             console.print(
                 Panel(
+                    f"Unknown option: {args[0]}\nUsage: history [-c] [-s] [n] [pattern]",
                     style="bold yellow",
                 )
             )

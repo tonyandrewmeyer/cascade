@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class StopCommand(Command):
     """Stop a service."""
 
-    name = "pebble-stop"
+    name = "stop"
     help = "Stop one or more services"
     category = "Pebble Management"
 

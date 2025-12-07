@@ -68,7 +68,7 @@ Examples:
             return 1
         flags, positional_args = parse_result
 
-        lease_file = flags.get("f", "/var/lib/dhcp/dhcpd.leases")
+        lease_file = flags.get("f") or "/var/lib/dhcp/dhcpd.leases"
         show_remaining = flags.get("r", False)
 
         try:

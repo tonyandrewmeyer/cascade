@@ -15,6 +15,7 @@ from ...utils.proc_reader import (
     get_user_name_for_uid,
     parse_proc_stat,
     read_proc_cmdline,
+    read_proc_environ,
     read_proc_file,
     read_proc_status_fields,
 )
@@ -29,7 +30,7 @@ class ProcessCommand(Command):
     """Show process information."""
 
     name = "ps"
-    help = "Show running processes"
+    help = "Show running processes (supports -aux, e, eww for environment)"
     category = "System"
 
     def execute(
@@ -42,6 +43,8 @@ class ProcessCommand(Command):
         show_all = False
         user_format = False
         show_no_tty = False
+        show_env = False
+        show_full_env = False
 
         # Handle -aux as a special case
         if "-aux" in args:
@@ -57,14 +60,31 @@ class ProcessCommand(Command):
             show_no_tty = True
             args = [arg for arg in args if arg != "aux"]
 
-        # Parse individual flags
+        # Parse individual flags (including 'e' for environment)
+        remaining_args = []
         for arg in args:
-            if arg == "-a":
-                show_all = True
-            elif arg == "-u":
-                user_format = True
-            elif arg == "-x":
-                show_no_tty = True
+            if arg.startswith("-"):
+                # Handle combined flags like -aux, -ae, etc.
+                flags = arg[1:]
+                if "a" in flags:
+                    show_all = True
+                if "u" in flags:
+                    user_format = True
+                if "x" in flags:
+                    show_no_tty = True
+                if "e" in flags:
+                    show_env = True
+            elif arg == "e":
+                # Single 'e' flag without dash
+                show_env = True
+            elif arg == "eww":
+                # 'eww' shows full environment
+                show_env = True
+                show_full_env = True
+            else:
+                remaining_args.append(arg)
+
+        args = remaining_args
 
         proc_dirs: list[str] = []
         files = client.list_files("/proc")
@@ -89,10 +109,14 @@ class ProcessCommand(Command):
             table.add_column("START", style="white", no_wrap=True)
             table.add_column("TIME", style="white", no_wrap=True)
             table.add_column("COMMAND", style="green")
+            if show_env:
+                table.add_column("ENV", style="yellow")
         else:
             table = create_enhanced_table()
             table.add_column("PID", style="cyan", no_wrap=True)
             table.add_column("CMD", style="green")
+            if show_env:
+                table.add_column("ENV", style="yellow")
 
         for pid in sorted(proc_dirs, key=int):
             cmdline = read_proc_cmdline(client, pid)
@@ -102,6 +126,11 @@ class ProcessCommand(Command):
                     cmdline = f"[{comm.strip()}]"
                 except ProcReadError:
                     continue
+
+            # Get environment variables if requested (but don't append to cmdline)
+            env_str = ""
+            if show_env:
+                env_str = self._format_environment(client, pid, show_full_env)
 
             # Get status info for user format
             if user_format:
@@ -119,10 +148,14 @@ class ProcessCommand(Command):
                 if len(cmdline) > 30:
                     cmdline = cmdline[:27] + "..."
 
+                # Truncate environment if needed
+                if show_env and not show_full_env and len(env_str) > 100:
+                    env_str = env_str[:97] + "..."
+
                 # Use Text objects to avoid Rich markup interpretation issues
                 from rich.text import Text
 
-                table.add_row(
+                row_data = [
                     Text(status_info["user"], style="cyan"),
                     Text(pid, style="cyan"),
                     Text(f"{status_info['cpu_percent']:.1f}", style="yellow"),
@@ -134,17 +167,29 @@ class ProcessCommand(Command):
                     status_info["start"],
                     status_info["time"],
                     Text(cmdline, style="green"),
-                )
+                ]
+                if show_env:
+                    row_data.append(Text(env_str, style="yellow"))
+                table.add_row(*row_data)
             else:
                 # Simple format
                 if len(cmdline) > 50:
                     cmdline = cmdline[:47] + "..."
+
+                # Truncate environment if needed
+                if show_env and not show_full_env and len(env_str) > 150:
+                    env_str = env_str[:147] + "..."
+
                 # Use Text objects to avoid Rich markup interpretation
                 from rich.text import Text
 
-                pid_text = Text(pid, style="cyan")
-                cmd_text = Text(cmdline, style="green")
-                table.add_row(pid_text, cmd_text)
+                row_data = [
+                    Text(pid, style="cyan"),
+                    Text(cmdline, style="green"),
+                ]
+                if show_env:
+                    row_data.append(Text(env_str, style="yellow"))
+                table.add_row(*row_data)
 
         self.console.print(table.build())
         return 0
@@ -238,3 +283,30 @@ class ProcessCommand(Command):
             return get_process_tty(client, pid)
         except ProcReadError:
             return "?"
+
+    def _format_environment(
+        self, client: ops.pebble.Client | shimmer.PebbleCliClient, pid: str, full: bool
+    ) -> str:
+        """Format environment variables for display with command.
+
+        Args:
+            client: Pebble client
+            pid: Process ID
+            full: If True, show full environment (eww). If False, show abbreviated (e)
+
+        Returns:
+            Formatted environment string
+        """
+        try:
+            env_vars = read_proc_environ(client, pid)
+            if not env_vars:
+                return ""
+
+            # Format as KEY=VALUE pairs
+            env_pairs = [f"{k}={v}" for k, v in env_vars.items()]
+
+            # Return formatted environment - truncation happens in display code
+            return " ".join(env_pairs)
+
+        except ProcReadError:
+            return ""

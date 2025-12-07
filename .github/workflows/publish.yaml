@@ -1,0 +1,29 @@
+name: Publish
+"on":
+  push:
+    tags:
+      - 'v*'
+
+permissions: {}
+
+jobs:
+  build-and-publish:
+    name: Build and publish to PyPI
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
+      contents: read
+    environment: publish-pypi
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+      - uses: astral-sh/setup-uv@85856786d1ce8acfbcc2f13a5f3fbd6b938f9f41  # v7.1.2
+        with:
+          enable-cache: false
+      - run: uv build
+      - uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: 'dist/*'
+      - uses: pypa/gh-action-pypi-publish@release/v1

@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 class ReplanCommand(Command):
     """Replan services."""
 
-    name = "pebble-replan"
+    name = "replan"
     help = "Replan services based on current configuration"
     category = "Pebble Management"
 

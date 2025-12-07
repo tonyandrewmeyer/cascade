@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 class RestartCommand(Command):
     """Restart a service."""
 
-    name = "pebble-restart"
+    name = "restart"
     help = "Restart one or more services"
     category = "Pebble Management"
 
