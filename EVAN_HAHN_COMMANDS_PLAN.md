@@ -61,6 +61,9 @@ These commands have been implemented in Cascade:
 | `waitfor` | Wait for a process to exit | System |
 | `bb` | Run command in background | Remote Execution |
 | `sfx` | Play sound effects from ~/.cascade/sounds/ | Built-in Commands |
+| `boop` | Play success/failure feedback sounds | Built-in Commands |
+| `timer` | Countdown timer with audio alert | Built-in Commands |
+| `notify` | Send desktop notifications | Built-in Commands |
 
 ### Directory/File Management
 
@@ -98,14 +101,12 @@ Requires: `pip install pebble-cascade[clipboard]`
 **Reason:** Containers don't have a trash/recycle bin concept. Files should be deleted directly or backed up before removal.
 
 ### Audio/Video/Media (No local media access)
-- `boop` - Plays success/failure sounds
 - `tunes` - Audio player
 - `pix` - Image viewer
 - `radio` - Internet radio
 - `speak` - Text-to-speech
 - `shrinkvid` - Video compression
 - `tuivid` - Terminal video player
-- `timer` - Countdown timer with audio alert
 - `ocr` - Extracts text from images (macOS only)
 - `removeexif` - Removes EXIF data from images
 
@@ -115,7 +116,6 @@ Requires: `pip install pebble-cascade[clipboard]`
 - `wifi` - Controls system WiFi
 - `sleepybear` - Puts system to sleep
 - `theme` - Switches dark/light mode
-- `notify` - Sends OS notification
 - `ds-destroy` - Deletes .DS_Store files (macOS-specific)
 
 **Reason:** Control local system features not applicable to container environments.
@@ -143,12 +143,12 @@ Requires: `pip install pebble-cascade[clipboard]`
 
 ## Summary
 
-**Implemented:** 32 commands
+**Implemented:** 35 commands
 - Text Utilities: 10 (line, straightquote, markdownquote, length, jsonformat, uppered, lowered, nato, url, u+)
 - System Utilities: 7 (uuid, prettypath, catbin, each, running, waitfor, bb)
 - Reference: 3 (httpstatus, alphabet, emoji)
-- Built-in Commands: 7 (mkcd, tempe, mksh, scratch, serveit, rn, sfx)
+- Built-in Commands: 10 (mkcd, tempe, mksh, scratch, serveit, rn, sfx, boop, timer, notify)
 - Clipboard: 4
 - Date/Time: 1 (hoy)
 
-**Skipped:** ~18 commands (audio/video, system control, etc.)
+**Skipped:** ~15 commands (audio/video, system control, etc.)

@@ -2,6 +2,7 @@
 
 from .alias import AliasCommand
 from .beep import BeepCommand
+from .boop import BoopCommand
 from .bzcat import BzcatCommand
 from .cal import CalCommand
 from .cd import CdCommand
@@ -24,11 +25,13 @@ from .md5sum import Md5sumCommand
 from .mkcd import MkcdCommand
 from .mkpasswd import MkpasswdCommand
 from .mksh import MkshCommand
+from .notify import NotifyCommand
 from .pebblesay import PebblesayCommand
 from .scratch import ScratchCommand
 from .serveit import ServeitCommand
 from .sfx import SfxCommand
 from .tempe import TempeCommand
+from .timer import TimerCommand
 from .printenv import PrintenvCommand
 from .printf import PrintfCommand
 from .pwd import PwdCommand
@@ -54,6 +57,7 @@ from .zcat import ZcatCommand
 __all__ = [
     "AliasCommand",
     "BeepCommand",
+    "BoopCommand",
     "BzcatCommand",
     "CalCommand",
     "CdCommand",
@@ -76,11 +80,13 @@ __all__ = [
     "MkcdCommand",
     "MkpasswdCommand",
     "MkshCommand",
+    "NotifyCommand",
     "PebblesayCommand",
     "ScratchCommand",
     "ServeitCommand",
     "SfxCommand",
     "TempeCommand",
+    "TimerCommand",
     "PrintenvCommand",
     "PrintfCommand",
     "PwdCommand",
