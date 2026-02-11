@@ -21,15 +21,12 @@ def command(shell: pebble_shell.shell.PebbleShell):
     yield pebble_shell.commands.ListCommand(shell=shell)
 
 
-TEST_DIR = "/tmp/cascade_ls_test"  # noqa: S108
-
-
 @pytest.fixture(scope="session")
-def ls_test_tree(client: ops.pebble.Client):
+def ls_test_tree(client: ops.pebble.Client, tmp_path_factory: pytest.TempPathFactory):
     """Create a test directory tree on Pebble for ls tests.
 
     Structure:
-        /tmp/cascade_ls_test/
+        <tmpdir>/
         ├── alpha.txt      (small file, oldest)
         ├── bravo.txt      (larger file, newest)
         ├── charlie.txt    (medium file, middle)
@@ -37,24 +34,26 @@ def ls_test_tree(client: ops.pebble.Client):
         └── subdir/
             └── nested.txt
     """
-    client.make_dir(f"{TEST_DIR}/subdir", make_parents=True)
+    test_dir = str(tmp_path_factory.mktemp("cascade_ls_test"))
+
+    client.make_dir(f"{test_dir}/subdir", make_parents=True)
     # Push files with small delays so modification times differ.
-    client.push(f"{TEST_DIR}/alpha.txt", "a\n")
+    client.push(f"{test_dir}/alpha.txt", "a\n")
     time.sleep(1.1)
-    client.push(f"{TEST_DIR}/charlie.txt", "ccc\nccc\nccc\n")
+    client.push(f"{test_dir}/charlie.txt", "ccc\nccc\nccc\n")
     time.sleep(1.1)
-    client.push(f"{TEST_DIR}/bravo.txt", "bbbbb\nbbbbb\nbbbbb\nbbbbb\nbbbbb\n")
-    client.push(f"{TEST_DIR}/.hidden", "secret\n")
-    client.push(f"{TEST_DIR}/subdir/nested.txt", "nested\n")
+    client.push(f"{test_dir}/bravo.txt", "bbbbb\nbbbbb\nbbbbb\nbbbbb\nbbbbb\n")
+    client.push(f"{test_dir}/.hidden", "secret\n")
+    client.push(f"{test_dir}/subdir/nested.txt", "nested\n")
 
     # Also create an empty directory for the empty-dir test.
-    client.make_dir(f"{TEST_DIR}/emptydir", make_parents=True)
+    client.make_dir(f"{test_dir}/emptydir", make_parents=True)
 
-    yield TEST_DIR
+    yield test_dir
 
     # Cleanup
     with contextlib.suppress(Exception):
-        client.remove_path(TEST_DIR, recursive=True)
+        client.remove_path(test_dir, recursive=True)
 
 
 # ── Existing basic tests ────────────────────────────────────────────
