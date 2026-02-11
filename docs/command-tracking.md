@@ -15,7 +15,7 @@ These are the first commands anyone reaches for in a debugging shell.
 
 | Status | Command | POSIX | Notes |
 |--------|---------|-------|-------|
-| [ ] | `ls` | Yes | `-l`, `-a`, `-R`, `-t`, `-S`, `-h`, `-1`; color is a Cascade enhancement |
+| [x] | `ls` | Yes | `-l`, `-a`, `-R`, `-t`, `-S`, `-h`, `-1`, `-r`; color is a Cascade enhancement |
 | [ ] | `cat` | Yes | `-n`, `-b`, `-E`, `-T`; multiple files |
 | [ ] | `cd` | Yes | Relative, absolute, `~`, `-` (previous dir), no-arg goes to `~` |
 | [ ] | `pwd` | Yes | Should just work |

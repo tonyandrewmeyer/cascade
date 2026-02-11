@@ -166,21 +166,21 @@ class TestFormatBytes:
 
     def test_kilobytes(self) -> None:
         """Test formatting kilobytes."""
-        assert format_bytes(1024) == "1024.0KB"
-        assert format_bytes(2048) == "2048.0KB"
+        assert format_bytes(1024) == "1.0KB"
+        assert format_bytes(2048) == "2.0KB"
 
     def test_megabytes(self) -> None:
         """Test formatting megabytes."""
-        assert format_bytes(1024 * 1024) == "1048576.0MB"
-        assert format_bytes(2 * 1024 * 1024) == "2097152.0MB"
+        assert format_bytes(1024 * 1024) == "1.0MB"
+        assert format_bytes(2 * 1024 * 1024) == "2.0MB"
 
     def test_gigabytes(self) -> None:
         """Test formatting gigabytes."""
-        assert format_bytes(1024 * 1024 * 1024) == "1073741824.0GB"
+        assert format_bytes(1024 * 1024 * 1024) == "1.0GB"
 
     def test_terabytes(self) -> None:
         """Test formatting terabytes."""
-        assert format_bytes(1024 * 1024 * 1024 * 1024) == "1099511627776.0TB"
+        assert format_bytes(1024 * 1024 * 1024 * 1024) == "1.0TB"
 
     def test_petabytes(self) -> None:
         """Test formatting petabytes."""

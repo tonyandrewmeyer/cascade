@@ -1,10 +1,10 @@
 """Tests for filesystem commands."""
 
-from datetime import datetime
+from datetime import datetime, timezone
 from unittest.mock import MagicMock, Mock
 
 import pytest
-from ops.pebble import FileInfo, PathError
+from ops.pebble import FileInfo, FileType, PathError
 
 from pebble_shell.commands.filesystem_read import (
     CatCommand,
@@ -78,6 +78,149 @@ class TestListCommand:
         command.shell.console.print.assert_called()
         args, kwargs = command.shell.console.print.call_args
         assert "cannot list directory:" in args[0]
+
+    @pytest.fixture
+    def multi_file_client(self):
+        """Create mock client with multiple files of varying sizes and times."""
+        client = Mock()
+        files = [
+            FileInfo(
+                path="/charlie.txt",
+                name="charlie.txt",
+                type="file",
+                size=500,
+                permissions=0o644,
+                last_modified=datetime(2023, 3, 1, 12, 0, 0, tzinfo=timezone.utc),
+                user_id=1000,
+                user="user",
+                group_id=1000,
+                group="group",
+            ),
+            FileInfo(
+                path="/alpha.txt",
+                name="alpha.txt",
+                type="file",
+                size=100,
+                permissions=0o644,
+                last_modified=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
+                user_id=1000,
+                user="user",
+                group_id=1000,
+                group="group",
+            ),
+            FileInfo(
+                path="/bravo.txt",
+                name="bravo.txt",
+                type="file",
+                size=2000,
+                permissions=0o644,
+                last_modified=datetime(2023, 5, 1, 12, 0, 0, tzinfo=timezone.utc),
+                user_id=1000,
+                user="user",
+                group_id=1000,
+                group="group",
+            ),
+        ]
+        client.list_files.return_value = files
+        return client
+
+    def test_default_alphabetical_sort(self, command, multi_file_client):
+        """Files are sorted alphabetically by default."""
+        command.execute(multi_file_client, ["-1"])
+        calls = command.shell.console.print.call_args_list
+        names = [c[0][0] for c in calls if isinstance(c[0][0], str)]
+        assert names == ["alpha.txt", "bravo.txt", "charlie.txt"]
+
+    def test_flag_t_sort_by_time(self, command, multi_file_client):
+        """Files sorted by modification time, newest first."""
+        command.execute(multi_file_client, ["-1t"])
+        calls = command.shell.console.print.call_args_list
+        names = [c[0][0] for c in calls if isinstance(c[0][0], str)]
+        assert names == ["bravo.txt", "charlie.txt", "alpha.txt"]
+
+    def test_flag_sort_by_size(self, command, multi_file_client):
+        """Files sorted by size, largest first."""
+        command.execute(multi_file_client, ["-1S"])
+        calls = command.shell.console.print.call_args_list
+        names = [c[0][0] for c in calls if isinstance(c[0][0], str)]
+        assert names == ["bravo.txt", "charlie.txt", "alpha.txt"]
+
+    def test_flag_r_reverse(self, command, multi_file_client):
+        """Reverse the default alphabetical sort."""
+        command.execute(multi_file_client, ["-1r"])
+        calls = command.shell.console.print.call_args_list
+        names = [c[0][0] for c in calls if isinstance(c[0][0], str)]
+        assert names == ["charlie.txt", "bravo.txt", "alpha.txt"]
+
+    def test_flag_1_output(self, command, multi_file_client):
+        """One-per-line output prints plain filenames."""
+        command.execute(multi_file_client, ["-1"])
+        calls = command.shell.console.print.call_args_list
+        # Each call should be a plain string filename, not a Table
+        for call in calls:
+            assert isinstance(call[0][0], str)
+
+    def test_flag_recursive(self, command):
+        """Recursive listing descends into subdirectories."""
+        client = Mock()
+        root_files = [
+            FileInfo(
+                path="/alpha.txt",
+                name="alpha.txt",
+                type="file",
+                size=100,
+                permissions=0o644,
+                last_modified=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
+                user_id=1000,
+                user="user",
+                group_id=1000,
+                group="group",
+            ),
+            FileInfo(
+                path="/subdir",
+                name="subdir",
+                type=FileType.DIRECTORY,
+                size=0,
+                permissions=0o755,
+                last_modified=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
+                user_id=1000,
+                user="user",
+                group_id=1000,
+                group="group",
+            ),
+        ]
+        nested_files = [
+            FileInfo(
+                path="/subdir/nested.txt",
+                name="nested.txt",
+                type="file",
+                size=50,
+                permissions=0o644,
+                last_modified=datetime(2023, 1, 1, 12, 0, 0, tzinfo=timezone.utc),
+                user_id=1000,
+                user="user",
+                group_id=1000,
+                group="group",
+            ),
+        ]
+
+        def mock_list_files(path):
+            if path == "/":
+                return root_files
+            if path == "/subdir":
+                return nested_files
+            return []
+
+        client.list_files.side_effect = mock_list_files
+        command.execute(client, ["-R1"])
+
+        # Should have listed root and recursed into subdir
+        all_output = " ".join(
+            str(c[0][0]) for c in command.shell.console.print.call_args_list
+        )
+        assert "alpha.txt" in all_output
+        assert "nested.txt" in all_output
+        assert "/subdir" in all_output
 
 
 class TestCatCommand:
