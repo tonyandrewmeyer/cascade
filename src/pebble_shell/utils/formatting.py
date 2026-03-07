@@ -95,7 +95,7 @@ def format_bytes(size: int) -> str:
     human_size: float = size
     for unit in ["B", "KB", "MB", "GB", "TB"]:
         if human_size < 1024.0:
-            return f"{size:.1f}{unit}"
+            return f"{human_size:.1f}{unit}"
         human_size /= 1024.0
     return f"{human_size:.1f}PB"
 
