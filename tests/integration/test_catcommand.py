@@ -54,7 +54,7 @@ def test_execute_no_args(
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=[])
     assert result == 1
-    assert "Usage: cat <file>" in capture.get()
+    assert "Usage: cat [-nbETAs]" in capture.get()
 
 
 def test_execute_temp_file(

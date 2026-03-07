@@ -85,7 +85,7 @@ class CatCommand(Command):
             return 1
         flags, remaining_args = flags_result
 
-        if not validate_min_args(self.shell, remaining_args, 1, "cat <file>"):
+        if not validate_min_args(self.shell, remaining_args, 1, "cat [-nbETAs] [--plain] <file> [file2 ...]"):
             return 1
 
         file_paths = process_file_arguments(
@@ -150,6 +150,9 @@ class CatCommand(Command):
                         show_tabs=show_tabs,
                         squeeze_blank=squeeze_blank,
                     )
+                    # Ensure separation between files
+                    if content and not content.endswith("\n"):
+                        self.shell.console.print()
                 else:
                     self._display_content(content, file_path, plain)
                 progress.advance(task)
