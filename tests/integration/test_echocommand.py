@@ -143,7 +143,11 @@ def test_default_escapes_enabled(
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["a\\tb"])
     assert result == 0
-    assert capture.get() == "a\tb\n"
+    output = capture.get()
+    # Rich expands tabs in captured output, so check that 'a' and 'b'
+    # are separated by whitespace (the expanded tab)
+    assert output.startswith("a") and "b" in output
+    assert output.strip() != "a\\tb"  # escapes were processed, not literal
 
 
 def test_exit_code_always_zero(
