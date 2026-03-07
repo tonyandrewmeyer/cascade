@@ -186,6 +186,18 @@ class TestHeadCommand:
         client.pull.return_value = mock_context
         return client
 
+    @pytest.fixture
+    def mock_client_str(self):
+        """Create mock client that returns string content (for byte mode)."""
+        client = Mock()
+        mock_file = MagicMock()
+        content = "\n".join([f"Line {i}" for i in range(1, 21)])
+        mock_file.read.return_value = content
+        mock_context = MagicMock()
+        mock_context.__enter__.return_value = mock_file
+        client.pull.return_value = mock_context
+        return client
+
     def test_execute_default_lines(self, command, mock_client):
         """Test head command with default number of lines."""
         command.execute(mock_client, ["/var/test.txt"])
@@ -206,6 +218,85 @@ class TestHeadCommand:
         for i, call in enumerate(calls):
             assert f"Line {i + 1}" in str(call[0][0])
 
+    def test_execute_n_flag(self, command, mock_client):
+        """Test head command with -n flag."""
+        result = command.execute(mock_client, ["-n", "5", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 5
+        for i, call in enumerate(calls):
+            assert f"Line {i + 1}" in str(call[0][0])
+
+    def test_execute_n_flag_attached(self, command, mock_client):
+        """Test head command with -n5 (value attached to flag)."""
+        result = command.execute(mock_client, ["-n5", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 5
+
+    def test_execute_lines_long_flag(self, command, mock_client):
+        """Test head command with --lines=5."""
+        result = command.execute(mock_client, ["--lines=5", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 5
+
+    def test_execute_lines_long_flag_space(self, command, mock_client):
+        """Test head command with --lines 5."""
+        result = command.execute(mock_client, ["--lines", "5", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 5
+
+    def test_execute_legacy_dash_n(self, command, mock_client):
+        """Test head command with legacy -5 form."""
+        result = command.execute(mock_client, ["-5", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 5
+
+    def test_execute_c_flag_bytes(self, command, mock_client_str):
+        """Test head command with -c flag for byte count."""
+        result = command.execute(mock_client_str, ["-c", "10", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 1
+        # First 10 bytes of "Line 1\nLin..."
+        output = str(calls[0][0][0])
+        assert len(output) <= 10
+
+    def test_execute_bytes_long_flag(self, command, mock_client_str):
+        """Test head command with --bytes=10."""
+        result = command.execute(mock_client_str, ["--bytes=10", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 1
+
+    def test_execute_quiet_flag(self, command, mock_client):
+        """Test head command with -q suppresses headers for multiple files."""
+        command.execute(mock_client, ["-q", "/var/test.txt", "/var/test2.txt"])
+        calls = command.shell.console.print.call_args_list
+        # With -q, no header lines should appear
+        for call in calls:
+            assert "==>" not in str(call[0][0])
+
+    def test_execute_verbose_flag(self, command, mock_client):
+        """Test head command with -v forces headers even for single file."""
+        result = command.execute(mock_client, ["-v", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        # First call should be the header
+        assert "==>" in str(calls[0][0][0])
+        assert "/var/test.txt" in str(calls[0][0][0])
+
+    def test_execute_multiple_files_headers(self, command, mock_client):
+        """Test head command shows headers for multiple files."""
+        command.execute(mock_client, ["/var/test.txt", "/var/test2.txt"])
+        calls = command.shell.console.print.call_args_list
+        # Should have headers for both files
+        header_calls = [c for c in calls if "==>" in str(c[0][0])]
+        assert len(header_calls) == 2
+
     def test_execute_invalid_lines(self, command, mock_client):
         """Test head command with invalid number of lines."""
         command.execute(mock_client, ["/var/test.txt", "invalid"])
@@ -218,6 +309,22 @@ class TestHeadCommand:
 
         # Should have called print multiple times - 10 for the first file, then a filename header, then an error
         assert len(calls) >= 10
+
+    def test_execute_no_args(self, command, mock_client):
+        """Test head command with no file arguments returns error."""
+        result = command.execute(mock_client, [])
+        assert result == 1
+
+    def test_execute_exit_code_success(self, command, mock_client):
+        """Test head command returns 0 on success."""
+        result = command.execute(mock_client, ["/var/test.txt"])
+        assert result == 0
+
+    def test_execute_exit_code_error(self, command, mock_client):
+        """Test head command returns 1 on file read error."""
+        mock_client.pull.side_effect = PathError("base", "not found")
+        result = command.execute(mock_client, ["/var/missing.txt"])
+        assert result == 1
 
 
 class TestTailCommand:
@@ -244,6 +351,18 @@ class TestTailCommand:
         client.pull.return_value = mock_context
         return client
 
+    @pytest.fixture
+    def mock_client_str(self):
+        """Create mock client that returns string content (for byte mode)."""
+        client = Mock()
+        mock_file = MagicMock()
+        content = "\n".join([f"Line {i}" for i in range(1, 21)])
+        mock_file.read.return_value = content
+        mock_context = MagicMock()
+        mock_context.__enter__.return_value = mock_file
+        client.pull.return_value = mock_context
+        return client
+
     def test_execute_default_lines(self, command, mock_client):
         """Test tail command with default number of lines."""
         command.execute(mock_client, ["/var/test.txt"])
@@ -263,6 +382,81 @@ class TestTailCommand:
         assert len(calls) == 3
         for i, call in enumerate(calls):
             assert f"Line {i + 18}" in str(call[0][0])
+
+    def test_execute_n_flag(self, command, mock_client):
+        """Test tail command with -n flag."""
+        result = command.execute(mock_client, ["-n", "3", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 3
+        for i, call in enumerate(calls):
+            assert f"Line {i + 18}" in str(call[0][0])
+
+    def test_execute_legacy_dash_n(self, command, mock_client):
+        """Test tail command with legacy -3 form."""
+        result = command.execute(mock_client, ["-3", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 3
+
+    def test_execute_n_plus_offset(self, command, mock_client):
+        """Test tail command with -n +3 (starting from line 3)."""
+        result = command.execute(mock_client, ["-n", "+3", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        # Should show lines 3 through 20 (18 lines)
+        assert len(calls) == 18
+        assert "Line 3" in str(calls[0][0][0])
+        assert "Line 20" in str(calls[-1][0][0])
+
+    def test_execute_lines_long_flag(self, command, mock_client):
+        """Test tail command with --lines=3."""
+        result = command.execute(mock_client, ["--lines=3", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 3
+
+    def test_execute_c_flag_bytes(self, command, mock_client_str):
+        """Test tail command with -c flag for byte count."""
+        result = command.execute(mock_client_str, ["-c", "10", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert len(calls) == 1
+        # Last 10 bytes
+        output = str(calls[0][0][0])
+        assert len(output) <= 10
+
+    def test_execute_quiet_flag(self, command, mock_client):
+        """Test tail command with -q suppresses headers for multiple files."""
+        command.execute(mock_client, ["-q", "/var/test.txt", "/var/test2.txt"])
+        calls = command.shell.console.print.call_args_list
+        for call in calls:
+            assert "==>" not in str(call[0][0])
+
+    def test_execute_verbose_flag(self, command, mock_client):
+        """Test tail command with -v forces headers even for single file."""
+        result = command.execute(mock_client, ["-v", "/var/test.txt"])
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        assert "==>" in str(calls[0][0][0])
+
+    def test_execute_multiple_files_headers(self, command, mock_client):
+        """Test tail command shows headers for multiple files."""
+        command.execute(mock_client, ["/var/test.txt", "/var/test2.txt"])
+        calls = command.shell.console.print.call_args_list
+        header_calls = [c for c in calls if "==>" in str(c[0][0])]
+        assert len(header_calls) == 2
+
+    def test_execute_no_args(self, command, mock_client):
+        """Test tail command with no file arguments returns error."""
+        result = command.execute(mock_client, [])
+        assert result == 1
+
+    def test_execute_exit_code_error(self, command, mock_client):
+        """Test tail command returns 1 on file read error."""
+        mock_client.pull.side_effect = PathError("base", "not found")
+        result = command.execute(mock_client, ["/var/missing.txt"])
+        assert result == 1
 
 
 class TestFindCommand:
