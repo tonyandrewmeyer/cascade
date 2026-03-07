@@ -187,15 +187,23 @@ class TestHeadCommand:
         return client
 
     @pytest.fixture
-    def mock_client_str(self):
-        """Create mock client that returns string content (for byte mode)."""
+    def mock_client_bytes(self):
+        """Create mock client that returns bytes content (for byte mode)."""
         client = Mock()
-        mock_file = MagicMock()
         content = "\n".join([f"Line {i}" for i in range(1, 21)])
-        mock_file.read.return_value = content
-        mock_context = MagicMock()
-        mock_context.__enter__.return_value = mock_file
-        client.pull.return_value = mock_context
+        content_bytes = content.encode("utf-8")
+
+        def pull_side_effect(path, encoding=None):
+            mock_file = MagicMock()
+            if encoding is None:
+                mock_file.read.return_value = content_bytes
+            else:
+                mock_file.read.return_value = content
+            mock_context = MagicMock()
+            mock_context.__enter__.return_value = mock_file
+            return mock_context
+
+        client.pull.side_effect = pull_side_effect
         return client
 
     def test_execute_default_lines(self, command, mock_client):
@@ -255,9 +263,9 @@ class TestHeadCommand:
         calls = command.shell.console.print.call_args_list
         assert len(calls) == 5
 
-    def test_execute_c_flag_bytes(self, command, mock_client_str):
+    def test_execute_c_flag_bytes(self, command, mock_client_bytes):
         """Test head command with -c flag for byte count."""
-        result = command.execute(mock_client_str, ["-c", "10", "/var/test.txt"])
+        result = command.execute(mock_client_bytes, ["-c", "10", "/var/test.txt"])
         assert result == 0
         calls = command.shell.console.print.call_args_list
         assert len(calls) == 1
@@ -265,9 +273,9 @@ class TestHeadCommand:
         output = str(calls[0][0][0])
         assert len(output) <= 10
 
-    def test_execute_bytes_long_flag(self, command, mock_client_str):
+    def test_execute_bytes_long_flag(self, command, mock_client_bytes):
         """Test head command with --bytes=10."""
-        result = command.execute(mock_client_str, ["--bytes=10", "/var/test.txt"])
+        result = command.execute(mock_client_bytes, ["--bytes=10", "/var/test.txt"])
         assert result == 0
         calls = command.shell.console.print.call_args_list
         assert len(calls) == 1
@@ -326,6 +334,21 @@ class TestHeadCommand:
         result = command.execute(mock_client, ["/var/missing.txt"])
         assert result == 1
 
+    def test_execute_head_invalid_count(self, command, mock_client):
+        """head -n abc should return error."""
+        result = command.execute(mock_client, ["-n", "abc", "/var/test.txt"])
+        assert result == 1
+
+    def test_execute_head_c_zero(self, command, mock_client_bytes):
+        """head -c 0 should produce no output."""
+        result = command.execute(mock_client_bytes, ["-c", "0", "/var/test.txt"])
+        assert result == 0
+        # Should not print any file content
+        calls = command.shell.console.print.call_args_list
+        for call in calls:
+            if call[0]:
+                assert "Line" not in str(call[0][0])
+
 
 class TestTailCommand:
     """Test cases for TailCommand."""
@@ -352,15 +375,23 @@ class TestTailCommand:
         return client
 
     @pytest.fixture
-    def mock_client_str(self):
-        """Create mock client that returns string content (for byte mode)."""
+    def mock_client_bytes(self):
+        """Create mock client that returns bytes content (for byte mode)."""
         client = Mock()
-        mock_file = MagicMock()
         content = "\n".join([f"Line {i}" for i in range(1, 21)])
-        mock_file.read.return_value = content
-        mock_context = MagicMock()
-        mock_context.__enter__.return_value = mock_file
-        client.pull.return_value = mock_context
+        content_bytes = content.encode("utf-8")
+
+        def pull_side_effect(path, encoding=None):
+            mock_file = MagicMock()
+            if encoding is None:
+                mock_file.read.return_value = content_bytes
+            else:
+                mock_file.read.return_value = content
+            mock_context = MagicMock()
+            mock_context.__enter__.return_value = mock_file
+            return mock_context
+
+        client.pull.side_effect = pull_side_effect
         return client
 
     def test_execute_default_lines(self, command, mock_client):
@@ -416,9 +447,9 @@ class TestTailCommand:
         calls = command.shell.console.print.call_args_list
         assert len(calls) == 3
 
-    def test_execute_c_flag_bytes(self, command, mock_client_str):
+    def test_execute_c_flag_bytes(self, command, mock_client_bytes):
         """Test tail command with -c flag for byte count."""
-        result = command.execute(mock_client_str, ["-c", "10", "/var/test.txt"])
+        result = command.execute(mock_client_bytes, ["-c", "10", "/var/test.txt"])
         assert result == 0
         calls = command.shell.console.print.call_args_list
         assert len(calls) == 1
@@ -456,6 +487,31 @@ class TestTailCommand:
         """Test tail command returns 1 on file read error."""
         mock_client.pull.side_effect = PathError("base", "not found")
         result = command.execute(mock_client, ["/var/missing.txt"])
+        assert result == 1
+
+    def test_execute_tail_n_zero(self, command, mock_client):
+        """tail -n 0 should produce no output."""
+        result = command.execute(mock_client, ["-n", "0", "/var/test.txt"])
+        assert result == 0
+        # Should not print any file content
+        calls = command.shell.console.print.call_args_list
+        for call in calls:
+            if call[0]:
+                assert "Line" not in str(call[0][0])
+
+    def test_execute_tail_c_zero(self, command, mock_client_bytes):
+        """tail -c 0 should produce no output."""
+        result = command.execute(mock_client_bytes, ["-c", "0", "/var/test.txt"])
+        assert result == 0
+        # Should not print any file content
+        calls = command.shell.console.print.call_args_list
+        for call in calls:
+            if call[0]:
+                assert "Line" not in str(call[0][0])
+
+    def test_execute_tail_invalid_count(self, command, mock_client):
+        """tail -n abc should return error."""
+        result = command.execute(mock_client, ["-n", "abc", "/var/test.txt"])
         assert result == 1
 
 

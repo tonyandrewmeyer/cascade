@@ -35,8 +35,13 @@ class HeadCommand(_LinesCommand):
         for line in file_lines[:lines]:
             self.shell.console.print(line)
 
-    def process_bytes(self, content: str, byte_count: int) -> None:
+    def process_bytes(self, content: bytes, byte_count: int) -> None:
         """Display first N bytes of a file."""
+        if byte_count == 0:
+            return
         output = content[:byte_count]
         if output:
-            self.shell.console.print(output, end="")
+            # Decode for display, replacing incomplete multi-byte sequences
+            self.shell.console.print(
+                output.decode("utf-8", errors="replace"), end=""
+            )

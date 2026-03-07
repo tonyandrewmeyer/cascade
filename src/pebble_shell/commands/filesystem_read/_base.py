@@ -14,7 +14,6 @@ if TYPE_CHECKING:
 from ...utils.command_helpers import (
     handle_help_flag,
     process_file_arguments,
-    safe_read_file,
     safe_read_file_lines,
 )
 from .._base import Command
@@ -103,6 +102,9 @@ def _parse_head_tail_args(
                     if value.startswith("+"):
                         offset_mode = True
                     lines = _parse_count(value)
+                else:
+                    msg = "option requires an argument -- 'n'"
+                    raise ValueError(msg)
                 i += 1
                 continue
 
@@ -113,6 +115,9 @@ def _parse_head_tail_args(
                 elif i + 1 < len(args):
                     i += 1
                     byte_count = _parse_count(args[i])
+                else:
+                    msg = "option requires an argument -- 'c'"
+                    raise ValueError(msg)
                 i += 1
                 continue
 
@@ -145,7 +150,11 @@ def _parse_head_tail_args(
 
 def _parse_count(value: str) -> int:
     """Parse a count value, preserving the sign for values like ``+3``."""
-    return int(value)
+    try:
+        return int(value)
+    except ValueError:
+        msg = f"invalid number: {value!r}"
+        raise ValueError(msg) from None
 
 
 class _LinesCommand(Command):
@@ -160,9 +169,16 @@ class _LinesCommand(Command):
         if handle_help_flag(self, args):
             return 0
 
-        lines, byte_count, quiet, offset_mode, remaining_args = _parse_head_tail_args(
-            args
-        )
+        try:
+            lines, byte_count, quiet, offset_mode, remaining_args = (
+                _parse_head_tail_args(args)
+            )
+        except ValueError as e:
+            from ...utils.theme import get_theme
+
+            theme = get_theme()
+            self.shell.console.print(theme.error_text(f"Error: {e}"))
+            return 1
         self._offset_mode = offset_mode
 
         if not remaining_args:
@@ -198,12 +214,17 @@ class _LinesCommand(Command):
                 self.shell.console.print(f"==> {file_path} <==")
 
             if byte_count is not None:
-                # Byte mode
-                content = safe_read_file(client, file_path, self.shell)
-                if content is None:
+                # Byte mode - read as raw bytes for correct byte counting
+                try:
+                    with client.pull(file_path, encoding=None) as f:
+                        raw_content = f.read()
+                except Exception as e:
+                    self.shell.console.print(
+                        f"Error reading file {file_path}: {e}"
+                    )
                     exit_code = 1
                     continue
-                self.process_bytes(content, byte_count)
+                self.process_bytes(raw_content, byte_count)
             else:
                 # Line mode
                 file_lines = safe_read_file_lines(client, file_path, self.shell)
@@ -218,6 +239,6 @@ class _LinesCommand(Command):
         """Process lines read from the file."""
         raise NotImplementedError("Subclasses must implement process_lines method")
 
-    def process_bytes(self, content: str, byte_count: int) -> None:
+    def process_bytes(self, content: bytes, byte_count: int) -> None:
         """Process bytes read from the file."""
         raise NotImplementedError("Subclasses must implement process_bytes method")

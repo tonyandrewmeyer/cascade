@@ -30,7 +30,7 @@ class TailCommand(_LinesCommand):
     """
 
     name = "tail"
-    help = "Display last lines of file"
+    help = "Display last lines of file. Supports -n, -c, -q, -v flags. (-f follow mode not yet implemented)"
 
     def process_lines(self, file_lines: Sequence[str], lines: int) -> None:
         """Display last N lines, or from line N if lines is positive offset.
@@ -42,6 +42,8 @@ class TailCommand(_LinesCommand):
         ``lines`` argument came from a ``+`` prefixed string — the base
         class stores that information on ``self._offset_mode``.
         """
+        if lines == 0 and not getattr(self, "_offset_mode", False):
+            return
         if getattr(self, "_offset_mode", False) and lines >= 1:
             # -n +N: output starting from line N (1-indexed)
             for line in file_lines[lines - 1 :]:
@@ -50,8 +52,12 @@ class TailCommand(_LinesCommand):
             for line in file_lines[-lines:]:
                 self.shell.console.print(line)
 
-    def process_bytes(self, content: str, byte_count: int) -> None:
+    def process_bytes(self, content: bytes, byte_count: int) -> None:
         """Display last N bytes of a file."""
+        if byte_count == 0:
+            return
         output = content[-byte_count:]
         if output:
-            self.shell.console.print(output, end="")
+            self.shell.console.print(
+                output.decode("utf-8", errors="replace"), end=""
+            )
