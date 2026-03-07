@@ -572,7 +572,7 @@ class TestEchoCommand:
         call_args = command.console.print.call_args
         return call_args[1].get("end", "\n")
 
-    def test_execute_simple_text(self, command, capsys):
+    def test_execute_simple_text(self, command):
         """Test echo command with simple text."""
         command.execute(Mock(), ["Hello", "World"])
 
@@ -580,7 +580,7 @@ class TestEchoCommand:
             "Hello World", end="\n", markup=False, highlight=False
         )
 
-    def test_execute_escape_sequences(self, command, capsys):
+    def test_execute_escape_sequences(self, command):
         """Test echo command with escape sequences (default -e)."""
         command.execute(Mock(), ["Hello\\nWorld\\t!"])
 
@@ -588,7 +588,7 @@ class TestEchoCommand:
             "Hello\nWorld\t!", end="\n", markup=False, highlight=False
         )
 
-    def test_execute_no_args(self, command, capsys):
+    def test_execute_no_args(self, command):
         """Test echo command with no arguments outputs blank line."""
         command.execute(Mock(), [])
 

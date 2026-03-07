@@ -54,7 +54,7 @@ def _process_escapes(text: str) -> tuple[str, bool]:
                 continue
 
             if next_char == "0":
-                # \0nnn: octal value (1-3 octal digits after the 0)
+                # \0nnn: octal value (0-3 octal digits after the 0)
                 octal_match = re.match(r"0([0-7]{0,3})", text[i + 1 :])
                 if octal_match:
                     octal_str = octal_match.group(1)
