@@ -562,26 +562,219 @@ class TestEchoCommand:
         mock_shell.console = Mock()
         return EchoCommand(mock_shell)
 
+    def _get_printed(self, command):
+        """Extract the printed text from the mock console call."""
+        call_args = command.console.print.call_args
+        return call_args[0][0] if call_args[0] else ""
+
+    def _get_end(self, command):
+        """Extract the end kwarg from the mock console call."""
+        call_args = command.console.print.call_args
+        return call_args[1].get("end", "\n")
+
     def test_execute_simple_text(self, command, capsys):
         """Test echo command with simple text."""
         command.execute(Mock(), ["Hello", "World"])
 
-        # Check that console.print was called with the expected output
-        command.console.print.assert_called_once_with("Hello World")
+        command.console.print.assert_called_once_with(
+            "Hello World", end="\n", markup=False, highlight=False
+        )
 
     def test_execute_escape_sequences(self, command, capsys):
-        """Test echo command with escape sequences."""
+        """Test echo command with escape sequences (default -e)."""
         command.execute(Mock(), ["Hello\\nWorld\\t!"])
 
-        # Check that console.print was called with the expected output (escaped sequences processed)
-        command.console.print.assert_called_once_with("Hello\nWorld\t!")
+        command.console.print.assert_called_once_with(
+            "Hello\nWorld\t!", end="\n", markup=False, highlight=False
+        )
 
     def test_execute_no_args(self, command, capsys):
-        """Test echo command with no arguments."""
+        """Test echo command with no arguments outputs blank line."""
         command.execute(Mock(), [])
 
-        # Check that console.print was called with no arguments (empty line)
-        command.console.print.assert_called_once_with()
+        command.console.print.assert_called_once_with(
+            "", end="\n", markup=False, highlight=False
+        )
+
+    def test_flag_n_no_trailing_newline(self, command):
+        """Test -n flag suppresses trailing newline."""
+        command.execute(Mock(), ["-n", "hello"])
+
+        assert self._get_printed(command) == "hello"
+        assert self._get_end(command) == ""
+
+    def test_flag_e_explicit(self, command):
+        """Test -e flag explicitly enables escape sequences."""
+        command.execute(Mock(), ["-e", "hello\\nworld"])
+
+        assert self._get_printed(command) == "hello\nworld"
+
+    def test_flag_upper_e_disables_escapes(self, command):
+        """Test -E flag disables escape interpretation."""
+        command.execute(Mock(), ["-E", "hello\\nworld"])
+
+        assert self._get_printed(command) == "hello\\nworld"
+
+    def test_combined_flags_ne(self, command):
+        """Test combined -ne flags."""
+        command.execute(Mock(), ["-ne", "hello\\n"])
+
+        assert self._get_printed(command) == "hello\n"
+        assert self._get_end(command) == ""
+
+    def test_combined_flags_n_upper_e(self, command):
+        """Test combined -nE flags."""
+        command.execute(Mock(), ["-nE", "hello\\n"])
+
+        assert self._get_printed(command) == "hello\\n"
+        assert self._get_end(command) == ""
+
+    def test_last_flag_wins_e_upper_e(self, command):
+        """Test that -eE means -E wins (last one)."""
+        command.execute(Mock(), ["-eE", "hello\\n"])
+
+        assert self._get_printed(command) == "hello\\n"
+
+    def test_last_flag_wins_upper_e_e(self, command):
+        """Test that -Ee means -e wins (last one)."""
+        command.execute(Mock(), ["-Ee", "hello\\n"])
+
+        assert self._get_printed(command) == "hello\n"
+
+    def test_flags_only_at_start(self, command):
+        """Test that -n after a non-flag arg is treated as text."""
+        command.execute(Mock(), ["foo", "-n"])
+
+        assert self._get_printed(command) == "foo -n"
+        assert self._get_end(command) == "\n"
+
+    def test_escape_backslash(self, command):
+        """Test \\\\ escape produces single backslash."""
+        command.execute(Mock(), ["a\\\\b"])
+
+        assert self._get_printed(command) == "a\\b"
+
+    def test_escape_alert(self, command):
+        """Test \\a escape produces bell character."""
+        command.execute(Mock(), ["a\\ab"])
+
+        assert self._get_printed(command) == "a\ab"
+
+    def test_escape_backspace(self, command):
+        """Test \\b escape produces backspace character."""
+        command.execute(Mock(), ["a\\bb"])
+
+        assert self._get_printed(command) == "a\bb"
+
+    def test_escape_c_stops_output(self, command):
+        """Test \\c stops all further output."""
+        command.execute(Mock(), ["hello\\cworld"])
+
+        assert self._get_printed(command) == "hello"
+        assert self._get_end(command) == ""
+
+    def test_escape_e_char(self, command):
+        """Test \\e escape produces ESC character."""
+        command.execute(Mock(), ["a\\eb"])
+
+        assert self._get_printed(command) == "a\x1bb"
+
+    def test_escape_upper_e_char(self, command):
+        """Test \\E escape produces ESC character."""
+        # Use -e explicitly since -E alone would disable escapes
+        command.execute(Mock(), ["-e", "a\\Eb"])
+
+        assert self._get_printed(command) == "a\x1bb"
+
+    def test_escape_formfeed(self, command):
+        """Test \\f escape produces form feed character."""
+        command.execute(Mock(), ["a\\fb"])
+
+        assert self._get_printed(command) == "a\fb"
+
+    def test_escape_newline(self, command):
+        """Test \\n escape produces newline."""
+        command.execute(Mock(), ["a\\nb"])
+
+        assert self._get_printed(command) == "a\nb"
+
+    def test_escape_carriage_return(self, command):
+        """Test \\r escape produces carriage return."""
+        command.execute(Mock(), ["a\\rb"])
+
+        assert self._get_printed(command) == "a\rb"
+
+    def test_escape_tab(self, command):
+        """Test \\t escape produces horizontal tab."""
+        command.execute(Mock(), ["a\\tb"])
+
+        assert self._get_printed(command) == "a\tb"
+
+    def test_escape_vertical_tab(self, command):
+        """Test \\v escape produces vertical tab."""
+        command.execute(Mock(), ["a\\vb"])
+
+        assert self._get_printed(command) == "a\vb"
+
+    def test_escape_octal(self, command):
+        """Test \\0nnn octal escape."""
+        # \0101 = octal 101 = 65 = 'A'
+        command.execute(Mock(), ["\\0101"])
+
+        assert self._get_printed(command) == "A"
+
+    def test_escape_octal_null(self, command):
+        """Test \\0 with no digits produces null character."""
+        command.execute(Mock(), ["a\\0b"])
+
+        assert self._get_printed(command) == "a\0b"
+
+    def test_escape_hex(self, command):
+        """Test \\xHH hex escape."""
+        # \x41 = hex 41 = 65 = 'A'
+        command.execute(Mock(), ["\\x41"])
+
+        assert self._get_printed(command) == "A"
+
+    def test_escape_hex_single_digit(self, command):
+        """Test \\xH hex escape with single digit."""
+        # \x9 = hex 9 = 9 = tab character
+        command.execute(Mock(), ["\\x9"])
+
+        assert self._get_printed(command) == "\x09"
+
+    def test_n_flag_no_args(self, command):
+        """Test -n with no text args outputs nothing."""
+        command.execute(Mock(), ["-n"])
+
+        assert self._get_printed(command) == ""
+        assert self._get_end(command) == ""
+
+    def test_always_returns_zero(self, command):
+        """Test echo always returns exit code 0."""
+        assert command.execute(Mock(), []) == 0
+        assert command.execute(Mock(), ["hello"]) == 0
+        assert command.execute(Mock(), ["-n", "test"]) == 0
+        assert command.execute(Mock(), ["-E", "test"]) == 0
+
+    def test_multiple_flag_args(self, command):
+        """Test multiple separate flag args."""
+        command.execute(Mock(), ["-n", "-E", "hello\\n"])
+
+        assert self._get_printed(command) == "hello\\n"
+        assert self._get_end(command) == ""
+
+    def test_invalid_flag_treated_as_text(self, command):
+        """Test that -z (invalid) is treated as text."""
+        command.execute(Mock(), ["-z", "hello"])
+
+        assert self._get_printed(command) == "-z hello"
+
+    def test_dash_alone_treated_as_text(self, command):
+        """Test that a bare - is treated as text."""
+        command.execute(Mock(), ["-", "hello"])
+
+        assert self._get_printed(command) == "- hello"
 
 
 class TestGrepCommand:
