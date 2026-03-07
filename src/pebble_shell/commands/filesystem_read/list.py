@@ -114,6 +114,8 @@ class ListCommand(Command):
             return 1
 
         if not files:
+            if recursive and not is_root:
+                self.shell.console.print(f"\n{path}:")
             if is_root:
                 self.shell.console.print(f"[dim]Directory {path} is empty[/dim]")
             return 0
@@ -128,27 +130,24 @@ class ListCommand(Command):
         if recursive and not is_root:
             self.shell.console.print(f"\n{path}:")
 
-        # One-per-line mode: plain text output
-        if one_per_line:
+        # One-per-line mode: plain text output (but -l already implies one-per-line)
+        if one_per_line and not long_listing:
             for file_info in files:
                 self.shell.console.print(file_info.name)
         else:
-            self._print_table(
-                files, long_listing, human_readable, show_plain
-            )
+            self._print_table(files, long_listing, human_readable, show_plain)
 
         # Recurse into subdirectories
+        exit_code = 0
         if recursive:
             import ops as ops_module
 
             subdirs = [
-                f
-                for f in files
-                if f.type == ops_module.pebble.FileType.DIRECTORY
+                f for f in files if f.type == ops_module.pebble.FileType.DIRECTORY
             ]
             for subdir in subdirs:
                 subdir_path = posixpath.join(path, subdir.name)
-                self._list_directory(
+                result = self._list_directory(
                     client,
                     subdir_path,
                     show_all=show_all,
@@ -162,8 +161,10 @@ class ListCommand(Command):
                     recursive=recursive,
                     is_root=False,
                 )
+                if result != 0:
+                    exit_code = result
 
-        return 0
+        return exit_code
 
     def _sort_files(
         self,
@@ -176,7 +177,9 @@ class ListCommand(Command):
         if sort_by_time:
             files = sorted(
                 files,
-                key=lambda f: f.last_modified or "",
+                key=lambda f: (
+                    f.last_modified.timestamp() if f.last_modified is not None else 0
+                ),
                 reverse=not reverse_sort,
             )
         elif sort_by_size:
