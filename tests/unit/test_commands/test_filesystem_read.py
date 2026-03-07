@@ -122,13 +122,13 @@ class TestCatCommand:
         # Check that validation message was printed (any console.print call indicates validation)
         assert command.shell.console.print.called
 
-    def test_execute_too_many_args(self, command, mock_client):
-        """Test cat command with too many arguments."""
+    def test_execute_multiple_files(self, command, mock_client):
+        """Test cat command with multiple files."""
         result = command.execute(mock_client, ["file1", "file2"])
 
-        # Should return error code and print validation message
-        assert result == 1
-        assert command.shell.console.print.called
+        # Should succeed with multiple files
+        assert result == 0
+        assert mock_client.pull.call_count == 2
 
     def test_execute_binary_file(self, command, mock_client):
         """Test cat command with binary file."""
@@ -160,6 +160,148 @@ class TestCatCommand:
         # Should return error code and print error message
         assert result == 1
         assert command.shell.console.print.called
+
+    def test_execute_number_lines(self, command, mock_client):
+        """Test cat -n numbers all lines."""
+        mock_file = MagicMock()
+        mock_file.read.return_value = "line1\nline2\nline3\n"
+        mock_context = MagicMock()
+        mock_context.__enter__.return_value = mock_file
+        mock_client.pull.return_value = mock_context
+
+        result = command.execute(mock_client, ["-n", "/var/test.txt"])
+
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        output = calls[0][0][0]
+        assert "     1\tline1" in output
+        assert "     2\tline2" in output
+        assert "     3\tline3" in output
+
+    def test_execute_number_nonblank(self, command, mock_client):
+        """Test cat -b numbers only non-blank lines."""
+        mock_file = MagicMock()
+        mock_file.read.return_value = "line1\n\nline2\n"
+        mock_context = MagicMock()
+        mock_context.__enter__.return_value = mock_file
+        mock_client.pull.return_value = mock_context
+
+        result = command.execute(mock_client, ["-b", "/var/test.txt"])
+
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        output = calls[0][0][0]
+        assert "     1\tline1" in output
+        assert "     2\tline2" in output
+        # Blank line should not be numbered
+        lines = output.split("\n")
+        blank_lines = [ln for ln in lines if ln.strip() == ""]
+        assert len(blank_lines) >= 1
+
+    def test_execute_show_ends(self, command, mock_client):
+        """Test cat -E shows $ at end of lines."""
+        mock_file = MagicMock()
+        mock_file.read.return_value = "hello\nworld\n"
+        mock_context = MagicMock()
+        mock_context.__enter__.return_value = mock_file
+        mock_client.pull.return_value = mock_context
+
+        result = command.execute(mock_client, ["-E", "/var/test.txt"])
+
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        output = calls[0][0][0]
+        assert "hello$" in output
+        assert "world$" in output
+
+    def test_execute_show_tabs(self, command, mock_client):
+        """Test cat -T shows ^I for tabs."""
+        mock_file = MagicMock()
+        mock_file.read.return_value = "col1\tcol2\n"
+        mock_context = MagicMock()
+        mock_context.__enter__.return_value = mock_file
+        mock_client.pull.return_value = mock_context
+
+        result = command.execute(mock_client, ["-T", "/var/test.txt"])
+
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        output = calls[0][0][0]
+        assert "col1^Icol2" in output
+
+    def test_execute_show_all(self, command, mock_client):
+        """Test cat -A is equivalent to -ET."""
+        mock_file = MagicMock()
+        mock_file.read.return_value = "hello\tworld\n"
+        mock_context = MagicMock()
+        mock_context.__enter__.return_value = mock_file
+        mock_client.pull.return_value = mock_context
+
+        result = command.execute(mock_client, ["-A", "/var/test.txt"])
+
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        output = calls[0][0][0]
+        assert "^I" in output
+        assert "$" in output
+
+    def test_execute_squeeze_blank(self, command, mock_client):
+        """Test cat -s squeezes repeated blank lines."""
+        mock_file = MagicMock()
+        mock_file.read.return_value = "line1\n\n\n\nline2\n"
+        mock_context = MagicMock()
+        mock_context.__enter__.return_value = mock_file
+        mock_client.pull.return_value = mock_context
+
+        result = command.execute(mock_client, ["-s", "/var/test.txt"])
+
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        output = calls[0][0][0]
+        # Multiple blank lines should be squeezed to one
+        assert "\n\n\n" not in output
+        assert "line1\n\nline2" in output
+
+    def test_execute_b_overrides_n(self, command, mock_client):
+        """Test that -b overrides -n."""
+        mock_file = MagicMock()
+        mock_file.read.return_value = "line1\n\nline2\n"
+        mock_context = MagicMock()
+        mock_context.__enter__.return_value = mock_file
+        mock_client.pull.return_value = mock_context
+
+        result = command.execute(mock_client, ["-n", "-b", "/var/test.txt"])
+
+        assert result == 0
+        calls = command.shell.console.print.call_args_list
+        output = calls[0][0][0]
+        # -b overrides -n: blank lines should NOT be numbered
+        assert "     1\tline1" in output
+        assert "     2\tline2" in output
+
+    def test_execute_error_continues_other_files(self, command, mock_client):
+        """Test cat with missing file continues to process other files."""
+        call_count = 0
+
+        def side_effect(path):
+            nonlocal call_count
+            call_count += 1
+            if path == "/var/missing.txt":
+                raise PathError("base", "File not found")
+            mock_file = MagicMock()
+            mock_file.read.return_value = "content"
+            mock_context = MagicMock()
+            mock_context.__enter__.return_value = mock_file
+            return mock_context
+
+        mock_client.pull.side_effect = side_effect
+
+        result = command.execute(mock_client, ["/var/missing.txt", "/var/test.txt"])
+
+        # Should return 1 because one file failed
+        assert result == 1
+        # But should have tried both files
+        assert call_count == 2
 
 
 class TestHeadCommand:
