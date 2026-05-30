@@ -15,13 +15,13 @@ These are the first commands anyone reaches for in a debugging shell.
 
 | Status | Command | POSIX | Notes |
 |--------|---------|-------|-------|
-| [ ] | `ls` | Yes | `-l`, `-a`, `-R`, `-t`, `-S`, `-h`, `-1`; color is a Cascade enhancement |
-| [ ] | `cat` | Yes | `-n`, `-b`, `-E`, `-T`; multiple files |
+| [~] | `ls` | Yes | `-l`, `-a`, `-R`, `-t`, `-S`, `-h`, `-1`; color is a Cascade enhancement — PR #10 |
+| [~] | `cat` | Yes | `-n`, `-b`, `-E`, `-T`; multiple files — PR #13 |
 | [ ] | `cd` | Yes | Relative, absolute, `~`, `-` (previous dir), no-arg goes to `~` |
 | [ ] | `pwd` | Yes | Should just work |
-| [ ] | `echo` | Yes | `-n`, `-e` (escape sequences); BusyBox behavior for `-e` is default-on |
-| [ ] | `head` | Yes | `-n`, `-c`; default 10 lines; multiple files with headers |
-| [ ] | `tail` | Yes | `-n`, `-c`; default 10 lines; `-n +N` for offset |
+| [~] | `echo` | Yes | `-n`, `-e` (escape sequences); BusyBox behavior for `-e` is default-on — PR #14 |
+| [~] | `head` | Yes | `-n`, `-c`; default 10 lines; multiple files with headers — PR #15 |
+| [~] | `tail` | Yes | `-n`, `-c`; default 10 lines; `-n +N` for offset — PR #15 |
 | [ ] | `grep` | Yes | `-i`, `-v`, `-n`, `-c`, `-l`, `-r`, `-E`, `-F`, `-w`; exit code 1 = no match |
 | [ ] | `find` | Yes | `-name`, `-type`, `-size`, `-mtime`, `-exec`, `-print`; subset is fine |
 | [ ] | `stat` | Yes | File metadata; format may differ from GNU stat |
