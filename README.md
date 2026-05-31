@@ -4,6 +4,8 @@
 
 A Python-based shell for debugging containers using Pebble's filesystem operations. This tool provides a command-line interface for interacting with containers through Pebble's API, allowing you to explore filesystems, read files, and gather system information without requiring a shell on the remote side.
 
+> **Note:** [borescope](https://github.com/tonyandrewmeyer/borescope) is a more polished and refined take on the same idea, though significantly more limited in scope — it focuses on a small POSIX-conformant core rather than cascade's kitchen-sink shell.
+
 ## Features
 
 - **Directory Navigation**: Change and track current directory with `cd`/`pwd`
