@@ -32,27 +32,85 @@ class TestEchoCommand:
         """Create mock client."""
         return Mock()
 
+    def _get_printed(self, command):
+        """Extract the printed text from the mock console call."""
+        call_args = command.shell.console.print.call_args
+        return call_args[0][0] if call_args[0] else ""
+
+    def _get_end(self, command):
+        """Extract the end kwarg from the mock console call."""
+        call_args = command.shell.console.print.call_args
+        return call_args[1].get("end", "\n")
+
     def test_execute_simple_text(self, command, mock_client):
         """Test echo command with simple text."""
         result = command.execute(mock_client, ["hello", "world"])
 
         assert result == 0
-        command.shell.console.print.assert_called_once_with("hello world")
+        command.shell.console.print.assert_called_once_with(
+            "hello world", end="\n", markup=False, highlight=False
+        )
 
     def test_execute_no_args(self, command, mock_client):
-        """Test echo command with no arguments."""
+        """Test echo command with no arguments outputs blank line."""
         result = command.execute(mock_client, [])
 
         assert result == 0
-        command.shell.console.print.assert_called_once_with()
+        command.shell.console.print.assert_called_once_with(
+            "", end="\n", markup=False, highlight=False
+        )
 
     def test_execute_escape_sequences(self, command, mock_client):
-        """Test echo command with escape sequences."""
+        """Test echo command with escape sequences (default -e)."""
         result = command.execute(mock_client, ["hello\\nworld"])
 
         assert result == 0
-        # Echo should handle escape sequences
-        command.shell.console.print.assert_called_once()
+        assert self._get_printed(command) == "hello\nworld"
+
+    def test_flag_n_suppresses_newline(self, command, mock_client):
+        """Test -n flag suppresses trailing newline."""
+        result = command.execute(mock_client, ["-n", "hello"])
+
+        assert result == 0
+        assert self._get_printed(command) == "hello"
+        assert self._get_end(command) == ""
+
+    def test_flag_upper_e_disables_escapes(self, command, mock_client):
+        """Test -E flag disables escape interpretation."""
+        result = command.execute(mock_client, ["-E", "hello\\nworld"])
+
+        assert result == 0
+        assert self._get_printed(command) == "hello\\nworld"
+
+    def test_escape_c_stops_output(self, command, mock_client):
+        """Test \\c stops all output including trailing newline."""
+        result = command.execute(mock_client, ["hello\\cworld"])
+
+        assert result == 0
+        assert self._get_printed(command) == "hello"
+        assert self._get_end(command) == ""
+
+    def test_escape_octal(self, command, mock_client):
+        """Test \\0nnn octal escape sequence."""
+        result = command.execute(mock_client, ["\\0101"])
+
+        assert result == 0
+        assert self._get_printed(command) == "A"
+
+    def test_escape_hex(self, command, mock_client):
+        """Test \\xHH hex escape sequence."""
+        result = command.execute(mock_client, ["\\x41"])
+
+        assert result == 0
+        assert self._get_printed(command) == "A"
+
+    def test_flags_not_recognized_after_text(self, command, mock_client):
+        """Test -n after text is treated as literal text."""
+        result = command.execute(mock_client, ["foo", "-n"])
+
+        assert result == 0
+        assert self._get_printed(command) == "foo -n"
+        assert self._get_end(command) == "\n"
 
 
 class TestPwdCommand:
