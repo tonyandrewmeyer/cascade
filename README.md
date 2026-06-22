@@ -4,7 +4,20 @@
 
 A Python-based shell for debugging containers using Pebble's filesystem operations. This tool provides a command-line interface for interacting with containers through Pebble's API, allowing you to explore filesystems, read files, and gather system information without requiring a shell on the remote side.
 
-> **Note:** [borescope](https://github.com/tonyandrewmeyer/borescope) is a more polished and refined take on the same idea, though significantly more limited in scope — it focuses on a small POSIX-conformant core rather than cascade's kitchen-sink shell.
+> [!WARNING]
+> **Use [borescope](https://borescope.dev) instead.**
+>
+> Cascade is a playground / proof-of-concept and is **not** intended for real use.
+> [borescope](https://borescope.dev) ([source](https://github.com/tonyandrewmeyer/borescope))
+> is the polished, maintained take on the same idea — a natural shell for debugging
+> Juju Kubernetes workload containers that have no shell of their own. It ships a
+> small, POSIX-conformant core, integrates cleanly with Juju (`juju ssh` authority,
+> no `kubectl` required), and treats Pebble's vocabulary (`services`, `logs`, `plan`,
+> …) as first-class commands.
+>
+> Cascade remains here only as a space to experiment with the kitchen-sink end of
+> the design — 170+ commands, shell features, etc. If you want something to actually
+> debug a rock with, reach for borescope.
 
 ## Features
 
