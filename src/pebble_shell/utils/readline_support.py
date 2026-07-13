@@ -180,6 +180,10 @@ def setup_readline_support(
     if wrapper.has_readline:
         completer = EnhancedCompleter(shell, commands, alias_command)
         wrapper.set_completer(completer.complete)
+
+        # Set up custom display matches hook for better completion display
+        readline.set_completion_display_matches_hook(completer.display_matches_hook)
+
         print("Enhanced readline support enabled (use tab for smart completion)")
     else:
         print(
