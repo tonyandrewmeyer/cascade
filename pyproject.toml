@@ -21,7 +21,7 @@ classifiers = [
 ]
 dependencies = [
     "ops>=2.0.0,<4",
-    "rich~=13.7",
+    "rich>=13.7,<16.0",
     "pebble-shimmer",
     "typer~=0.16",
 ]
