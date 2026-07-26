@@ -104,9 +104,7 @@ Examples:
                     # Also check cmdline for scripts if requested
                     if include_scripts:
                         try:
-                            cmdline_content = read_proc_file(
-                                client, f"/proc/{pid}/cmdline"
-                            )
+                            cmdline_content = read_proc_file(client, f"/proc/{pid}/cmdline")
                             cmdline = cmdline_content.replace("\0", " ").strip()
                         except ops.pebble.PathError:
                             cmdline = ""
@@ -115,15 +113,11 @@ Examples:
 
                     # Check if process matches any of the program names
                     for program_name in program_names:
-                        if comm == program_name or (
-                            include_scripts and program_name in cmdline
-                        ):
+                        if comm == program_name or (include_scripts and program_name in cmdline):
                             # Check if process is running if requested
                             if only_running:
                                 try:
-                                    stat_content = read_proc_file(
-                                        client, f"/proc/{pid}/stat"
-                                    )
+                                    stat_content = read_proc_file(client, f"/proc/{pid}/stat")
                                     stat_data = stat_content.split()
                                     if len(stat_data) > 2 and stat_data[2] not in [
                                         "R",

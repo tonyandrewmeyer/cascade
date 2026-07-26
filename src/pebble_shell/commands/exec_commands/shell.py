@@ -26,9 +26,7 @@ class ShellCommand(Command):
     help = "Start an interactive shell on the remote system"
     category = "Remote Execution"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute shell command."""
         if handle_help_flag(self, args):
             return 0
@@ -52,11 +50,9 @@ class ShellCommand(Command):
                 # Start the shell with remaining args
                 shell_args = [shell_path, *args[1:]] if args else [shell_path]
                 exec_cmd = ExecCommand(self.shell)
-                return exec_cmd.execute_remote_command(
-                    client, shell_args, interactive=True
-                )
+                return exec_cmd.execute_remote_command(client, shell_args, interactive=True)
 
-            except (ops.pebble.ExecError, ops.pebble.APIError):  # noqa: PERF203  # needed for shell detection
+            except (ops.pebble.ExecError, ops.pebble.APIError):  # needed for shell detection
                 continue
 
         self.console.print("No suitable shell found on the remote system")

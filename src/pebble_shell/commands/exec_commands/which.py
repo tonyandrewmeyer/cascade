@@ -23,9 +23,7 @@ class WhichCommand(Command):
     help = "Find the location of a command on the remote system"
     category = "Remote Execution"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute which command."""
         if handle_help_flag(self, args):
             return 0

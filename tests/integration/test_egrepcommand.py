@@ -33,8 +33,7 @@ def test_help(command: pebble_shell.commands.EgrepCommand):
     output = capture.get()
     assert "egrep" in output
     assert any(
-        phrase in output.lower()
-        for phrase in ["extended", "regex", "grep", "search", "pattern"]
+        phrase in output.lower() for phrase in ["extended", "regex", "grep", "search", "pattern"]
     )
 
 
@@ -50,8 +49,7 @@ def test_execute_help(
     output = capture.get()
     assert "egrep" in output
     assert any(
-        phrase in output.lower()
-        for phrase in ["extended", "regex", "grep", "search", "pattern"]
+        phrase in output.lower() for phrase in ["extended", "regex", "grep", "search", "pattern"]
     )
 
 
@@ -283,9 +281,7 @@ def test_execute_files_with_matches_option(
 ):
     # Test files with matches option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-l", "root", "/etc/passwd", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["-l", "root", "/etc/passwd", "/etc/hosts"])
 
     # Should either succeed listing files or fail gracefully
     if result == 0:
@@ -362,9 +358,7 @@ def test_execute_context_before(
 ):
     # Test context lines before match
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-B", "2", "daemon", "/etc/passwd"]
-        )
+        result = command.execute(client=client, args=["-B", "2", "daemon", "/etc/passwd"])
 
     # Should either succeed with context or fail gracefully
     if result == 0:
@@ -402,9 +396,7 @@ def test_execute_context_both(
 ):
     # Test context lines both before and after
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-C", "1", "daemon", "/etc/passwd"]
-        )
+        result = command.execute(client=client, args=["-C", "1", "daemon", "/etc/passwd"])
 
     # Should either succeed with context or fail gracefully
     if result == 0:
@@ -421,9 +413,7 @@ def test_execute_multiple_files(
 ):
     # Test searching multiple files
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["localhost", "/etc/hosts", "/etc/hostname"]
-        )
+        result = command.execute(client=client, args=["localhost", "/etc/hosts", "/etc/hostname"])
 
     # Should either succeed with multiple files or fail gracefully
     if result == 0:
@@ -460,16 +450,12 @@ def test_execute_nonexistent_file(
 ):
     # Test with nonexistent file
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["pattern", "/nonexistent/file.txt"]
-        )
+        result = command.execute(client=client, args=["pattern", "/nonexistent/file.txt"])
 
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_permission_denied_file(

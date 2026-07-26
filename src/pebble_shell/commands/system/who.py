@@ -30,9 +30,7 @@ class WhoCommand(Command):
     help = "Show logged in users"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute who command with rich table output."""
         if handle_help_flag(self, args):
             return 0
@@ -80,9 +78,7 @@ class WhoCommand(Command):
                     indicator in cmdline.lower() for indicator in session_indicators
                 ):
                     username = (
-                        get_user_name_for_uid(client, uid) or f"uid{uid}"
-                        if uid
-                        else "unknown"
+                        get_user_name_for_uid(client, uid) or f"uid{uid}" if uid else "unknown"
                     )
                     tty = self._get_tty_info(client, pid)
                     session_id = f"{username}:{tty}:{cmdline[:20]}"
@@ -100,7 +96,7 @@ class WhoCommand(Command):
                             "-",
                             f"[green]{cmdline[:30]}[/green]",
                         )
-            except Exception:  # noqa: S112, PERF203  # needed for process scanning
+            except Exception:  # noqa: S112  # needed for process scanning
                 continue
 
         if not sessions:
@@ -115,9 +111,7 @@ class WhoCommand(Command):
         self.console.print(table.build())
         return 0
 
-    def _get_tty_info(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, pid: str
-    ) -> str:
+    def _get_tty_info(self, client: ops.pebble.Client | shimmer.PebbleCliClient, pid: str) -> str:
         """Get TTY information for a process."""
         try:
             return get_process_tty(client, pid)

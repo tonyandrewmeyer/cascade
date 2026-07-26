@@ -25,9 +25,7 @@ class UsleepCommand(Command):
     help = "Sleep for microseconds"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ) -> int:
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]) -> int:
         """Execute the usleep command."""
         if handle_help_flag(self, args):
             return 0
@@ -39,9 +37,7 @@ class UsleepCommand(Command):
         try:
             microseconds = int(args[0])
             if microseconds < 0:
-                self.console.print(
-                    get_theme().error_text("usleep: invalid time interval")
-                )
+                self.console.print(get_theme().error_text("usleep: invalid time interval"))
                 return 1
 
             time.sleep(microseconds / 1000000.0)

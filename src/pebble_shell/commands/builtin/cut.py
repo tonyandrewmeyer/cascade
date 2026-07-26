@@ -29,9 +29,7 @@ class CutCommand(Command):
     help = "Extract fields or characters from files"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute cut command."""
         # Handle help flag
         if handle_help_flag(self, args):
@@ -43,12 +41,8 @@ class CutCommand(Command):
             self.console.print("       cut -c characters <file> [file2...]")
             self.console.print("Examples:")
             self.console.print("  cut -f 1,3 file.txt        # Extract fields 1 and 3")
-            self.console.print(
-                "  cut -f 2-4 file.txt        # Extract fields 2 through 4"
-            )
-            self.console.print(
-                "  cut -d: -f 1 /etc/passwd   # Extract usernames from passwd"
-            )
+            self.console.print("  cut -f 2-4 file.txt        # Extract fields 2 through 4")
+            self.console.print("  cut -d: -f 1 /etc/passwd   # Extract usernames from passwd")
             self.console.print("  cut -c 1-5 file.txt        # Extract characters 1-5")
             return 1
 
@@ -64,9 +58,7 @@ class CutCommand(Command):
         delimiter = flags["d"]
 
         # Validate file arguments
-        if not validate_min_args(
-            self.shell, file_args, 1, "cut [-f|-c] <file> [file2...]"
-        ):
+        if not validate_min_args(self.shell, file_args, 1, "cut [-f|-c] <file> [file2...]"):
             return 1
 
         files = file_args

@@ -20,12 +20,12 @@ class NotifyCommand(Command):
     """Send a notice."""
 
     name = "notify"
-    help = "Send a notice. Usage: notify <type> <key> [--file <file.json|file.yaml>] [key=value...]"
+    help = (
+        "Send a notice. Usage: notify <type> <key> [--file <file.json|file.yaml>] [key=value...]"
+    )
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the notify command."""
         if handle_help_flag(self, args):
             return 0
@@ -36,9 +36,7 @@ class NotifyCommand(Command):
             )
             self.console.print("Examples:")
             self.console.print("  notify warning service-down --file data.json")
-            self.console.print(
-                "  notify info deployment-complete status=success version=1.2.3"
-            )
+            self.console.print("  notify info deployment-complete status=success version=1.2.3")
             self.console.print(
                 "  notify error db-connection host=localhost port=5432 error=timeout"
             )

@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, Any, Union
 import ops
 
 from ...utils.command_helpers import (
-    handle_help_flag,
     parse_flags,
 )
 from .._base import Command
@@ -28,9 +27,7 @@ class ExecCommand(Command):
     help = "Execute commands remotely"
     category = "Remote Execution"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute exec command."""
         if "--help" in args:
             self.show_help()

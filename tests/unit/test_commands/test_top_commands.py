@@ -3,8 +3,8 @@
 from unittest.mock import MagicMock, Mock, mock_open, patch
 
 import pytest
-
 from pebble_shell.commands.pebble_top import PebbleTopViewer, ProcessInfo, ProcReader
+
 from pebble_shell.utils.formatting import format_bytes, format_time
 
 
@@ -94,9 +94,7 @@ class TestProcReader:
         """Test getting memory information."""
         # Mock the client.pull to return the memory data
         mock_file = MagicMock()
-        mock_file.read.return_value = (
-            "MemTotal: 16777216 kB\nMemAvailable: 8388608 kB\n"
-        )
+        mock_file.read.return_value = "MemTotal: 16777216 kB\nMemAvailable: 8388608 kB\n"
         context_manager = MagicMock()
         context_manager.__enter__.return_value = mock_file
         context_manager.__exit__.return_value = None
@@ -161,9 +159,7 @@ class TestProcReader:
             elif path == "/proc/1/cmdline":
                 mock_file.read.return_value = cmdline_data
             elif path == "/proc/meminfo":
-                mock_file.read.return_value = (
-                    "MemTotal: 16777216 kB\nMemAvailable: 8388608 kB\n"
-                )
+                mock_file.read.return_value = "MemTotal: 16777216 kB\nMemAvailable: 8388608 kB\n"
             else:
                 # For any other path, simulate file not found
                 raise Exception("File not found")
@@ -315,9 +311,7 @@ class TestTopViewer:
         pebble_top._client.pull.side_effect = mock_pull_side_effect
 
         # Mock memory info
-        monkeypatch.setattr(
-            pebble_top.proc_reader, "get_memory_info", lambda: (16777216, 8388608)
-        )
+        monkeypatch.setattr(pebble_top.proc_reader, "get_memory_info", lambda: (16777216, 8388608))
 
         processes = []
 

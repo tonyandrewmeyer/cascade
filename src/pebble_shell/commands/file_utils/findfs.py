@@ -60,9 +60,7 @@ Examples:
                 uuid = search_spec[5:]
                 device = self._find_by_uuid(client, uuid)
             else:
-                self.console.print(
-                    "[red]" + "findfs: invalid argument format" + "[/red]"
-                )
+                self.console.print("[red]" + "findfs: invalid argument format" + "[/red]")
                 return 1
 
             if device:
@@ -142,7 +140,7 @@ Examples:
                     device_label = content.decode("utf-8").strip() if content else None
                     if device_label == label:
                         return True
-                except ops.pebble.PathError:  # noqa: PERF203  # needed for device probing
+                except ops.pebble.PathError:  # needed for device probing
                     continue
 
         except Exception:  # noqa: S110
@@ -166,7 +164,7 @@ Examples:
                     device_uuid = content.decode("utf-8").strip() if content else None
                     if device_uuid == uuid:
                         return True
-                except ops.pebble.PathError:  # noqa: PERF203  # needed for device probing
+                except ops.pebble.PathError:  # needed for device probing
                     continue
 
         except Exception:  # noqa: S110

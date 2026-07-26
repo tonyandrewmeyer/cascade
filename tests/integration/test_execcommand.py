@@ -72,9 +72,7 @@ def test_execute_basic_command(
     command: pebble_shell.commands.ExecCommand,
 ):
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["nonexistent-cmd", "echo", "test"]
-        )
+        result = command.execute(client=client, args=["nonexistent-cmd", "echo", "test"])
     # Command doesn't exist so this should fail.
     assert result == 1
     assert "Command failed:" in capture.get()

@@ -71,9 +71,7 @@ Examples:
 
         if len(positional_args) != 2:
             if not silent:
-                self.console.print(
-                    get_theme().error_text("cmp: missing operand after file1")
-                )
+                self.console.print(get_theme().error_text("cmp: missing operand after file1"))
                 self.console.print("Usage: cmp [OPTIONS] FILE1 FILE2")
             return 2
 

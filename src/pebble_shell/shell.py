@@ -106,9 +106,7 @@ class PebbleShell:
                 importlib.import_module(f".commands.{modname}", package=__package__)
             except ImportError as e:
                 # Log import errors but continue with other modules.
-                self.console.print(
-                    f"Warning: Could not import command module {modname}: {e}"
-                )
+                self.console.print(f"Warning: Could not import command module {modname}: {e}")
 
     def _setup_commands(self) -> None:
         """Set up available commands via auto-discovery."""
@@ -119,11 +117,9 @@ class PebbleShell:
         for command_name, command_class in Command.get_all_commands().items():
             try:
                 self.commands[command_name] = command_class(self)
-            except Exception as e:  # noqa: PERF203  # needed for command loading
+            except Exception as e:  # needed for command loading
                 # Log instantiation errors but continue with other commands.
-                self.console.print(
-                    f"Warning: Could not instantiate command {command_name}: {e}"
-                )
+                self.console.print(f"Warning: Could not instantiate command {command_name}: {e}")
 
         # Special handling for alias command.
         self.alias_command = self.commands["alias"]
@@ -201,9 +197,7 @@ class PebbleShell:
                 var_value = parts[1].strip()
                 parser = get_shell_parser()
                 parser.set_variable(var_name, var_value)
-                self.console.print(
-                    f"[cyan]{var_name}[/cyan]=[white]{var_value}[/white]"
-                )
+                self.console.print(f"[cyan]{var_name}[/cyan]=[white]{var_value}[/white]")
                 return True
 
         alias_expanded_command = self.alias_command.expand_alias(expanded_command)
@@ -218,9 +212,7 @@ class PebbleShell:
 
             if self.executor is None:
                 assert self.client is not None
-                self.executor = PipelineExecutor(
-                    self.commands, self.alias_command, self
-                )
+                self.executor = PipelineExecutor(self.commands, self.alias_command, self)
 
             start_time = time.perf_counter()
             result = self.executor.execute_pipeline(parsed_commands)
@@ -229,9 +221,7 @@ class PebbleShell:
             # Get last exit code from parser.
             self.last_exit_code = parser.get_exit_code()
             if elapsed >= 0.5:
-                self.console.print(
-                    f"[dim]Command executed in {elapsed:.3f} seconds[/dim]"
-                )
+                self.console.print(f"[dim]Command executed in {elapsed:.3f} seconds[/dim]")
             return result
 
         except Exception as e:
@@ -322,9 +312,7 @@ class PebbleShell:
                 if parsed_commands:
                     if self.executor is None:
                         assert self.client is not None
-                        self.executor = PipelineExecutor(
-                            self.commands, self.alias_command, self
-                        )
+                        self.executor = PipelineExecutor(self.commands, self.alias_command, self)
 
                     result = self.executor.execute_pipeline(parsed_commands)
                     if not result:  # Exit requested
@@ -477,14 +465,10 @@ class PebbleShell:
             )
         )
 
-        rich.print(
-            Panel(self._get_system_info(), title="System Info", style="bold magenta")
-        )
+        rich.print(Panel(self._get_system_info(), title="System Info", style="bold magenta"))
 
         assert self.client is not None
-        self.readline_wrapper = setup_readline_support(
-            self.commands, self.alias_command, self
-        )
+        self.readline_wrapper = setup_readline_support(self.commands, self.alias_command, self)
         self.executor = PipelineExecutor(self.commands, self.alias_command, self)
         parser = get_shell_parser()
         parser.update_pwd(self.current_directory)
@@ -583,7 +567,7 @@ def select_socket_interactively(sockets: list[str]) -> str | None:
                 return None
             else:
                 console.print("[red]Invalid choice. Please try again.[/red]")
-        except (ValueError, KeyboardInterrupt):  # noqa: PERF203  # needed for input handling
+        except (ValueError, KeyboardInterrupt):  # needed for input handling
             console.print("[red]Invalid input. Please enter a number.[/red]")
         except EOFError:
             return None
@@ -661,9 +645,7 @@ def select_juju_unit_container(units_containers: list[dict]) -> dict | None:
     )
 
     for i, uc in enumerate(units_containers, 1):
-        console.print(
-            f"  {i}. {uc['unit']} / {uc['container']} (app: {uc['application']})"
-        )
+        console.print(f"  {i}. {uc['unit']} / {uc['container']} (app: {uc['application']})")
 
     console.print(f"  {len(units_containers) + 1}. Exit")
 
@@ -678,7 +660,7 @@ def select_juju_unit_container(units_containers: list[dict]) -> dict | None:
                 return None
             else:
                 console.print("[red]Invalid choice. Please try again.[/red]")
-        except (ValueError, KeyboardInterrupt):  # noqa: PERF203  # needed for input handling
+        except (ValueError, KeyboardInterrupt):  # needed for input handling
             console.print("[red]Invalid input. Please enter a number.[/red]")
         except EOFError:
             return None
@@ -775,9 +757,7 @@ def main(
                         )
                     )
 
-                    client = create_juju_pebble_client(
-                        selected["unit"], selected["container"]
-                    )
+                    client = create_juju_pebble_client(selected["unit"], selected["container"])
                     shell = PebbleShell(client)
 
                     if not command_file:

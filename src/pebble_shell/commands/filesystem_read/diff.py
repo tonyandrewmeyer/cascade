@@ -21,9 +21,7 @@ class DiffCommand(Command):
     help = "Compare files line by line. Use -r for recursive directory comparison"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute diff command."""
         if handle_help_flag(self, args):
             return 0
@@ -33,9 +31,7 @@ class DiffCommand(Command):
             return 1
         flags, remaining_args = flags_result
 
-        if not validate_min_args(
-            self.shell, remaining_args, 2, "diff [-r] file1 file2"
-        ):
+        if not validate_min_args(self.shell, remaining_args, 2, "diff [-r] file1 file2"):
             return 1
 
         if len(remaining_args) > 2:

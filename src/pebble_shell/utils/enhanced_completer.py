@@ -19,9 +19,7 @@ if TYPE_CHECKING:
 class EnhancedCompleter:
     """Enhanced tab completion with remote file support and command-specific completion."""
 
-    def __init__(
-        self, shell: PebbleShell, commands: dict[str, Any], alias_command: AliasCommand
-    ):
+    def __init__(self, shell: PebbleShell, commands: dict[str, Any], alias_command: AliasCommand):
         self.shell = shell
         self.client = shell.client
         self.commands = commands
@@ -55,7 +53,7 @@ class EnhancedCompleter:
         self.fuzzy_threshold = 0.6
 
     def complete(self, text: str, state: int) -> str | None:
-        """Main completion function for readline.
+        """Return main completion function for readline.
 
         Args:
             text: Text to complete
@@ -99,20 +97,14 @@ class EnhancedCompleter:
         matches: list[str] = []
 
         matches = [cmd for cmd in self.command_names if cmd.startswith(text)]
-        matches.extend(
-            alias for alias in self.alias_command.aliases if alias.startswith(text)
-        )
+        matches.extend(alias for alias in self.alias_command.aliases if alias.startswith(text))
         # Fuzzy matches if no exact matches:
         if not matches and text:
-            matches.extend(
-                cmd for cmd in self.command_names if self._fuzzy_match(text, cmd)
-            )
+            matches.extend(cmd for cmd in self.command_names if self._fuzzy_match(text, cmd))
 
         return matches
 
-    def _complete_argument(
-        self, command: str, parts: list[str], text: str
-    ) -> list[str]:
+    def _complete_argument(self, command: str, parts: list[str], text: str) -> list[str]:
         """Complete command arguments based on command type."""
         current_arg = (text if text else parts[-1]) if len(parts) > 1 else text
 
@@ -230,9 +222,7 @@ class EnhancedCompleter:
             return True
 
         # Simple fuzzy matching using difflib:
-        similarity = difflib.SequenceMatcher(
-            None, pattern.lower(), text.lower()
-        ).ratio()
+        similarity = difflib.SequenceMatcher(None, pattern.lower(), text.lower()).ratio()
         return similarity >= self.fuzzy_threshold
 
     def get_completion_hints(self, command: str) -> list[str]:

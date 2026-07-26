@@ -35,7 +35,7 @@ dev = [
     "pytest>=7.0.0",
     "pytest-cov>=4.0.0",
     "pytest-mock>=3.10.0",
-    "ruff>=0.1.0",
+    "ruff>=0.16.0",
     "pyright>=1.1.0",
     "tox>=4.0.0",
     "pre-commit>=3.0.0",
@@ -60,17 +60,6 @@ include = [
     "/README.md",
     "/pyproject.toml",
 ]
-
-[tool.ruff]
-line-length = 88
-target-version = "py310"
-src = ["src", "tests"]
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-line-ending = "auto"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -115,87 +104,62 @@ dev = [
     "zizmor>=1.28.0",
 ]
 
+[tool.ruff]
+line-length = 99
+target-version = "py310"
+
 [tool.ruff.lint]
 select = [
-    # Pyflakes
     "F",
-    # Pycodestyle
     "E",
     "W",
-    # isort
-    "I001",
-    # pep8-naming
+    "I",
     "N",
-    # flake8-builtins
     "A",
-    # pyupgrade
     "UP",
-    # flake8-2020
     "YTT",
-    # flake8-bandit
     "S",
-    # flake8-bugbear
     "B",
-    # flake8-simplify
     "SIM",
-    # Ruff specific
     "RUF",
-    # Perflint
     "PERF",
-    # pyflakes-docstrings
     "D",
-    # flake8-future-annotations
     "FA",
-    # flake8-type-checking
     "TC",
 ]
 ignore = [
-    # Use a single `with` statement with multiple contexts instead of nested `with` statements
-    "SIM117",
-
-    # Missing docstring in magic method
     "D105",
-    # Missing docstring in `__init__`
     "D107",
-
-    # Manual dict comprehension.
+    "D203",
+    "D204",
+    "D213",
+    "D215",
+    "D400",
+    "D404",
+    "D406",
+    "D407",
+    "D408",
+    "D409",
+    "D413",
+    "SIM117",
     "PERF403",
-
-    # Use of assert detected (we use this to make the static type checkers happy).
     "S101",
-
-    "E501", # line too long (handled by formatter)
-
-    "PLR0913", # too many arguments
-    "PLR2004", # magic value used in comparison
+    "E501",
+    "PLR0913",
+    "PLR2004",
+    # Mirrors the ops.pebble exception names.
+    "A004",
+    # Per-item try/except is deliberate: one bad line/protocol must not
+    # abort the whole listing.
+    "PERF203",
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = [
-    # All documentation linting.
-    "D",
+"**/tests/**" = ["S101", "S105", "S106", "S108", "PLR2004", "ARG", "SLF001", "N802", "N803", "N806", "D"]
+"scripts/*" = ["D", "S108"]
 
-    # Hard-coded password string.
-    "S105",
-    # Hard-coded password function argument.
-    "S106",
-
-    # Use of assert detected (common in tests).
-    "S101",
-
-    # "Useless" expression.
-    "B018"
-]
-"scripts/*" = [
-    # All documentation linting.
-    "D",
-
-    # Probable insecure usage of temporary file (demo scripts).
-    "S108",
-]
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
-
-[tool.ruff.lint.flake8-builtins]
-builtins-ignorelist = ["id", "min", "map", "range", "type", "TimeoutError", "ConnectionError", "Warning", "input", "format"]
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

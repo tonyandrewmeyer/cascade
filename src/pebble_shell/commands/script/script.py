@@ -152,9 +152,7 @@ Examples:
         # Check if files exist for append mode
         if append_mode:
             existing_output = safe_read_file(client, output_file)
-            existing_timing = (
-                safe_read_file(client, timing_file) if timing_file else None
-            )
+            existing_timing = safe_read_file(client, timing_file) if timing_file else None
 
             if existing_output is not None and not quiet:
                 self.console.print(f"Appending to existing file {output_file}")
@@ -195,9 +193,7 @@ Examples:
         # Generate timing content
         timing_output = ""
         if timing_file:
-            timing_output = self._format_timing_output(
-                timing_data, timing_format, start_time
-            )
+            timing_output = self._format_timing_output(timing_data, timing_format, start_time)
 
         # Show what would be written (since we're in read-only mode)
         mode = "append to" if append_mode else "write to"
@@ -205,9 +201,7 @@ Examples:
         self.console.print(f"[yellow]script: would {mode} {output_file}:[/yellow]")
         if len(session_output) > 1000:
             self.console.print(f"[dim]{session_output[:500]}...[/dim]")
-            self.console.print(
-                f"[dim]...(truncated, total {len(session_output)} bytes)[/dim]"
-            )
+            self.console.print(f"[dim]...(truncated, total {len(session_output)} bytes)[/dim]")
         else:
             self.console.print(f"[dim]{session_output}[/dim]")
 
@@ -242,9 +236,7 @@ Examples:
         current_time = time.time()
 
         # Record command input
-        session_data.append(
-            {"timestamp": current_time, "type": "input", "data": f"{command}\r\n"}
-        )
+        session_data.append({"timestamp": current_time, "type": "input", "data": f"{command}\r\n"})
         timing_data.append(
             {
                 "timestamp": current_time - start_time,
@@ -259,9 +251,7 @@ Examples:
             output += "This would be the actual command output in a real session.\n"
 
             current_time = time.time()
-            session_data.append(
-                {"timestamp": current_time, "type": "output", "data": output}
-            )
+            session_data.append({"timestamp": current_time, "type": "output", "data": output})
             timing_data.append(
                 {
                     "timestamp": current_time - start_time,
@@ -294,9 +284,7 @@ Examples:
     ) -> int:
         """Record an interactive session simulation."""
         if not quiet:
-            self.console.print(
-                "[yellow]script: simulating interactive session[/yellow]"
-            )
+            self.console.print("[yellow]script: simulating interactive session[/yellow]")
             self.console.print(
                 "[dim]In a real implementation, this would start an interactive shell[/dim]"
             )

@@ -74,10 +74,7 @@ def test_execute_delete_nonexistent_group(
     # Should fail with group not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["not found", "does not exist", "no such group", "error"]
-    )
+    assert any(msg in output for msg in ["not found", "does not exist", "no such group", "error"])
 
 
 def test_execute_delete_system_group(
@@ -126,9 +123,7 @@ def test_execute_only_if_empty_option(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not empty", "members", "not found", "error"]
-        )
+        assert any(msg in output for msg in ["not empty", "members", "not found", "error"])
 
 
 def test_execute_system_option(
@@ -181,10 +176,7 @@ def test_execute_remove_user_from_group(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["not found", "user", "group", "not member", "error"]
-        )
+        assert any(msg in output for msg in ["not found", "user", "group", "not member", "error"])
 
 
 def test_execute_invalid_groupname(
@@ -213,8 +205,7 @@ def test_execute_root_group_protection(
     assert result == 1
     output = capture.get()
     assert any(
-        msg in output
-        for msg in ["protect", "cannot", "root", "system", "not found", "error"]
+        msg in output for msg in ["protect", "cannot", "root", "system", "not found", "error"]
     )
 
 
@@ -235,8 +226,7 @@ def test_execute_group_with_members(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["members", "not empty", "users", "not found", "error"]
+            msg in output for msg in ["members", "not empty", "users", "not found", "error"]
         )
 
 
@@ -256,9 +246,7 @@ def test_execute_primary_group_of_user(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["primary", "group", "user", "not found", "error"]
-        )
+        assert any(msg in output for msg in ["primary", "group", "user", "not found", "error"])
 
 
 def test_execute_nonexistent_user(
@@ -272,9 +260,7 @@ def test_execute_nonexistent_user(
     # Should fail with user not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["user", "not found", "does not exist", "error"]
-    )
+    assert any(msg in output for msg in ["user", "not found", "does not exist", "error"])
 
 
 def test_execute_nonexistent_target_group(
@@ -288,9 +274,7 @@ def test_execute_nonexistent_target_group(
     # Should fail with group not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["group", "not found", "does not exist", "error"]
-    )
+    assert any(msg in output for msg in ["group", "not found", "does not exist", "error"])
 
 
 def test_execute_user_not_member(
@@ -309,9 +293,7 @@ def test_execute_user_not_member(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not member", "not in group", "group", "error"]
-        )
+        assert any(msg in output for msg in ["not member", "not in group", "group", "error"])
 
 
 def test_execute_permission_denied(
@@ -331,10 +313,7 @@ def test_execute_permission_denied(
         # Should fail if not root
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["permission", "denied", "root", "not found", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "root", "not found", "error"])
 
 
 def test_execute_invalid_option(
@@ -357,9 +336,7 @@ def test_execute_conflicting_options(
 ):
     # Test conflicting options
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--system", "--only-if-empty", "testgroup"]
-        )
+        result = command.execute(client=client, args=["--system", "--only-if-empty", "testgroup"])
 
     # Should either handle conflicts or fail appropriately
     if result == 0:

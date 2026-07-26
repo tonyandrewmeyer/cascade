@@ -20,20 +20,14 @@ class SignalCommand(Command):
     help = "Send a signal to services"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the signal command."""
         if handle_help_flag(self, args):
             return 0
 
         if len(args) < 2:
-            self.console.print(
-                "Usage: signal <signal> <service-name> [service-name2 ...]"
-            )
-            self.console.print(
-                "Common signals: SIGTERM, SIGKILL, SIGHUP, SIGUSR1, SIGUSR2"
-            )
+            self.console.print("Usage: signal <signal> <service-name> [service-name2 ...]")
+            self.console.print("Common signals: SIGTERM, SIGKILL, SIGHUP, SIGUSR1, SIGUSR2")
             return 1
 
         signal_name = args[0]

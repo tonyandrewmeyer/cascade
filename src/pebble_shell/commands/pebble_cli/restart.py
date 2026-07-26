@@ -20,16 +20,12 @@ class RestartCommand(Command):
     help = "Restart one or more services"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the restart command."""
         if handle_help_flag(self, args):
             return 0
 
-        if validate_min_args(
-            self.shell, args, 1, "restart <service-name> [service-name2 ...]"
-        ):
+        if validate_min_args(self.shell, args, 1, "restart <service-name> [service-name2 ...]"):
             return 1
 
         try:

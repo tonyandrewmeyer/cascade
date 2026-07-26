@@ -29,9 +29,7 @@ class DateCommand(Command):
     help = "Show the current date and time. Usage: date [+FORMAT]"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the date command."""
         if handle_help_flag(self, args):
             return 0

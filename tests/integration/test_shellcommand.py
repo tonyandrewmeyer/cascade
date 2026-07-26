@@ -72,9 +72,7 @@ def test_execute_no_args_interactive(
         # Should fail if interactive shell not available
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["interactive not available", "usage", "shell"]
-        )
+        assert any(msg in output for msg in ["interactive not available", "usage", "shell"])
 
 
 def test_execute_simple_command(
@@ -146,9 +144,7 @@ def test_execute_command_with_variables(
 ):
     # Test command with environment variables
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-c", "TEST_VAR=hello && echo $TEST_VAR"]
-        )
+        result = command.execute(client=client, args=["-c", "TEST_VAR=hello && echo $TEST_VAR"])
 
     # Should succeed with variable usage
     assert result == 0
@@ -180,9 +176,7 @@ def test_execute_command_with_loops(
 ):
     # Test command with loops
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-c", "for i in 1 2 3; do echo $i; done"]
-        )
+        result = command.execute(client=client, args=["-c", "for i in 1 2 3; do echo $i; done"])
 
     # Should succeed with loop
     assert result == 0
@@ -202,9 +196,7 @@ def test_execute_invalid_command(
     # Should fail with command not found
     assert result != 0
     output = capture.get()
-    assert any(
-        msg in output for msg in ["command not found", "not found", "No such file"]
-    )
+    assert any(msg in output for msg in ["command not found", "not found", "No such file"])
 
 
 def test_execute_empty_command(
@@ -243,9 +235,7 @@ def test_execute_command_with_spaces(
 ):
     # Test command with spaces in arguments
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-c", "echo 'hello world with spaces'"]
-        )
+        result = command.execute(client=client, args=["-c", "echo 'hello world with spaces'"])
 
     # Should succeed with spaced arguments
     assert result == 0
@@ -297,8 +287,7 @@ def test_execute_interactive_mode(
         output = capture.get()
         # Should indicate interactive mode
         assert (
-            any(msg in output for msg in ["interactive", "shell", "$"])
-            or len(output.strip()) >= 0
+            any(msg in output for msg in ["interactive", "shell", "$"]) or len(output.strip()) >= 0
         )
     else:
         # Should fail if interactive mode not available
@@ -488,9 +477,7 @@ def test_execute_signal_handling(
 ):
     # Test signal handling
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-c", "trap 'echo caught' INT && echo done"]
-        )
+        result = command.execute(client=client, args=["-c", "trap 'echo caught' INT && echo done"])
 
     # Should succeed with signal trap
     assert result == 0
@@ -523,9 +510,7 @@ def test_execute_aliases(
 ):
     # Test shell aliases
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-c", "alias ll='ls -l' && echo alias_set"]
-        )
+        result = command.execute(client=client, args=["-c", "alias ll='ls -l' && echo alias_set"])
 
     # Should succeed with alias definition
     assert result == 0
@@ -633,9 +618,7 @@ def test_execute_error_handling(
 ):
     # Test error handling
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-c", "false || echo error_handled"]
-        )
+        result = command.execute(client=client, args=["-c", "false || echo error_handled"])
 
     # Should succeed with error handling
     assert result == 0
@@ -689,9 +672,7 @@ def test_execute_shell_options(
 ):
     # Test shell options
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-c", "set -e && echo strict_mode"]
-        )
+        result = command.execute(client=client, args=["-c", "set -e && echo strict_mode"])
 
     # Should succeed with shell options
     assert result == 0

@@ -110,7 +110,7 @@ Examples:
                         else:
                             self.console.print(f"{param_name} = {value}")
                         found_any = True
-                except Exception:  # noqa: S112, PERF203  # needed for system parameter scanning
+                except Exception:  # noqa: S112  # needed for system parameter scanning
                     # Broad exception needed when scanning system parameters
                     continue
 
@@ -151,14 +151,10 @@ Examples:
                         else:
                             self.console.print(f"{param} = {value}")
                     else:
-                        self.console.print(
-                            f"[red]sysctl: cannot read parameter '{param}'[/red]"
-                        )
+                        self.console.print(f"[red]sysctl: cannot read parameter '{param}'[/red]")
                         exit_code = 1
                 except Exception:
-                    self.console.print(
-                        f"[red]sysctl: cannot read parameter '{param}'[/red]"
-                    )
+                    self.console.print(f"[red]sysctl: cannot read parameter '{param}'[/red]")
                     exit_code = 1
             else:
                 # Try to convert parameter name to proc path
@@ -172,14 +168,10 @@ Examples:
                         else:
                             self.console.print(f"{param} = {value}")
                     else:
-                        self.console.print(
-                            f"[red]sysctl: cannot read parameter '{param}'[/red]"
-                        )
+                        self.console.print(f"[red]sysctl: cannot read parameter '{param}'[/red]")
                         exit_code = 1
                 except Exception:
-                    self.console.print(
-                        f"[red]sysctl: unknown parameter '{param}'[/red]"
-                    )
+                    self.console.print(f"[red]sysctl: unknown parameter '{param}'[/red]")
                     exit_code = 1
 
         return exit_code

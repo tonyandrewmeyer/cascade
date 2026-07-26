@@ -181,9 +181,7 @@ def test_execute_negative_microseconds(
     # Should fail with negative value error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["negative", "invalid", "must be positive", "error"]
-    )
+    assert any(msg in output for msg in ["negative", "invalid", "must be positive", "error"])
 
 
 def test_execute_invalid_number_format(
@@ -198,8 +196,7 @@ def test_execute_invalid_number_format(
     assert result == 1
     output = capture.get()
     assert any(
-        msg in output
-        for msg in ["invalid number", "not a number", "invalid argument", "error"]
+        msg in output for msg in ["invalid number", "not a number", "invalid argument", "error"]
     )
 
 
@@ -220,9 +217,7 @@ def test_execute_floating_point_microseconds(
         # Should fail if floating point not supported
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["invalid format", "integer required", "error"]
-        )
+        assert any(msg in output for msg in ["invalid format", "integer required", "error"])
 
 
 def test_execute_very_large_microseconds(
@@ -242,9 +237,7 @@ def test_execute_very_large_microseconds(
         # Should fail if value too large
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["too large", "value too big", "overflow", "error"]
-        )
+        assert any(msg in output for msg in ["too large", "value too big", "overflow", "error"])
 
 
 def test_execute_empty_argument(
@@ -258,9 +251,7 @@ def test_execute_empty_argument(
     # Should fail with empty argument error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["empty argument", "invalid number", "usage", "error"]
-    )
+    assert any(msg in output for msg in ["empty argument", "invalid number", "usage", "error"])
 
 
 def test_execute_multiple_arguments(
@@ -352,9 +343,7 @@ def test_execute_leading_zeros(
     # Test with leading zeros
     start_time = time.time()
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["000001000"]
-        )  # 1000 with leading zeros
+        result = command.execute(client=client, args=["000001000"])  # 1000 with leading zeros
     end_time = time.time()
 
     # Should succeed parsing number with leading zeros

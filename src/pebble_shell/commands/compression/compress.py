@@ -59,9 +59,7 @@ class CompressCommand(Command):
         force = flags.get("f", False)
         verbose = flags.get("v", False)
 
-        if not validate_min_args(
-            self.shell, positional_args, 1, "compress: missing file operand"
-        ):
+        if not validate_min_args(self.shell, positional_args, 1, "compress: missing file operand"):
             return 1
 
         # Show note about using gzip fallback
@@ -73,9 +71,7 @@ class CompressCommand(Command):
         # Process each file
         for file_path in positional_args:
             # Convert relative paths to absolute paths
-            file_path = resolve_path(
-                self.shell.current_directory, file_path, self.shell.home_dir
-            )
+            file_path = resolve_path(self.shell.current_directory, file_path, self.shell.home_dir)
 
             try:
                 if decompress:
@@ -85,7 +81,7 @@ class CompressCommand(Command):
 
                 if not success:
                     return 1
-            except CompressionError as e:  # noqa: PERF203
+            except CompressionError as e:
                 self.console.print(f"[red]compress: {e}[/red]")
                 return 1
 
@@ -158,11 +154,7 @@ EXAMPLES:
             if verbose:
                 original_size = len(file_content)
                 compressed_size = len(compressed_content)
-                ratio = (
-                    (1 - compressed_size / original_size) * 100
-                    if original_size > 0
-                    else 0
-                )
+                ratio = (1 - compressed_size / original_size) * 100 if original_size > 0 else 0
                 self.console.print(
                     f"[green]{file_path}: {original_size} -> {compressed_size} bytes ({ratio:.1f}% reduction)[/green]"
                 )
@@ -186,9 +178,7 @@ EXAMPLES:
         try:
             # Check if file has .Z extension
             if not file_path.endswith(".Z"):
-                raise CompressionError(
-                    f"File {file_path} doesn't appear to be a compress file"
-                )
+                raise CompressionError(f"File {file_path} doesn't appear to be a compress file")
 
             output_path = file_path[:-2]  # Remove .Z extension
 
@@ -223,9 +213,7 @@ EXAMPLES:
                 compressed_size = len(compressed_content)
                 decompressed_size = len(decompressed_content)
                 ratio = (
-                    (decompressed_size / compressed_size - 1) * 100
-                    if compressed_size > 0
-                    else 0
+                    (decompressed_size / compressed_size - 1) * 100 if compressed_size > 0 else 0
                 )
                 self.console.print(
                     f"[green]{file_path}: {compressed_size} -> {decompressed_size} bytes ({ratio:.1f}% expansion)[/green]"

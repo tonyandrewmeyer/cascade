@@ -25,9 +25,7 @@ class NetworkCommand(Command):
     help = "Show network interface statistics"
     category = "Network"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute netstat-like command."""
         if handle_help_flag(self, args):
             return 0
@@ -44,12 +42,8 @@ class NetworkCommand(Command):
         for interface_data in interfaces:
             rx_bytes = interface_data["rx_bytes"]
             tx_bytes = interface_data["tx_bytes"]
-            assert isinstance(rx_bytes, int), (
-                f"rx_bytes should be int, got {type(rx_bytes)}"
-            )
-            assert isinstance(tx_bytes, int), (
-                f"tx_bytes should be int, got {type(tx_bytes)}"
-            )
+            assert isinstance(rx_bytes, int), f"rx_bytes should be int, got {type(rx_bytes)}"
+            assert isinstance(tx_bytes, int), f"tx_bytes should be int, got {type(tx_bytes)}"
 
             table.add_row(
                 interface_data["interface"],  # Theme handled by column style

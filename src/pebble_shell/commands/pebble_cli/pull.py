@@ -16,19 +16,17 @@ class PullCommand(Command):
     """Pull files and directories from the remote container."""
 
     name = "pull"
-    help = "Pull files and directories from the remote container. Usage: pebble pull <source> <dest>"
+    help = (
+        "Pull files and directories from the remote container. Usage: pebble pull <source> <dest>"
+    )
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ) -> int:
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]) -> int:
         """Execute the pull command."""
         if handle_help_flag(self, args):
             return 0
 
-        if not validate_min_args(
-            self.shell, args, 2, "Usage: pebble pull <source> <dest>"
-        ):
+        if not validate_min_args(self.shell, args, 2, "Usage: pebble pull <source> <dest>"):
             return 1
 
         source = args[0]

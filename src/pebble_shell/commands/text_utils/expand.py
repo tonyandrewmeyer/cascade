@@ -125,9 +125,7 @@ class ExpandCommand(Command):
 
         return "".join(result)
 
-    def _expand_with_stops(
-        self, content: str, stops: list[int], initial_only: bool
-    ) -> str:
+    def _expand_with_stops(self, content: str, stops: list[int], initial_only: bool) -> str:
         """Expand tabs using custom tab stops."""
         lines = content.splitlines(keepends=True)
         result = []

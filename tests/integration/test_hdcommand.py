@@ -95,9 +95,7 @@ def test_execute_single_file_hexdump(
         # Should fail if file not accessible
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["No such file", "permission denied", "error"]
-        )
+        assert any(msg in output for msg in ["No such file", "permission denied", "error"])
 
 
 def test_execute_nonexistent_file(
@@ -147,9 +145,7 @@ def test_execute_binary_file(
         # Should contain hex values
         assert any(char in "0123456789abcdef" for char in output.lower())
         # Should contain address information
-        assert any(
-            char.isdigit() for char in output[:20]
-        )  # Check first 20 chars for addresses
+        assert any(char.isdigit() for char in output[:20])  # Check first 20 chars for addresses
     else:
         assert result == 1
 
@@ -405,9 +401,7 @@ def test_execute_permission_denied_file(
     # Should fail with permission error
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission denied", "cannot open", "error"]
-        )
+        assert any(msg in output for msg in ["permission denied", "cannot open", "error"])
     else:
         # May succeed if file is readable
         assert result == 0
@@ -639,9 +633,7 @@ def test_execute_combined_options(
 ):
     # Test combining multiple options
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-C", "-s", "10", "-n", "50", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["-C", "-s", "10", "-n", "50", "/etc/hosts"])
 
     # Should either succeed with combined options or fail gracefully
     if result == 0:

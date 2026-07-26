@@ -33,8 +33,7 @@ def test_help(command: pebble_shell.commands.DumpkmapCommand):
         command.show_help()
     output = capture.get()
     assert any(
-        phrase in output.lower()
-        for phrase in ["dump", "keymap", "kernel", "keyboard", "map"]
+        phrase in output.lower() for phrase in ["dump", "keymap", "kernel", "keyboard", "map"]
     )
 
 
@@ -48,9 +47,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["dump", "keymap", "kernel", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["dump", "keymap", "kernel", "usage"])
 
 
 def test_execute_dump_keymap(
@@ -75,8 +72,7 @@ def test_execute_dump_keymap(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["permission", "denied", "keymap", "error", "not found"]
+            msg in output for msg in ["permission", "denied", "keymap", "error", "not found"]
         )
 
 
@@ -119,9 +115,7 @@ def test_execute_console_keymap_access(
         # Should fail if console unavailable
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["console", "permission", "denied", "error"]
-        )
+        assert any(msg in output for msg in ["console", "permission", "denied", "error"])
 
 
 def test_execute_virtual_console_environment(
@@ -197,9 +191,7 @@ def test_execute_container_environment(
         # Should fail in restricted container
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["container", "console", "permission", "error"]
-        )
+        assert any(msg in output for msg in ["container", "console", "permission", "error"])
 
 
 def test_execute_invalid_option(
@@ -233,9 +225,7 @@ def test_execute_unexpected_arguments(
         # Should fail with argument error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["argument", "unexpected", "usage", "error"]
-        )
+        assert any(msg in output for msg in ["argument", "unexpected", "usage", "error"])
 
 
 def test_execute_keymap_format_validation(
@@ -386,9 +376,7 @@ def test_execute_error_recovery(
         # Should fail with meaningful error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["error", "keymap", "console", "permission"]
-        )
+        assert any(msg in output for msg in ["error", "keymap", "console", "permission"])
 
 
 def test_execute_signal_handling(

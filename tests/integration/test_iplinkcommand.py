@@ -32,8 +32,7 @@ def test_help(command: pebble_shell.commands.IplinkCommand):
         command.show_help()
     output = capture.get()
     assert any(
-        phrase in output.lower()
-        for phrase in ["ip", "link", "interface", "network", "device"]
+        phrase in output.lower() for phrase in ["ip", "link", "interface", "network", "device"]
     )
 
 
@@ -47,9 +46,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["ip", "link", "interface", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["ip", "link", "interface", "usage"])
 
 
 def test_execute_show_all_links(
@@ -71,10 +68,7 @@ def test_execute_show_all_links(
             assert len(lines) >= 1
             # Should contain network interface indicators
             interface_found = any(
-                any(
-                    indicator in line
-                    for indicator in [":", "mtu", "state", "lo", "eth", "wlan"]
-                )
+                any(indicator in line for indicator in [":", "mtu", "state", "lo", "eth", "wlan"])
                 for line in lines
                 if line.strip()
             )
@@ -163,10 +157,7 @@ def test_execute_set_interface_up(
         # Should fail if not root
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["permission", "denied", "root", "error", "not found"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "root", "error", "not found"])
 
 
 def test_execute_set_interface_down(
@@ -211,9 +202,7 @@ def test_execute_set_mac_address(
 ):
     # Test setting MAC address (should require privileges)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["set", "lo", "address", "00:11:22:33:44:55"]
-        )
+        result = command.execute(client=client, args=["set", "lo", "address", "00:11:22:33:44:55"])
 
     # Should either succeed or fail with permission error
     if result == 0:
@@ -297,9 +286,7 @@ def test_execute_invalid_mac_address(
 ):
     # Test with invalid MAC address format
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["set", "lo", "address", "invalid:mac"]
-        )
+        result = command.execute(client=client, args=["set", "lo", "address", "invalid:mac"])
 
     # Should fail with invalid address error
     assert result == 1
@@ -337,8 +324,7 @@ def test_execute_link_state_detection(
         if len(output) > 0:
             # Should contain state information
             has_state = any(
-                state in output.upper()
-                for state in ["UP", "DOWN", "UNKNOWN", "LOWER_UP"]
+                state in output.upper() for state in ["UP", "DOWN", "UNKNOWN", "LOWER_UP"]
             )
             if has_state:
                 assert has_state
@@ -520,9 +506,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["invalid", "unknown", "error", "usage", "command"]
-    )
+    assert any(msg in output for msg in ["invalid", "unknown", "error", "usage", "command"])
 
 
 def test_execute_signal_handling(

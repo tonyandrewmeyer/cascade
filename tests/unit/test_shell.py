@@ -15,18 +15,14 @@ class TestShell:
         mock_client.pull.side_effect = [
             Mock(
                 __enter__=Mock(
-                    return_value=Mock(
-                        read=Mock(return_value="Uid:\t1000\t1000\t1000\t1000")
-                    )
+                    return_value=Mock(read=Mock(return_value="Uid:\t1000\t1000\t1000\t1000"))
                 ),
                 __exit__=Mock(),
             ),
             Mock(
                 __enter__=Mock(
                     return_value=Mock(
-                        read=Mock(
-                            return_value="user:x:1000:1000:User:/home/user:/bin/bash"
-                        )
+                        read=Mock(return_value="user:x:1000:1000:User:/home/user:/bin/bash")
                     )
                 ),
                 __exit__=Mock(),
@@ -45,16 +41,12 @@ class TestShell:
         # Mock the file operations for getting remote user
         mock_client.pull.side_effect = [
             Mock(
-                __enter__=Mock(
-                    return_value=Mock(read=Mock(return_value="Uid:\t0\t0\t0\t0"))
-                ),
+                __enter__=Mock(return_value=Mock(read=Mock(return_value="Uid:\t0\t0\t0\t0"))),
                 __exit__=Mock(),
             ),
             Mock(
                 __enter__=Mock(
-                    return_value=Mock(
-                        read=Mock(return_value="root:x:0:0:root:/root:/bin/bash")
-                    )
+                    return_value=Mock(read=Mock(return_value="root:x:0:0:root:/root:/bin/bash"))
                 ),
                 __exit__=Mock(),
             ),
@@ -69,16 +61,12 @@ class TestShell:
         # Mock the file operations for getting remote user
         mock_client.pull.side_effect = [
             Mock(
-                __enter__=Mock(
-                    return_value=Mock(read=Mock(return_value="Uid:\t0\t0\t0\t0"))
-                ),
+                __enter__=Mock(return_value=Mock(read=Mock(return_value="Uid:\t0\t0\t0\t0"))),
                 __exit__=Mock(),
             ),
             Mock(
                 __enter__=Mock(
-                    return_value=Mock(
-                        read=Mock(return_value="root:x:0:0:root:/root:/bin/bash")
-                    )
+                    return_value=Mock(read=Mock(return_value="root:x:0:0:root:/root:/bin/bash"))
                 ),
                 __exit__=Mock(),
             ),

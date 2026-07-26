@@ -100,17 +100,13 @@ Examples:
             # Read patch file
             patch_content = safe_read_file(client, patch_file)
             if patch_content is None:
-                self.console.print(
-                    f"[red]patch: cannot read patch file '{patch_file}'[/red]"
-                )
+                self.console.print(f"[red]patch: cannot read patch file '{patch_file}'[/red]")
                 return 1
 
             # Read target file
             original_content = safe_read_file(client, target_file)
             if original_content is None:
-                self.console.print(
-                    f"[red]patch: cannot read target file '{target_file}'[/red]"
-                )
+                self.console.print(f"[red]patch: cannot read target file '{target_file}'[/red]")
                 return 1
 
             # Apply patch
@@ -120,9 +116,7 @@ Examples:
                 )
 
                 if dry_run:
-                    self.console.print(
-                        f"[green]patch: would patch '{target_file}'[/green]"
-                    )
+                    self.console.print(f"[green]patch: would patch '{target_file}'[/green]")
                     return 0
 
                 # Write result
@@ -130,9 +124,7 @@ Examples:
                 with client.push(output_path, encoding="utf-8") as f:
                     f.write(patched_content)
 
-                self.console.print(
-                    f"[green]patch: successfully patched '{output_path}'[/green]"
-                )
+                self.console.print(f"[green]patch: successfully patched '{output_path}'[/green]")
                 return 0
 
             except Exception as e:
@@ -163,9 +155,7 @@ Examples:
 
         return "".join(lines)
 
-    def _parse_unified_diff(
-        self, patch_lines: list[str], strip_count: int
-    ) -> list[dict]:
+    def _parse_unified_diff(self, patch_lines: list[str], strip_count: int) -> list[dict]:
         """Parse unified diff format into hunks."""
         hunks = []
         current_hunk = None

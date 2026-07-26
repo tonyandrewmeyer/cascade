@@ -52,9 +52,7 @@ Examples:
             try:
                 route_info = read_proc_file(client, "/proc/net/route")
             except ProcReadError:
-                self.console.print(
-                    "[red]iproute: cannot read routing information[/red]"
-                )
+                self.console.print("[red]iproute: cannot read routing information[/red]")
                 return 1
 
             lines = route_info.strip().split("\n")
@@ -82,14 +80,10 @@ Examples:
                     cidr = self._mask_to_cidr(mask_ip)
 
                     if dest_ip == "0.0.0.0" and mask_ip == "0.0.0.0":  # noqa: S104 # legitimate use of 0.0.0.0 for default route
-                        self.console.print(
-                            f"default via {gw_ip} dev {iface} metric {metric}"
-                        )
+                        self.console.print(f"default via {gw_ip} dev {iface} metric {metric}")
                     else:
                         if cidr == 32:
-                            self.console.print(
-                                f"{dest_ip} dev {iface} scope link metric {metric}"
-                            )
+                            self.console.print(f"{dest_ip} dev {iface} scope link metric {metric}")
                         else:
                             self.console.print(
                                 f"{dest_ip}/{cidr} dev {iface} scope link metric {metric}"

@@ -355,7 +355,7 @@ eth0	0000000A	00000000	0001	0	0	0	0000FFFF	0	0	0
         mock_client.pull.assert_called_once_with("/proc/net/route")
         # Verify shell.console.print was called with a Panel
         command.shell.console.print.assert_called_once()
-        args, kwargs = command.shell.console.print.call_args
+        args, _kwargs = command.shell.console.print.call_args
         assert isinstance(args[0], Panel)
         # Check the Panel's title (now themed)
         assert args[0].title == "[magenta]Kernel IP Routing Table[/magenta]"

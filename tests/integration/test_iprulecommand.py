@@ -31,10 +31,7 @@ def test_help(command: pebble_shell.commands.IpruleCommand):
     with command.shell.console.capture() as capture:
         command.show_help()
     output = capture.get()
-    assert any(
-        phrase in output.lower()
-        for phrase in ["ip", "rule", "routing", "policy", "table"]
-    )
+    assert any(phrase in output.lower() for phrase in ["ip", "rule", "routing", "policy", "table"])
 
 
 @pytest.mark.parametrize("args", [["-h"], ["--help"]])
@@ -47,9 +44,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["ip", "rule", "routing", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["ip", "rule", "routing", "usage"])
 
 
 def test_execute_show_all_rules(
@@ -192,10 +187,7 @@ def test_execute_add_rule(
         # Should fail if not root
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["permission", "denied", "root", "error", "not found"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "root", "error", "not found"])
 
 
 def test_execute_delete_rule(
@@ -378,9 +370,7 @@ def test_execute_invalid_priority(
 ):
     # Test with invalid priority value
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["add", "priority", "abc", "table", "main"]
-        )
+        result = command.execute(client=client, args=["add", "priority", "abc", "table", "main"])
 
     # Should fail with invalid priority error
     assert result == 1
@@ -466,8 +456,7 @@ def test_execute_rule_priority_display(
         if len(output) > 0:
             # Should contain priority information
             has_priority = any(
-                priority in output
-                for priority in ["32766", "32767", "0:", "100:", "1000:"]
+                priority in output for priority in ["32766", "32767", "0:", "100:", "1000:"]
             )
             if has_priority:
                 assert has_priority
@@ -491,8 +480,7 @@ def test_execute_table_lookup_display(
         if len(output) > 0:
             # Should contain table lookup information
             has_lookup = any(
-                lookup in output.lower()
-                for lookup in ["lookup", "table", "main", "local"]
+                lookup in output.lower() for lookup in ["lookup", "table", "main", "local"]
             )
             if has_lookup:
                 assert has_lookup
@@ -531,9 +519,7 @@ def test_execute_permission_handling(
 ):
     # Test permission handling for modifications
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["add", "from", "10.0.0.0/8", "table", "200"]
-        )
+        result = command.execute(client=client, args=["add", "from", "10.0.0.0/8", "table", "200"])
 
     # Should either succeed or fail with permission error
     if result == 0:
@@ -599,8 +585,7 @@ def test_execute_routing_policy_validation(
         if len(output) > 0:
             # Should contain policy information
             assert any(
-                policy in output.lower()
-                for policy in ["rule", "table", "lookup", "priority"]
+                policy in output.lower() for policy in ["rule", "table", "lookup", "priority"]
             )
     else:
         assert result == 1
@@ -635,9 +620,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["invalid", "unknown", "error", "usage", "command"]
-    )
+    assert any(msg in output for msg in ["invalid", "unknown", "error", "usage", "command"])
 
 
 def test_execute_signal_handling(

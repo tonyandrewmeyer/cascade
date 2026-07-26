@@ -149,16 +149,12 @@ def test_execute_timeout_option(
     if result == 0:
         output = capture.get()
         # Should complete within timeout
-        assert any(
-            msg in output for msg in ["Replan completed", "Plan updated", "completed"]
-        )
+        assert any(msg in output for msg in ["Replan completed", "Plan updated", "completed"])
     else:
         # Should fail if timeout exceeded or other error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["timeout", "Replan operation failed", "error"]
-        )
+        assert any(msg in output for msg in ["timeout", "Replan operation failed", "error"])
 
 
 def test_execute_short_timeout(
@@ -193,9 +189,7 @@ def test_execute_long_timeout(
     if result == 0:
         output = capture.get()
         # Should complete successfully
-        assert any(
-            msg in output for msg in ["Replan completed", "Plan updated", "completed"]
-        )
+        assert any(msg in output for msg in ["Replan completed", "Plan updated", "completed"])
     else:
         assert result == 1
 
@@ -257,9 +251,7 @@ def test_execute_combined_wait_timeout(
     if result == 0:
         output = capture.get()
         # Should complete with wait and timeout
-        assert any(
-            msg in output for msg in ["Replan completed", "Plan updated", "completed"]
-        )
+        assert any(msg in output for msg in ["Replan completed", "Plan updated", "completed"])
     else:
         assert result == 1
 
@@ -296,17 +288,12 @@ def test_execute_pebble_connection_handling(
     if result == 0:
         output = capture.get()
         # Should successfully connect and replan
-        assert any(
-            msg in output for msg in ["Replan completed", "Plan updated", "completed"]
-        )
+        assert any(msg in output for msg in ["Replan completed", "Plan updated", "completed"])
     else:
         # Should fail gracefully if connection issues
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["Connection failed", "Pebble not available", "error"]
-        )
+        assert any(msg in output for msg in ["Connection failed", "Pebble not available", "error"])
 
 
 def test_execute_service_dependency_handling(
@@ -346,16 +333,13 @@ def test_execute_plan_validation(
         output = capture.get()
         # Should show successful plan validation
         assert any(
-            msg in output
-            for msg in ["Replan completed", "Plan valid", "Validation successful"]
+            msg in output for msg in ["Replan completed", "Plan valid", "Validation successful"]
         )
     else:
         # Should fail if plan validation fails
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["validation failed", "invalid plan", "error"]
-        )
+        assert any(msg in output for msg in ["validation failed", "invalid plan", "error"])
 
 
 def test_execute_service_state_changes(
@@ -435,9 +419,7 @@ def test_execute_error_recovery(
         # Should recover from errors gracefully
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Replan operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Replan operation failed", "error", "failed"])
 
 
 def test_execute_progress_reporting(
@@ -453,8 +435,7 @@ def test_execute_progress_reporting(
         output = capture.get()
         # Should show progress updates
         assert any(
-            msg in output
-            for msg in ["Replan completed", "Progress", "Updating", "completed"]
+            msg in output for msg in ["Replan completed", "Progress", "Updating", "completed"]
         )
     else:
         assert result == 1
@@ -473,8 +454,7 @@ def test_execute_atomic_operations(
         output = capture.get()
         # Should complete atomically
         assert any(
-            msg in output
-            for msg in ["Replan completed", "Atomic update", "Transaction completed"]
+            msg in output for msg in ["Replan completed", "Atomic update", "Transaction completed"]
         )
     else:
         assert result == 1
@@ -512,10 +492,7 @@ def test_execute_concurrent_replan_handling(
     if result == 0:
         output = capture.get()
         # Should handle concurrency
-        assert any(
-            msg in output
-            for msg in ["Replan started", "Operation queued", "In progress"]
-        )
+        assert any(msg in output for msg in ["Replan started", "Operation queued", "In progress"])
     else:
         # Should fail if concurrent operation not allowed
         assert result == 1
@@ -535,10 +512,7 @@ def test_execute_plan_diff_reporting(
     if result == 0:
         output = capture.get()
         # Should show plan changes
-        assert any(
-            msg in output
-            for msg in ["Replan completed", "Changes applied", "Differences"]
-        )
+        assert any(msg in output for msg in ["Replan completed", "Changes applied", "Differences"])
     else:
         assert result == 1
 
@@ -556,8 +530,7 @@ def test_execute_health_check_integration(
         output = capture.get()
         # Should handle health checks during replan
         assert any(
-            msg in output
-            for msg in ["Replan completed", "Health checks", "Services healthy"]
+            msg in output for msg in ["Replan completed", "Health checks", "Services healthy"]
         )
     else:
         assert result == 1
@@ -599,9 +572,7 @@ def test_execute_logging_integration(
     if result == 0:
         output = capture.get()
         # Should log replan activities
-        assert any(
-            msg in output for msg in ["Replan completed", "Logged", "Activity recorded"]
-        )
+        assert any(msg in output for msg in ["Replan completed", "Logged", "Activity recorded"])
     else:
         assert result == 1
 

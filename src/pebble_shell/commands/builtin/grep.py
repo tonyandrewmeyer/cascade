@@ -29,16 +29,12 @@ class GrepCommand(Command):
     help = "Search for pattern in files"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the grep command to search for patterns in files."""
         if handle_help_flag(self, args):
             return 0
 
-        if not validate_min_args(
-            self.shell, args, 2, "grep <pattern> <file> [file2...]"
-        ):
+        if not validate_min_args(self.shell, args, 2, "grep <pattern> <file> [file2...]"):
             return 1
 
         pattern = args[0]

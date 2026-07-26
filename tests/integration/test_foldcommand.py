@@ -190,9 +190,7 @@ def test_execute_spaces_option_long(
 ):
     # Test long form spaces option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--spaces", "-w", "25", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["--spaces", "-w", "25", "/etc/hosts"])
 
     # Should succeed breaking at spaces
     if result == 0:
@@ -226,9 +224,7 @@ def test_execute_bytes_option_long(
 ):
     # Test long form bytes option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--bytes", "-w", "35", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["--bytes", "-w", "35", "/etc/hosts"])
 
     # Should succeed in bytes mode
     if result == 0:
@@ -387,9 +383,7 @@ def test_execute_multiple_files(
 ):
     # Test processing multiple files
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-w", "50", "/etc/hosts", "/etc/hostname"]
-        )
+        result = command.execute(client=client, args=["-w", "50", "/etc/hosts", "/etc/hostname"])
 
     # Should either succeed with multiple files or fail gracefully
     if result == 0:
@@ -411,9 +405,7 @@ def test_execute_nonexistent_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_permission_denied_file(

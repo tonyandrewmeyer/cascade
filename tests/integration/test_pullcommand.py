@@ -77,8 +77,7 @@ def test_execute_missing_dest_path(
     assert result == 1
     output = capture.get()
     assert any(
-        msg in output
-        for msg in ["missing destination", "pull <source-path> <dest-path>", "usage"]
+        msg in output for msg in ["missing destination", "pull <source-path> <dest-path>", "usage"]
     )
 
 
@@ -97,16 +96,13 @@ def test_execute_simple_file_pull(
         output = capture.get()
         # Should show transfer completion message
         assert any(
-            msg in output
-            for msg in ["File pulled successfully", "Transfer completed", "copied"]
+            msg in output for msg in ["File pulled successfully", "Transfer completed", "copied"]
         )
     else:
         # Should fail if file doesn't exist or Pebble unavailable
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Pull operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Pull operation failed", "error", "failed"])
 
 
 def test_execute_nonexistent_source_file(
@@ -117,9 +113,7 @@ def test_execute_nonexistent_source_file(
     with tempfile.NamedTemporaryFile(delete=False) as temp_file:
         dest_path = temp_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/nonexistent/file.txt", dest_path]
-        )
+        result = command.execute(client=client, args=["/nonexistent/file.txt", dest_path])
 
     # Should fail with file not found error
     assert result == 1
@@ -166,9 +160,7 @@ def test_execute_create_dirs_option(
     if result == 0:
         output = capture.get()
         # Should create directories and transfer file
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -187,9 +179,7 @@ def test_execute_overwrite_existing_file(
     if result == 0:
         output = capture.get()
         # Should complete transfer with overwrite
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -208,8 +198,7 @@ def test_execute_permission_denied_source(
     if result == 1:
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["permission denied", "Pull operation failed", "error"]
+            msg in output for msg in ["permission denied", "Pull operation failed", "error"]
         )
     else:
         # May succeed if file is readable
@@ -222,16 +211,13 @@ def test_execute_permission_denied_destination(
 ):
     # Test with permission denied on destination
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/etc/passwd", "/root/restricted"]
-        )
+        result = command.execute(client=client, args=["/etc/passwd", "/root/restricted"])
 
     # Should fail with permission error
     if result == 1:
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["permission denied", "Pull operation failed", "error"]
+            msg in output for msg in ["permission denied", "Pull operation failed", "error"]
         )
     else:
         # May succeed if destination is writable
@@ -252,9 +238,7 @@ def test_execute_large_file_transfer(
     if result == 0:
         output = capture.get()
         # Should complete large file transfer
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -273,9 +257,7 @@ def test_execute_binary_file_transfer(
     if result == 0:
         output = capture.get()
         # Should complete binary transfer
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -294,9 +276,7 @@ def test_execute_text_file_transfer(
     if result == 0:
         output = capture.get()
         # Should complete text transfer
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -315,9 +295,7 @@ def test_execute_empty_file_transfer(
     if result == 0:
         output = capture.get()
         # Should complete empty file transfer
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -336,9 +314,7 @@ def test_execute_symlink_handling(
     if result == 0:
         output = capture.get()
         # Should transfer symlink or target
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -357,9 +333,7 @@ def test_execute_absolute_paths(
     if result == 0:
         output = capture.get()
         # Should complete transfer with absolute paths
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -376,9 +350,7 @@ def test_execute_relative_paths(
     if result == 0:
         output = capture.get()
         # Should resolve and transfer relative paths
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -388,9 +360,7 @@ def test_execute_special_characters_in_paths(
     command: pebble_shell.commands.PullCommand,
 ):
     # Test paths with special characters
-    with tempfile.NamedTemporaryFile(
-        delete=False, suffix=" with spaces & chars"
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(delete=False, suffix=" with spaces & chars") as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["/etc/passwd", tmp_name])
@@ -399,9 +369,7 @@ def test_execute_special_characters_in_paths(
     if result == 0:
         output = capture.get()
         # Should handle special characters
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -412,17 +380,14 @@ def test_execute_nested_directory_pull(
 ):
     # Test pulling nested directory structure
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/usr/share/doc", tempfile.mkdtemp()]
-        )
+        result = command.execute(client=client, args=["/usr/share/doc", tempfile.mkdtemp()])
 
     # Should handle nested directory transfer
     if result == 0:
         output = capture.get()
         # Should transfer entire directory tree
         assert any(
-            msg in output
-            for msg in ["Directory pulled successfully", "Transfer completed"]
+            msg in output for msg in ["Directory pulled successfully", "Transfer completed"]
         )
     else:
         assert result == 1
@@ -442,9 +407,7 @@ def test_execute_file_metadata_preservation(
     if result == 0:
         output = capture.get()
         # Should maintain file attributes
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -463,9 +426,7 @@ def test_execute_concurrent_pull_operations(
     if result == 0:
         output = capture.get()
         # Should complete concurrent transfer
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -483,9 +444,7 @@ def test_execute_network_interruption_handling(
     # Should handle network issues gracefully
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Pull operation failed", "network", "error"]
-        )
+        assert any(msg in output for msg in ["Pull operation failed", "network", "error"])
     else:
         assert result == 0
 
@@ -521,9 +480,7 @@ def test_execute_api_error_handling(
     # Should handle API errors gracefully
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Pull operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Pull operation failed", "error", "failed"])
     else:
         # Should succeed if Pebble API is available
         assert result == 0
@@ -544,8 +501,7 @@ def test_execute_progress_reporting(
         output = capture.get()
         # Should show progress information
         assert any(
-            msg in output
-            for msg in ["File pulled successfully", "Transfer completed", "bytes"]
+            msg in output for msg in ["File pulled successfully", "Transfer completed", "bytes"]
         )
     else:
         assert result == 1
@@ -565,9 +521,7 @@ def test_execute_checksum_verification(
     if result == 0:
         output = capture.get()
         # Should complete with integrity check
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1
 
@@ -594,17 +548,14 @@ def test_execute_recursive_directory_pull(
 ):
     # Test recursive directory pulling
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/etc/systemd", tempfile.mkdtemp()]
-        )
+        result = command.execute(client=client, args=["/etc/systemd", tempfile.mkdtemp()])
 
     # Should handle recursive directory transfer
     if result == 0:
         output = capture.get()
         # Should transfer entire directory recursively
         assert any(
-            msg in output
-            for msg in ["Directory pulled successfully", "Transfer completed"]
+            msg in output for msg in ["Directory pulled successfully", "Transfer completed"]
         )
     else:
         assert result == 1
@@ -624,8 +575,6 @@ def test_execute_transfer_cancellation(
     if result == 0:
         output = capture.get()
         # Should complete or handle cancellation
-        assert any(
-            msg in output for msg in ["File pulled successfully", "Transfer completed"]
-        )
+        assert any(msg in output for msg in ["File pulled successfully", "Transfer completed"])
     else:
         assert result == 1

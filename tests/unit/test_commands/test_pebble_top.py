@@ -4,7 +4,6 @@
 from unittest.mock import MagicMock, Mock, mock_open, patch
 
 import pytest
-
 from pebble_shell.commands.pebble_top import PebbleTopViewer, ProcessInfo, ProcReader
 
 
@@ -89,9 +88,7 @@ class TestProcReader:
             read_data="1 (init) S 0 1 1 0 -1 4194560 0 0 0 0 0 0 0 0 20 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
         ),
     )
-    def test_get_process_info_invalid_stat(
-        self, mock_open_func, mock_exists, proc_reader
-    ):
+    def test_get_process_info_invalid_stat(self, mock_open_func, mock_exists, proc_reader):
         """Test getting process info with invalid stat data."""
         result = proc_reader._get_process_info(1)
         assert result is None

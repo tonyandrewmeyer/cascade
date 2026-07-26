@@ -52,9 +52,7 @@ class GzipCommand(Command):
             return 1
         flags, positional_args = parse_result
 
-        if not validate_min_args(
-            self.shell, positional_args, 1, "gzip: missing file operand"
-        ):
+        if not validate_min_args(self.shell, positional_args, 1, "gzip: missing file operand"):
             return 1
 
         decompress = flags.get("d", False)
@@ -65,9 +63,7 @@ class GzipCommand(Command):
         # Process each file
         for file_path in positional_args:
             # Convert relative paths to absolute paths
-            file_path = resolve_path(
-                self.shell.current_directory, file_path, self.shell.home_dir
-            )
+            file_path = resolve_path(self.shell.current_directory, file_path, self.shell.home_dir)
 
             try:
                 if decompress:
@@ -75,13 +71,11 @@ class GzipCommand(Command):
                         client, file_path, keep_original, force, verbose
                     )
                 else:
-                    success = self._compress_gzip(
-                        client, file_path, keep_original, force, verbose
-                    )
+                    success = self._compress_gzip(client, file_path, keep_original, force, verbose)
 
                 if not success:
                     return 1
-            except CompressionError as e:  # noqa: PERF203
+            except CompressionError as e:
                 self.console.print(f"[red]gzip: {e}[/red]")
                 return 1
 
@@ -153,11 +147,7 @@ EXAMPLES:
             if verbose:
                 original_size = len(file_content)
                 compressed_size = len(compressed_content)
-                ratio = (
-                    (1 - compressed_size / original_size) * 100
-                    if original_size > 0
-                    else 0
-                )
+                ratio = (1 - compressed_size / original_size) * 100 if original_size > 0 else 0
                 self.console.print(
                     f"[green]{file_path}: {original_size} -> {compressed_size} bytes ({ratio:.1f}% reduction)[/green]"
                 )
@@ -183,9 +173,7 @@ EXAMPLES:
         try:
             # Check if file has .gz extension
             if not file_path.endswith(".gz"):
-                raise CompressionError(
-                    f"File {file_path} doesn't appear to be a gzip file"
-                )
+                raise CompressionError(f"File {file_path} doesn't appear to be a gzip file")
 
             output_path = file_path[:-3]  # Remove .gz extension
 
@@ -209,9 +197,7 @@ EXAMPLES:
             try:
                 decompressed_content = gzip.decompress(compressed_content)
             except (OSError, gzip.BadGzipFile) as e:
-                raise CompressionError(
-                    f"Failed to decompress - not a valid gzip file: {e}"
-                ) from e
+                raise CompressionError(f"Failed to decompress - not a valid gzip file: {e}") from e
 
             # Write decompressed content
             client.push(output_path, io.BytesIO(decompressed_content), make_dirs=True)
@@ -220,9 +206,7 @@ EXAMPLES:
                 compressed_size = len(compressed_content)
                 decompressed_size = len(decompressed_content)
                 ratio = (
-                    (decompressed_size / compressed_size - 1) * 100
-                    if compressed_size > 0
-                    else 0
+                    (decompressed_size / compressed_size - 1) * 100 if compressed_size > 0 else 0
                 )
                 self.console.print(
                     f"[green]{file_path}: {compressed_size} -> {decompressed_size} bytes ({ratio:.1f}% expansion)[/green]"

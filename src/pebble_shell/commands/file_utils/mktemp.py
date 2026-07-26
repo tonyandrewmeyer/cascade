@@ -113,9 +113,7 @@ Examples:
                     return 0
                 except Exception as e:
                     self.console.print(
-                        get_theme().error_text(
-                            f"mktemp: cannot create directory {full_path}: {e}"
-                        )
+                        get_theme().error_text(f"mktemp: cannot create directory {full_path}: {e}")
                     )
                     return 1
             else:
@@ -128,9 +126,7 @@ Examples:
                     return 0
                 except Exception as e:
                     self.console.print(
-                        get_theme().error_text(
-                            f"mktemp: cannot create file {full_path}: {e}"
-                        )
+                        get_theme().error_text(f"mktemp: cannot create file {full_path}: {e}")
                     )
                     return 1
 

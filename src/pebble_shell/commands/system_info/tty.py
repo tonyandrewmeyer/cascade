@@ -60,7 +60,7 @@ Examples:
         )
         if parse_result is None:
             return 1
-        flags, positional_args = parse_result
+        flags, _positional_args = parse_result
 
         silent = flags.get("s", False) or flags.get("silent", False)
 

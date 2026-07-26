@@ -32,9 +32,7 @@ def test_help(command: pebble_shell.commands.RunlevelCommand):
         command.show_help()
     output = capture.get()
     assert "runlevel" in output
-    assert any(
-        phrase in output.lower() for phrase in ["runlevel", "init", "system", "level"]
-    )
+    assert any(phrase in output.lower() for phrase in ["runlevel", "init", "system", "level"])
 
 
 @pytest.mark.parametrize("args", [["-h"], ["--help"]])
@@ -48,9 +46,7 @@ def test_execute_help(
     assert result == 0
     output = capture.get()
     assert "runlevel" in output
-    assert any(
-        phrase in output.lower() for phrase in ["runlevel", "init", "system", "level"]
-    )
+    assert any(phrase in output.lower() for phrase in ["runlevel", "init", "system", "level"])
 
 
 def test_execute_no_args_show_runlevel(
@@ -105,10 +101,7 @@ def test_execute_current_runlevel_detection(
             # Should not be empty
             assert len(content) > 0
             # Should contain runlevel digits or N/S
-            assert any(
-                char in content
-                for char in ["0", "1", "2", "3", "4", "5", "6", "S", "N"]
-            )
+            assert any(char in content for char in ["0", "1", "2", "3", "4", "5", "6", "S", "N"])
     else:
         assert result == 1
 

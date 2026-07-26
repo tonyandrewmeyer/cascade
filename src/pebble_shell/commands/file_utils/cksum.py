@@ -63,9 +63,7 @@ Examples:
             data = safe_read_file(client, file_path, self.shell)
             if data is None:
                 self.console.print(
-                    "[red]"
-                    + f"cksum: {file_path}: No such file or directory"
-                    + "[/red]"
+                    "[red]" + f"cksum: {file_path}: No such file or directory" + "[/red]"
                 )
                 exit_code = 1
                 continue

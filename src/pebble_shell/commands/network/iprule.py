@@ -54,9 +54,7 @@ Examples:
 
             # Try to read additional rules from /etc/iproute2/rt_tables or similar
             try:
-                rt_tables = safe_read_file(
-                    client, "/etc/iproute2/rt_tables", self.shell
-                )
+                rt_tables = safe_read_file(client, "/etc/iproute2/rt_tables", self.shell)
                 if rt_tables:
                     # Parse custom routing tables
                     custom_tables = []
@@ -73,9 +71,7 @@ Examples:
                     # Display custom table rules (simplified)
                     for table_id, table_name in custom_tables:
                         if table_id.isdigit() and int(table_id) < 32766:
-                            self.console.print(
-                                f"{table_id}:\tfrom all lookup {table_name}"
-                            )
+                            self.console.print(f"{table_id}:\tfrom all lookup {table_name}")
             except Exception:  # noqa: S110
                 # Broad exception needed for network configuration probing
                 pass

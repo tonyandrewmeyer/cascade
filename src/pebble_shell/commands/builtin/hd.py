@@ -22,9 +22,7 @@ class HdCommand(HexdumpCommand):
     help = "Display file contents in hexadecimal (canonical format)"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ) -> int:
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]) -> int:
         """Execute the hd command."""
         # hd is equivalent to hexdump -C, so prepend -C to args
         return super().execute(client, ["-C", *args])

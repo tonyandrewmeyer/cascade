@@ -23,9 +23,7 @@ class DuCommand(Command):
     help = "Show disk usage. Use -h for human-readable sizes, -s for summary only"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute du command with rich table output."""
         if handle_help_flag(self, args):
             return 0

@@ -109,9 +109,7 @@ def read_proc_status_field(client: PebbleClient, pid: str, field: str) -> str | 
         raise
 
 
-def read_proc_status_fields(
-    client: PebbleClient, pid: str, fields: list[str]
-) -> dict[str, str]:
+def read_proc_status_fields(client: PebbleClient, pid: str, fields: list[str]) -> dict[str, str]:
     """Read multiple fields from /proc/{pid}/status efficiently.
 
     Args:
@@ -272,14 +270,10 @@ def parse_proc_net_dev(client: PebbleClient) -> list[dict[str, int | str]]:
 
         return interfaces
     except (ProcReadError, ValueError, IndexError) as e:
-        raise ProcReadError(
-            "/proc/net/dev", f"Failed to parse network interfaces: {e}"
-        ) from e
+        raise ProcReadError("/proc/net/dev", f"Failed to parse network interfaces: {e}") from e
 
 
-def parse_proc_net_connections(
-    client: PebbleClient, protocol: str
-) -> list[dict[str, str]]:
+def parse_proc_net_connections(client: PebbleClient, protocol: str) -> list[dict[str, str]]:
     """Parse /proc/net/{tcp,udp,unix} for network connections.
 
     Args:
@@ -305,9 +299,7 @@ def parse_proc_net_connections(
     except ProcReadError:
         raise
     except (ValueError, IndexError) as e:
-        raise ProcReadError(
-            f"/proc/net/{protocol}", f"Failed to parse connections: {e}"
-        ) from e
+        raise ProcReadError(f"/proc/net/{protocol}", f"Failed to parse connections: {e}") from e
 
 
 def _parse_inet_connections(content: str, protocol: str) -> list[dict[str, str]]:
@@ -399,9 +391,7 @@ def parse_proc_route(client: PebbleClient) -> list[dict[str, str]]:
 
         return routes
     except (ProcReadError, ValueError, IndexError) as e:
-        raise ProcReadError(
-            "/proc/net/route", f"Failed to parse routing table: {e}"
-        ) from e
+        raise ProcReadError("/proc/net/route", f"Failed to parse routing table: {e}") from e
 
 
 def parse_proc_meminfo(client: PebbleClient) -> dict[str, int]:
@@ -502,9 +492,7 @@ def parse_proc_loadavg(client: PebbleClient) -> dict[str, str | int]:
             raise ValueError("Invalid loadavg format")
 
     except (ProcReadError, ValueError, IndexError) as e:
-        raise ProcReadError(
-            "/proc/loadavg", f"Failed to parse load average: {e}"
-        ) from e
+        raise ProcReadError("/proc/loadavg", f"Failed to parse load average: {e}") from e
 
 
 def parse_proc_arp(client: PebbleClient) -> list[dict[str, str]]:
@@ -764,9 +752,7 @@ def parse_proc_diskstats(client: PebbleClient) -> list[dict[str, int | str]]:
 
         return disk_stats
     except (ProcReadError, ValueError, IndexError) as e:
-        raise ProcReadError(
-            "/proc/diskstats", f"Failed to parse disk statistics: {e}"
-        ) from e
+        raise ProcReadError("/proc/diskstats", f"Failed to parse disk statistics: {e}") from e
 
 
 def parse_proc_cpuinfo(client: PebbleClient) -> dict[str, int | list[dict[str, str]]]:
@@ -843,9 +829,7 @@ def get_process_tty(client: PebbleClient, pid: str) -> str:
             return "?"
         return "?"
     except (ProcReadError, ValueError) as e:
-        raise ProcReadError(
-            f"/proc/{pid}/stat", f"Failed to parse TTY info: {e}"
-        ) from e
+        raise ProcReadError(f"/proc/{pid}/stat", f"Failed to parse TTY info: {e}") from e
 
 
 def get_boot_time_from_stat(client: PebbleClient) -> int:
@@ -872,9 +856,7 @@ def get_boot_time_from_stat(client: PebbleClient) -> int:
         raise ProcReadError("/proc/stat", f"Failed to parse boot time: {e}") from e
 
 
-def parse_proc_limits_file(
-    client: PebbleClient, pid: str = "self"
-) -> dict[str, dict[str, str]]:
+def parse_proc_limits_file(client: PebbleClient, pid: str = "self") -> dict[str, dict[str, str]]:
     """Parse /proc/{pid}/limits file for resource limits.
 
     Args:
@@ -913,9 +895,7 @@ def parse_proc_limits_file(
 
         return limits
     except (ValueError, IndexError) as e:
-        raise ProcReadError(
-            f"/proc/{pid}/limits", f"Failed to parse limits: {e}"
-        ) from e
+        raise ProcReadError(f"/proc/{pid}/limits", f"Failed to parse limits: {e}") from e
 
 
 def parse_proc_mounts_file(client: PebbleClient) -> list[dict[str, str]]:
@@ -968,9 +948,7 @@ def get_hostname_from_proc_sys(client: PebbleClient) -> str:
         content = read_proc_file(client, "/proc/sys/kernel/hostname")
         return content.strip()
     except Exception as e:
-        raise ProcReadError(
-            "/proc/sys/kernel/hostname", f"Failed to read hostname: {e}"
-        ) from e
+        raise ProcReadError("/proc/sys/kernel/hostname", f"Failed to read hostname: {e}") from e
 
 
 def read_proc_cmdline(client: PebbleClient, pid: str) -> str:

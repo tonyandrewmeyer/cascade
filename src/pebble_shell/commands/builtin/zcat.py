@@ -26,18 +26,14 @@ class ZcatCommand(Command):
     help = "Decompress and print .gz files. Usage: zcat file [file2...]"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute zcat command."""
         if handle_help_flag(self, args):
             return 0
         if validate_min_args(self.shell, args, 1, "zcat file [file2...]"):
             return 1
         for filename in args:
-            path = resolve_path(
-                self.shell.current_directory, filename, self.shell.home_dir
-            )
+            path = resolve_path(self.shell.current_directory, filename, self.shell.home_dir)
             try:
                 with client.pull(path, encoding=None) as f:
                     compressed_data = f.read()

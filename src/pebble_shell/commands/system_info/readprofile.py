@@ -53,9 +53,7 @@ Examples:
         """
         self.console.print(help_text)
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ) -> int:
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]) -> int:
         """Execute the readprofile command."""
         if handle_help_flag(self, args):
             return 0
@@ -79,7 +77,7 @@ Examples:
         )
         if parse_result is None:
             return 1
-        flags, positional_args = parse_result
+        flags, _positional_args = parse_result
 
         profile_file = flags.get("p") or "/proc/profile"
         show_info = flags.get("i", False)
@@ -99,18 +97,14 @@ Examples:
             if show_info:
                 # Try to get profiling information
                 try:
-                    with client.pull(
-                        "/proc/sys/kernel/prof_cpu_mask", encoding="utf-8"
-                    ) as f:
+                    with client.pull("/proc/sys/kernel/prof_cpu_mask", encoding="utf-8") as f:
                         cpu_mask = f.read().strip()
                         self.console.print(f"Profiling CPU mask: {cpu_mask}")
                 except ops.pebble.PathError:
                     pass
 
                 try:
-                    with client.pull(
-                        "/proc/sys/kernel/profiling", encoding="utf-8"
-                    ) as f:
+                    with client.pull("/proc/sys/kernel/profiling", encoding="utf-8") as f:
                         profiling = f.read().strip()
                         self.console.print(f"Profiling enabled: {profiling}")
                 except ops.pebble.PathError:
@@ -125,9 +119,7 @@ Examples:
                     content = f.read()
 
                 if not content.strip():
-                    self.console.print(
-                        get_theme().warning_text("No profiling data available")
-                    )
+                    self.console.print(get_theme().warning_text("No profiling data available"))
                     return 0
 
                 # Parse profiling data (this is typically binary, but we'll try to handle it)

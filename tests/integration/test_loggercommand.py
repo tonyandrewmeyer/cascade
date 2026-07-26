@@ -33,8 +33,7 @@ def test_help(command: pebble_shell.commands.LoggerCommand):
     output = capture.get()
     assert "logger" in output
     assert any(
-        phrase in output.lower()
-        for phrase in ["log", "syslog", "message", "system", "send"]
+        phrase in output.lower() for phrase in ["log", "syslog", "message", "system", "send"]
     )
 
 
@@ -49,9 +48,7 @@ def test_execute_help(
     assert result == 0
     output = capture.get()
     assert "logger" in output
-    assert any(
-        phrase in output.lower() for phrase in ["log", "syslog", "message", "system"]
-    )
+    assert any(phrase in output.lower() for phrase in ["log", "syslog", "message", "system"])
 
 
 def test_execute_no_args_stdin(
@@ -98,9 +95,7 @@ def test_execute_multiple_word_message(
 ):
     # Test logging message with multiple words
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["This", "is", "a", "test", "message"]
-        )
+        result = command.execute(client=client, args=["This", "is", "a", "test", "message"])
 
     # Should either succeed logging or fail gracefully
     if result == 0:
@@ -117,9 +112,7 @@ def test_execute_priority_option(
 ):
     # Test priority option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-p", "info", "Test info message"]
-        )
+        result = command.execute(client=client, args=["-p", "info", "Test info message"])
 
     # Should either succeed with priority or fail gracefully
     if result == 0:
@@ -136,9 +129,7 @@ def test_execute_priority_numeric(
 ):
     # Test numeric priority
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-p", "6", "Test numeric priority"]
-        )
+        result = command.execute(client=client, args=["-p", "6", "Test numeric priority"])
 
     # Should either succeed with numeric priority or fail gracefully
     if result == 0:
@@ -155,9 +146,7 @@ def test_execute_facility_priority(
 ):
     # Test facility.priority format
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-p", "user.info", "Test facility.priority"]
-        )
+        result = command.execute(client=client, args=["-p", "user.info", "Test facility.priority"])
 
     # Should either succeed with facility.priority or fail gracefully
     if result == 0:
@@ -174,9 +163,7 @@ def test_execute_tag_option(
 ):
     # Test tag option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-t", "testapp", "Message with tag"]
-        )
+        result = command.execute(client=client, args=["-t", "testapp", "Message with tag"])
 
     # Should either succeed with tag or fail gracefully
     if result == 0:
@@ -245,9 +232,7 @@ def test_execute_socket_option(
 ):
     # Test custom socket path
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-u", "/dev/log", "Socket message"]
-        )
+        result = command.execute(client=client, args=["-u", "/dev/log", "Socket message"])
 
     # Should either succeed with custom socket or fail gracefully
     if result == 0:
@@ -265,9 +250,7 @@ def test_execute_server_option(
 ):
     # Test remote server option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-n", "localhost", "Remote message"]
-        )
+        result = command.execute(client=client, args=["-n", "localhost", "Remote message"])
 
     # Should either succeed with remote server or fail gracefully
     if result == 0:
@@ -391,9 +374,7 @@ def test_execute_special_characters(
 ):
     # Test message with special characters
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["Message with !@#$%^&*() characters"]
-        )
+        result = command.execute(client=client, args=["Message with !@#$%^&*() characters"])
 
     # Should either succeed with special chars or fail gracefully
     if result == 0:
@@ -451,9 +432,7 @@ def test_execute_nonexistent_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_permission_denied_file(
@@ -507,9 +486,7 @@ def test_execute_invalid_facility(
 ):
     # Test invalid facility
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-p", "invalid.info", "Test message"]
-        )
+        result = command.execute(client=client, args=["-p", "invalid.info", "Test message"])
 
     # Should fail with invalid facility error
     assert result == 1
@@ -666,9 +643,7 @@ def test_execute_network_resilience(
 ):
     # Test network resilience for remote logging
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-n", "unreachable.host", "Network test"]
-        )
+        result = command.execute(client=client, args=["-n", "unreachable.host", "Network test"])
 
     # Should either succeed or fail gracefully with network issues
     if result == 0:

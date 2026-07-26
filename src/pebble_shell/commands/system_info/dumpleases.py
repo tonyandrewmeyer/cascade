@@ -66,7 +66,7 @@ Examples:
         )
         if parse_result is None:
             return 1
-        flags, positional_args = parse_result
+        flags, _positional_args = parse_result
 
         lease_file = flags.get("f") or "/var/lib/dhcp/dhcpd.leases"
         show_remaining = flags.get("r", False)
@@ -91,9 +91,7 @@ Examples:
                     continue
 
             if not lease_content:
-                self.console.print(
-                    get_theme().warning_text("No DHCP lease files found")
-                )
+                self.console.print(get_theme().warning_text("No DHCP lease files found"))
                 return 1
 
             # Parse lease file (basic parsing)

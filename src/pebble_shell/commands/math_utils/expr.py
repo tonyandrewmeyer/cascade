@@ -276,9 +276,7 @@ Examples:
         # Return as string:
         return token, pos
 
-    def _try_to_number(
-        self, value: str | int | float | bool
-    ) -> int | float | str | bool:
+    def _try_to_number(self, value: str | int | float | bool) -> int | float | str | bool:
         """Try to convert value to number."""
         if isinstance(value, int | float):
             return value

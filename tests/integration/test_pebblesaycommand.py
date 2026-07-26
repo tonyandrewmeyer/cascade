@@ -100,9 +100,7 @@ def test_execute_multi_word_message(
 ):
     # Test with multi-word message
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["Welcome", "to", "Pebble", "Shell"]
-        )
+        result = command.execute(client=client, args=["Welcome", "to", "Pebble", "Shell"])
 
     # Should succeed combining words into message
     assert result == 0
@@ -190,9 +188,7 @@ def test_execute_file_option(
         # Should fail if character file not found
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["character not found", "file not found", "error"]
-        )
+        assert any(msg in output for msg in ["character not found", "file not found", "error"])
 
 
 def test_execute_eyes_option(
@@ -247,10 +243,7 @@ def test_execute_dead_option(
     # Should contain the message
     assert "Oh no!" in output
     # Should contain dead eyes (XX or similar)
-    assert (
-        any(dead_eye in output for dead_eye in ["XX", "xx", "X"])
-        or len(output.strip()) > 0
-    )
+    assert any(dead_eye in output for dead_eye in ["XX", "xx", "X"]) or len(output.strip()) > 0
     # Should contain ASCII art structure
     assert any(char in output for char in ["|", "_"])
 
@@ -307,10 +300,7 @@ def test_execute_stoned_option(
     # Should contain the message
     assert "Whoa..." in output
     # Should contain stoned eyes (**)
-    assert (
-        any(stoned_eye in output for stoned_eye in ["**", "--"])
-        or len(output.strip()) > 0
-    )
+    assert any(stoned_eye in output for stoned_eye in ["**", "--"]) or len(output.strip()) > 0
     # Should contain ASCII art structure
     assert any(char in output for char in ["|", "_"])
 
@@ -387,8 +377,7 @@ def test_execute_think_mode(
         assert "Hmm..." in output
         # Should contain thought bubble characters
         assert (
-            any(think_char in output for think_char in ["o", "O", "°"])
-            or len(output.strip()) > 0
+            any(think_char in output for think_char in ["o", "O", "°"]) or len(output.strip()) > 0
         )
         # Should contain ASCII art structure
         assert len(output.strip()) > 0
@@ -403,9 +392,7 @@ def test_execute_width_option(
 ):
     # Test -W option for message width
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-W", "20", "This is a test message"]
-        )
+        result = command.execute(client=client, args=["-W", "20", "This is a test message"])
 
     # Should succeed with specified width
     assert result == 0
@@ -414,9 +401,7 @@ def test_execute_width_option(
     assert any(word in output for word in ["This", "test", "message"])
     # Should respect width constraint
     lines = output.strip().split("\n")
-    message_lines = [
-        line for line in lines if "|" in line or "<" in line or ">" in line
-    ]
+    message_lines = [line for line in lines if "|" in line or "<" in line or ">" in line]
     if message_lines:
         # Should not exceed specified width significantly
         max_line_length = max(len(line) for line in message_lines)
@@ -446,9 +431,7 @@ def test_execute_special_characters_message(
 ):
     # Test with special characters
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=['Hello & welcome to "Pebble Shell"!']
-        )
+        result = command.execute(client=client, args=['Hello & welcome to "Pebble Shell"!'])
 
     # Should handle special characters
     assert result == 0
@@ -499,9 +482,7 @@ def test_execute_multiple_options(
 ):
     # Test combining multiple options
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-e", "@@", "-T", "U", "Complex message!"]
-        )
+        result = command.execute(client=client, args=["-e", "@@", "-T", "U", "Complex message!"])
 
     # Should succeed with multiple options
     assert result == 0
@@ -666,9 +647,7 @@ def test_execute_bubble_formatting(
     if len(lines) >= 3:
         # Should have top border, message line(s), and bottom border
         assert any("_" in line or "-" in line for line in lines[:2])  # Top border
-        assert any(
-            "|" in line or "<" in line or ">" in line for line in lines[1:-1]
-        )  # Message
+        assert any("|" in line or "<" in line or ">" in line for line in lines[1:-1])  # Message
         assert any("_" in line or "-" in line for line in lines[-2:])  # Bottom border
 
 
@@ -714,9 +693,7 @@ def test_execute_error_recovery(
 ):
     # Test error recovery capabilities
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-f", "nonexistent", "Error test"]
-        )
+        result = command.execute(client=client, args=["-f", "nonexistent", "Error test"])
 
     # Should recover from errors gracefully
     output = capture.get()

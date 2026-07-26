@@ -24,9 +24,7 @@ class TimeCommand(Command):
     help = "Time the execution of a command. Usage: time COMMAND [ARGS...]"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the time command to measure command execution time."""
         if handle_help_flag(self, args):
             return 0

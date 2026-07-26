@@ -72,9 +72,7 @@ Examples:
                 if file_path == "-":
                     # TODO: Handle stdin input
                     self.console.print(
-                        get_theme().warning_text(
-                            "sum: reading from stdin not supported"
-                        )
+                        get_theme().warning_text("sum: reading from stdin not supported")
                     )
                     continue
 
@@ -82,9 +80,7 @@ Examples:
                 data = safe_read_file(client, file_path, self.shell)
                 if data is None:
                     self.console.print(
-                        get_theme().error_text(
-                            f"sum: {file_path}: No such file or directory"
-                        )
+                        get_theme().error_text(f"sum: {file_path}: No such file or directory")
                     )
                     exit_code = 1
                     continue

@@ -66,9 +66,7 @@ Examples:
         flags, positional_args = parse_result
 
         append_mode = flags.get("a", False) or flags.get("append", False)
-        ignore_interrupts = flags.get("i", False) or flags.get(
-            "ignore-interrupts", False
-        )
+        ignore_interrupts = flags.get("i", False) or flags.get("ignore-interrupts", False)
         output_files = positional_args
 
         try:
@@ -85,7 +83,7 @@ Examples:
                         input_lines.append(line + "\n")
                         # Echo to stdout immediately
                         self.console.print(line)
-                    except EOFError:  # noqa: PERF203  # needed for input handling
+                    except EOFError:  # needed for input handling
                         break
                     except KeyboardInterrupt:
                         if not ignore_interrupts:
@@ -114,10 +112,8 @@ Examples:
 
                     self.console.print(f"[green]tee: written to {file_path}[/green]")
 
-                except Exception as e:  # noqa: PERF203  # needed for robust file processing
-                    self.console.print(
-                        f"[red]tee: failed to write {file_path}: {e}[/red]"
-                    )
+                except Exception as e:  # needed for robust file processing
+                    self.console.print(f"[red]tee: failed to write {file_path}: {e}[/red]")
                     return 1
 
             return 0

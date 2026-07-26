@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, ClassVar
 
 from ..utils.theme import get_theme
 
-
 if TYPE_CHECKING:
     import ops
     import shimmer
@@ -25,11 +24,7 @@ class CommandMeta(abc.ABCMeta):
         cls = super().__new__(mcs, name, bases, namespace, **kwargs)
 
         # Only register concrete Command subclasses that have a name.
-        if (
-            bases
-            and hasattr(cls, "name")
-            and isinstance(getattr(cls, "name", None), str)
-        ):
+        if bases and hasattr(cls, "name") and isinstance(getattr(cls, "name", None), str):
             CommandMeta._registry[cls.name] = cls  # type: ignore[misc]
 
         return cls
@@ -47,9 +42,7 @@ class Command(abc.ABC, metaclass=CommandMeta):
         self.console = shell.console
 
     @abc.abstractmethod
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ) -> int:
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]) -> int:
         """Execute the command.
 
         Args:
@@ -76,9 +69,7 @@ class Command(abc.ABC, metaclass=CommandMeta):
 
         if len(args) < min_args:
             self.console.print(
-                theme.error_text(
-                    f"Error: This command requires at least {min_args} argument(s)"
-                )
+                theme.error_text(f"Error: This command requires at least {min_args} argument(s)")
             )
             return False
 
@@ -90,9 +81,7 @@ class Command(abc.ABC, metaclass=CommandMeta):
 
         if max_args is not None and len(args) > max_args:
             self.console.print(
-                theme.error_text(
-                    f"Error: This command accepts at most {max_args} argument(s)"
-                )
+                theme.error_text(f"Error: This command accepts at most {max_args} argument(s)")
             )
             return False
 
@@ -103,9 +92,7 @@ class Command(abc.ABC, metaclass=CommandMeta):
         from ..utils.theme import get_theme
 
         theme = get_theme()
-        self.console.print(
-            f"\n{theme.highlight_text('Usage:')} {theme.primary_text(self.name)}"
-        )
+        self.console.print(f"\n{theme.highlight_text('Usage:')} {theme.primary_text(self.name)}")
         self.console.print(f"{theme.data_text(self.help)}\n")
 
     @classmethod

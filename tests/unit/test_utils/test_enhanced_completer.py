@@ -25,9 +25,7 @@ class TestEnhancedCompleter:
         self.alias_command = Mock()
         self.alias_command.aliases = {"ll": "ls -la", "la": "ls -a"}
 
-        self.completer = EnhancedCompleter(
-            self.shell, self.commands, self.alias_command
-        )
+        self.completer = EnhancedCompleter(self.shell, self.commands, self.alias_command)
 
     def test_init(self) -> None:
         """Test completer initialization."""
@@ -79,9 +77,7 @@ class TestEnhancedCompleter:
         mock_entry.type = "directory"
 
         with patch.object(self.completer, "_get_current_line", return_value="ls /"):
-            with patch.object(
-                self.completer.client, "list_files", return_value=[mock_entry]
-            ):
+            with patch.object(self.completer.client, "list_files", return_value=[mock_entry]):
                 matches = self.completer._generate_completions("/")
 
                 # Should return path completions
@@ -116,9 +112,7 @@ class TestEnhancedCompleter:
 
     def test_get_current_line_no_readline(self) -> None:
         """Test getting current line when readline is not available."""
-        with patch(
-            "builtins.__import__", side_effect=ImportError("No module named 'readline'")
-        ):
+        with patch("builtins.__import__", side_effect=ImportError("No module named 'readline'")):
             result = self.completer._get_current_line()
             assert result == ""
 
@@ -158,9 +152,7 @@ class TestEnhancedCompleter:
 
     def test_complete_command_fuzzy_matching(self) -> None:
         """Test command completion with fuzzy matching."""
-        with patch.object(
-            self.completer, "_fuzzy_match", return_value=True
-        ) as mock_fuzzy:
+        with patch.object(self.completer, "_fuzzy_match", return_value=True) as mock_fuzzy:
             self.completer._complete_command("xyz")
             mock_fuzzy.assert_called()
             # Should include fuzzy matches when no exact matches found
@@ -175,12 +167,8 @@ class TestEnhancedCompleter:
 
     def test_complete_argument_default_path(self) -> None:
         """Test argument completion falls back to path completion."""
-        with patch.object(
-            self.completer, "_complete_paths", return_value=["/home/test"]
-        ):
-            matches = self.completer._complete_argument(
-                "unknown", ["unknown", "test"], "test"
-            )
+        with patch.object(self.completer, "_complete_paths", return_value=["/home/test"]):
+            matches = self.completer._complete_argument("unknown", ["unknown", "test"], "test")
             assert matches == ["/home/test"]
 
     def test_complete_process_names(self) -> None:
@@ -244,9 +232,7 @@ class TestEnhancedCompleter:
 
     def test_fuzzy_match_empty_strings(self) -> None:
         """Test fuzzy matching with empty strings."""
-        assert self.completer._fuzzy_match(
-            "", "command"
-        )  # Empty pattern matches anything
+        assert self.completer._fuzzy_match("", "command")  # Empty pattern matches anything
         assert not self.completer._fuzzy_match("command", "")
 
     @patch.object(EnhancedCompleter, "_complete_pebble_services")
@@ -274,10 +260,7 @@ class TestEnhancedCompleter:
         for cmd in file_commands:
             assert cmd in self.completer.command_completions
             # Verify it points to the file completion method
-            assert (
-                self.completer.command_completions[cmd]
-                == self.completer._complete_files
-            )
+            assert self.completer.command_completions[cmd] == self.completer._complete_files
 
     def test_directory_command_completions(self) -> None:
         """Test that directory commands use directory completion."""
@@ -286,10 +269,7 @@ class TestEnhancedCompleter:
         for cmd in dir_commands:
             assert cmd in self.completer.command_completions
             # Verify it points to the directory completion method
-            assert (
-                self.completer.command_completions[cmd]
-                == self.completer._complete_directories
-            )
+            assert self.completer.command_completions[cmd] == self.completer._complete_directories
 
     def test_path_command_completions(self) -> None:
         """Test that path commands use path completion."""
@@ -298,10 +278,7 @@ class TestEnhancedCompleter:
         for cmd in path_commands:
             assert cmd in self.completer.command_completions
             # Verify it points to the path completion method
-            assert (
-                self.completer.command_completions[cmd]
-                == self.completer._complete_paths
-            )
+            assert self.completer.command_completions[cmd] == self.completer._complete_paths
 
 
 class TestEnhancedCompleterAdvanced:
@@ -315,9 +292,7 @@ class TestEnhancedCompleterAdvanced:
         self.commands = {"test": Mock()}
         self.alias_command = Mock()
         self.alias_command.aliases = {}
-        self.completer = EnhancedCompleter(
-            self.shell, self.commands, self.alias_command
-        )
+        self.completer = EnhancedCompleter(self.shell, self.commands, self.alias_command)
 
     def test_complete_pebble_services_error_handling(self) -> None:
         """Test Pebble service completion with API errors."""
@@ -326,9 +301,7 @@ class TestEnhancedCompleterAdvanced:
         connection_error = Exception("Connection failed")
         self.shell.client.get_services.side_effect = connection_error
 
-        completions = self.completer._complete_pebble_services(
-            "test", ["pebble-start", "test"]
-        )
+        completions = self.completer._complete_pebble_services("test", ["pebble-start", "test"])
 
         assert completions == []
 
@@ -338,9 +311,7 @@ class TestEnhancedCompleterAdvanced:
         api_error = Exception("API Error")
         self.shell.client.get_checks.side_effect = api_error
 
-        completions = self.completer._complete_pebble_checks(
-            "test", ["pebble-check", "test"]
-        )
+        completions = self.completer._complete_pebble_checks("test", ["pebble-check", "test"])
 
         assert completions == []
 
@@ -348,9 +319,7 @@ class TestEnhancedCompleterAdvanced:
         """Test Pebble notice completion with API errors."""
         self.shell.client.get_notices.side_effect = Exception("Unexpected error")
 
-        completions = self.completer._complete_pebble_notices(
-            "test", ["pebble-notice", "test"]
-        )
+        completions = self.completer._complete_pebble_notices("test", ["pebble-notice", "test"])
 
         assert completions == []
 
@@ -437,9 +406,7 @@ class TestEnhancedCompleterAdvanced:
         mock_service.name = "test-service"
         self.shell.client.get_services.return_value = [mock_service]
 
-        completions = self.completer._complete_pebble_services(
-            "test", ["pebble-start", "test"]
-        )
+        completions = self.completer._complete_pebble_services("test", ["pebble-start", "test"])
 
         assert any("test-service" in comp for comp in completions)
 
@@ -449,9 +416,7 @@ class TestEnhancedCompleterAdvanced:
         mock_check.name = "health-check"
         self.shell.client.get_checks.return_value = [mock_check]
 
-        completions = self.completer._complete_pebble_checks(
-            "hea", ["pebble-check", "hea"]
-        )
+        completions = self.completer._complete_pebble_checks("hea", ["pebble-check", "hea"])
 
         assert any("health-check" in comp for comp in completions)
 
@@ -461,9 +426,7 @@ class TestEnhancedCompleterAdvanced:
         mock_notice.id = "123"
         self.shell.client.get_notices.return_value = [mock_notice]
 
-        completions = self.completer._complete_pebble_notices(
-            "12", ["pebble-notice", "12"]
-        )
+        completions = self.completer._complete_pebble_notices("12", ["pebble-notice", "12"])
 
         assert "123" in completions
 
@@ -472,7 +435,9 @@ class TestEnhancedCompleterAdvanced:
         mock_file = Mock()
         mock_file.__enter__ = Mock(return_value=mock_file)
         mock_file.__exit__ = Mock(return_value=None)
-        mock_file.read.return_value = "/dev/sda1 /home ext4 rw,relatime 0 0\n/dev/sda2 /var ext4 rw,relatime 0 0\n"
+        mock_file.read.return_value = (
+            "/dev/sda1 /home ext4 rw,relatime 0 0\n/dev/sda2 /var ext4 rw,relatime 0 0\n"
+        )
         self.shell.client.pull.return_value = mock_file
 
         completions = self.completer._complete_mount_points("/ho", ["mount", "/ho"])
@@ -484,9 +449,7 @@ class TestEnhancedCompleterAdvanced:
         mock_file = Mock()
         mock_file.__enter__ = Mock(return_value=mock_file)
         mock_file.__exit__ = Mock(return_value=None)
-        mock_file.read.return_value = (
-            "\n\nsingle_part\n/dev/sda1 /home ext4 rw,relatime 0 0\n"
-        )
+        mock_file.read.return_value = "\n\nsingle_part\n/dev/sda1 /home ext4 rw,relatime 0 0\n"
         self.shell.client.pull.return_value = mock_file
 
         completions = self.completer._complete_mount_points("/ho", ["mount", "/ho"])
@@ -498,9 +461,7 @@ class TestEnhancedCompleterAdvanced:
         from unittest.mock import Mock, patch
 
         # Mock the FileType enum
-        with patch(
-            "pebble_shell.utils.enhanced_completer.ops.pebble.FileType"
-        ) as mock_filetype:
+        with patch("pebble_shell.utils.enhanced_completer.ops.pebble.FileType") as mock_filetype:
             mock_filetype.DIRECTORY = "directory"
 
             mock_entry = Mock()
@@ -517,9 +478,7 @@ class TestEnhancedCompleterAdvanced:
         from unittest.mock import Mock, patch
 
         # Mock the FileType enum
-        with patch(
-            "pebble_shell.utils.enhanced_completer.ops.pebble.FileType"
-        ) as mock_filetype:
+        with patch("pebble_shell.utils.enhanced_completer.ops.pebble.FileType") as mock_filetype:
             mock_filetype.DIRECTORY = "directory"
 
             mock_entry = Mock()
@@ -527,9 +486,7 @@ class TestEnhancedCompleterAdvanced:
             mock_entry.type = "file"  # Not equal to DIRECTORY
             self.shell.client.list_files.return_value = [mock_entry]
 
-            completions = self.completer._complete_paths(
-                "/home/file", ["cat", "/home/file"]
-            )
+            completions = self.completer._complete_paths("/home/file", ["cat", "/home/file"])
 
             assert "/home/file.txt" in completions
 
@@ -538,9 +495,7 @@ class TestEnhancedCompleterAdvanced:
         from unittest.mock import Mock, patch
 
         # Mock the FileType enum
-        with patch(
-            "pebble_shell.utils.enhanced_completer.ops.pebble.FileType"
-        ) as mock_filetype:
+        with patch("pebble_shell.utils.enhanced_completer.ops.pebble.FileType") as mock_filetype:
             mock_filetype.DIRECTORY = "directory"
 
             mock_entry = Mock()
@@ -557,9 +512,7 @@ class TestEnhancedCompleterAdvanced:
         from unittest.mock import Mock, patch
 
         # Mock the FileType enum
-        with patch(
-            "pebble_shell.utils.enhanced_completer.ops.pebble.FileType"
-        ) as mock_filetype:
+        with patch("pebble_shell.utils.enhanced_completer.ops.pebble.FileType") as mock_filetype:
             mock_filetype.DIRECTORY = "directory"
 
             mock_entry = Mock()
@@ -573,9 +526,7 @@ class TestEnhancedCompleterAdvanced:
 
     def test_complete_directories_filters_correctly(self) -> None:
         """Test directory completion filters out files."""
-        with patch.object(
-            self.completer, "_complete_paths", return_value=["/home/", "/file.txt"]
-        ):
+        with patch.object(self.completer, "_complete_paths", return_value=["/home/", "/file.txt"]):
             completions = self.completer._complete_directories("", ["cd", ""])
 
             assert "/home/" in completions
@@ -583,9 +534,7 @@ class TestEnhancedCompleterAdvanced:
 
     def test_complete_files_filters_correctly(self) -> None:
         """Test file completion filters out directories."""
-        with patch.object(
-            self.completer, "_complete_paths", return_value=["/home/", "/file.txt"]
-        ):
+        with patch.object(self.completer, "_complete_paths", return_value=["/home/", "/file.txt"]):
             completions = self.completer._complete_files("", ["cat", ""])
 
             assert "/file.txt" in completions
@@ -639,9 +588,7 @@ class TestEnhancedCompleterAdvanced:
         class MockPathError(Exception):
             pass
 
-        with patch(
-            "pebble_shell.utils.enhanced_completer.ops.pebble.PathError", MockPathError
-        ):
+        with patch("pebble_shell.utils.enhanced_completer.ops.pebble.PathError", MockPathError):
             # Mock PathError for the pull operation
             self.shell.client.pull.side_effect = MockPathError("Path not found")
 

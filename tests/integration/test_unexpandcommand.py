@@ -360,9 +360,7 @@ def test_execute_nonexistent_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_permission_denied_file(
@@ -465,9 +463,7 @@ def test_execute_conflicting_options(
 ):
     # Test conflicting options
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-a", "--first-only", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["-a", "--first-only", "/etc/hosts"])
 
     # Should either handle conflicts or fail appropriately
     if result == 1:

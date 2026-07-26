@@ -63,9 +63,7 @@ class TestCopyCommand:
 
     @patch("pebble_shell.utils.resolve_path")
     @patch("pebble_shell.utils.expand_globs_in_tokens")
-    def test_execute_simple_copy(
-        self, mock_expand_globs, mock_resolve_path, command, mock_client
-    ):
+    def test_execute_simple_copy(self, mock_expand_globs, mock_resolve_path, command, mock_client):
         """Test simple file copy."""
         # Mock the path resolution
         mock_resolve_path.side_effect = ["/src/file.txt", "/dest/file.txt"]
@@ -223,9 +221,7 @@ class TestRemoveCommand:
         command.shell.console.print.assert_called()
 
     @patch("pebble_shell.utils.resolve_path")
-    def test_execute_remove_directory_recursive(
-        self, mock_resolve_path, command, mock_client
-    ):
+    def test_execute_remove_directory_recursive(self, mock_resolve_path, command, mock_client):
         """Test remove directory with -r flag."""
         mock_resolve_path.return_value = "/path/dir"
 
@@ -359,17 +355,13 @@ class TestRemoveDirCommand:
             group="user",
         )
         client.get_file_info.return_value = dir_info
-        client.list_files.return_value = [
-            dir_info
-        ]  # Return directory itself in list_files
+        client.list_files.return_value = [dir_info]  # Return directory itself in list_files
         client.remove_path = Mock()
 
         return client
 
     @patch("pebble_shell.utils.resolve_path")
-    def test_execute_remove_empty_directory(
-        self, mock_resolve_path, command, mock_client
-    ):
+    def test_execute_remove_empty_directory(self, mock_resolve_path, command, mock_client):
         """Test remove empty directory."""
         mock_resolve_path.return_value = "/path/emptydir"
 
@@ -379,9 +371,7 @@ class TestRemoveDirCommand:
         command.shell.console.print.assert_called()
 
     @patch("pebble_shell.utils.resolve_path")
-    def test_execute_remove_non_empty_directory(
-        self, mock_resolve_path, command, mock_client
-    ):
+    def test_execute_remove_non_empty_directory(self, mock_resolve_path, command, mock_client):
         """Test remove non-empty directory."""
         mock_resolve_path.return_value = "/path/nonemptydir"
 
@@ -406,9 +396,7 @@ class TestRemoveDirCommand:
         command.shell.console.print.assert_called()
 
     @patch("pebble_shell.utils.resolve_path")
-    def test_execute_remove_file_not_directory(
-        self, mock_resolve_path, command, mock_client
-    ):
+    def test_execute_remove_file_not_directory(self, mock_resolve_path, command, mock_client):
         """Test rmdir on a file."""
         mock_resolve_path.return_value = "/path/file.txt"
 
@@ -491,9 +479,7 @@ class TestTouchCommand:
         )
         mock_client.list_files.return_value = [file_info]
         mock_client.pull = MagicMock()
-        mock_client.pull.return_value.__enter__.return_value.read.return_value = (
-            b"content"
-        )
+        mock_client.pull.return_value.__enter__.return_value.read.return_value = b"content"
 
         result = command.execute(mock_client, ["existing.txt"])
 
@@ -527,9 +513,7 @@ class TestTouchCommand:
         result = command.execute(mock_client, ["dir"])
 
         assert result == 0
-        command.shell.console.print.assert_called_with(
-            "touch: /path/dir: Is a directory"
-        )
+        command.shell.console.print.assert_called_with("touch: /path/dir: Is a directory")
 
     def test_execute_no_args(self, command, mock_client):
         """Test touch with no arguments."""

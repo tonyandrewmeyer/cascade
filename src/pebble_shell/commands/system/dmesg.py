@@ -22,9 +22,7 @@ class DmesgCommand(Command):
     help = "Show kernel ring buffer messages"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute dmesg command."""
         if handle_help_flag(self, args):
             return 0

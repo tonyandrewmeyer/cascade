@@ -95,8 +95,7 @@ def test_execute_find_by_label_root(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["not found", "No filesystem", "Unable to resolve", "error"]
+            msg in output for msg in ["not found", "No filesystem", "Unable to resolve", "error"]
         )
 
 
@@ -118,9 +117,7 @@ def test_execute_find_by_label_boot(
         # Should fail if boot label not found
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "No filesystem", "Unable to resolve"]
-        )
+        assert any(msg in output for msg in ["not found", "No filesystem", "Unable to resolve"])
 
 
 def test_execute_find_by_nonexistent_label(
@@ -146,9 +143,7 @@ def test_execute_find_by_uuid_valid_format(
 ):
     # Test finding filesystem by UUID (valid format)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["UUID=12345678-1234-1234-1234-123456789abc"]
-        )
+        result = command.execute(client=client, args=["UUID=12345678-1234-1234-1234-123456789abc"])
 
     # Should either succeed finding device or fail if UUID not found
     if result == 0:
@@ -205,9 +200,7 @@ def test_execute_find_by_short_uuid(
     # Should fail with invalid UUID format
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["invalid UUID", "UUID format", "not found", "error"]
-    )
+    assert any(msg in output for msg in ["invalid UUID", "UUID format", "not found", "error"])
 
 
 def test_execute_empty_label(
@@ -221,9 +214,7 @@ def test_execute_empty_label(
     # Should fail with empty label error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["empty label", "invalid label", "not found", "error"]
-    )
+    assert any(msg in output for msg in ["empty label", "invalid label", "not found", "error"])
 
 
 def test_execute_empty_uuid(
@@ -237,9 +228,7 @@ def test_execute_empty_uuid(
     # Should fail with empty UUID error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["empty UUID", "invalid UUID", "not found", "error"]
-    )
+    assert any(msg in output for msg in ["empty UUID", "invalid UUID", "not found", "error"])
 
 
 def test_execute_invalid_identifier_format(
@@ -285,9 +274,7 @@ def test_execute_mixed_case_uuid(
 ):
     # Test with mixed case UUID identifier
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["uuid=12345678-1234-1234-1234-123456789abc"]
-        )
+        result = command.execute(client=client, args=["uuid=12345678-1234-1234-1234-123456789abc"])
 
     # Should either handle case insensitively or fail appropriately
     if result == 0:
@@ -342,9 +329,7 @@ def test_execute_very_long_label(
     command: pebble_shell.commands.FindfsCommand,
 ):
     # Test with very long label
-    long_label = (
-        "very-long-label-name-that-exceeds-normal-filesystem-label-length-limits"
-    )
+    long_label = "very-long-label-name-that-exceeds-normal-filesystem-label-length-limits"
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=[f"LABEL={long_label}"])
 
@@ -357,9 +342,7 @@ def test_execute_very_long_label(
         # Should fail if long label not found or invalid
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "label too long", "invalid label"]
-        )
+        assert any(msg in output for msg in ["not found", "label too long", "invalid label"])
 
 
 def test_execute_multiple_arguments(
@@ -379,9 +362,7 @@ def test_execute_multiple_arguments(
         # Should fail if first argument not found or multiple args not allowed
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "too many arguments", "error"]
-        )
+        assert any(msg in output for msg in ["not found", "too many arguments", "error"])
 
 
 def test_execute_blkid_integration(
@@ -408,9 +389,7 @@ def test_execute_udev_integration(
 ):
     # Test integration with udev device database
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["UUID=12345678-1234-1234-1234-123456789abc"]
-        )
+        result = command.execute(client=client, args=["UUID=12345678-1234-1234-1234-123456789abc"])
 
     # Should integrate with udev for device resolution
     if result == 0:
@@ -510,10 +489,7 @@ def test_execute_raid_device_handling(
     if result == 0:
         output = capture.get()
         # Should find RAID device
-        assert (
-            any(path in output for path in ["/dev/md", "/dev/raid"])
-            or "/dev/" in output
-        )
+        assert any(path in output for path in ["/dev/md", "/dev/raid"]) or "/dev/" in output
     else:
         # Should fail if RAID device not found
         assert result == 1
@@ -549,9 +525,7 @@ def test_execute_usb_device_handling(
     if result == 0:
         output = capture.get()
         # Should find USB device
-        assert (
-            any(path in output for path in ["/dev/sd", "/dev/usb"]) or "/dev/" in output
-        )
+        assert any(path in output for path in ["/dev/sd", "/dev/usb"]) or "/dev/" in output
     else:
         # Should fail if USB device not found
         assert result == 1

@@ -82,9 +82,7 @@ class TrCommand(Command):
                     return 1
 
                 if delete_chars:
-                    result = self._delete_chars(
-                        content, char_set, complement, squeeze_repeats
-                    )
+                    result = self._delete_chars(content, char_set, complement, squeeze_repeats)
                 else:
                     result = self._translate_chars(
                         content, set1, set2, complement, squeeze_repeats
@@ -115,17 +113,13 @@ class TrCommand(Command):
                 i += 1
         return result
 
-    def _delete_chars(
-        self, content: str, char_set: str, complement: bool, squeeze: bool
-    ) -> str:
+    def _delete_chars(self, content: str, char_set: str, complement: bool, squeeze: bool) -> str:
         """Delete characters from content."""
         expanded_set = set(self._expand_char_set(char_set))
 
-        if complement:
-            # Delete everything except the specified set
-            delete_set = set(chr(i) for i in range(256)) - expanded_set
-        else:
-            delete_set = expanded_set
+        # With --complement, delete everything *except* the specified set.
+        all_chars = {chr(i) for i in range(256)}
+        delete_set = all_chars - expanded_set if complement else expanded_set
 
         result = ""
         for char in content:

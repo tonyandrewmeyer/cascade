@@ -27,9 +27,7 @@ class MarkdownCommand(Command):
     help = "Pretty-print Markdown files with syntax highlighting and formatting"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the markdown command to format and display Markdown files."""
         if handle_help_flag(self, args):
             return 0
@@ -47,9 +45,7 @@ class MarkdownCommand(Command):
         file_path = args[0]
 
         # Resolve path
-        file_path = resolve_path(
-            self.shell.current_directory, file_path, self.shell.home_dir
-        )
+        file_path = resolve_path(self.shell.current_directory, file_path, self.shell.home_dir)
 
         try:
             with client.pull(file_path) as file:

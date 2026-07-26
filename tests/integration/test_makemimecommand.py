@@ -33,8 +33,7 @@ def test_help(command: pebble_shell.commands.MakemimeCommand):
         command.show_help()
     output = capture.get()
     assert any(
-        phrase in output.lower()
-        for phrase in ["make", "mime", "message", "email", "encode"]
+        phrase in output.lower() for phrase in ["make", "mime", "message", "email", "encode"]
     )
 
 
@@ -48,9 +47,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["make", "mime", "message", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["make", "mime", "message", "usage"])
 
 
 def test_execute_no_arguments(
@@ -64,9 +61,7 @@ def test_execute_no_arguments(
     # Should fail with missing arguments error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["argument", "required", "usage", "error", "option"]
-    )
+    assert any(msg in output for msg in ["argument", "required", "usage", "error", "option"])
 
 
 def test_execute_simple_text_message(
@@ -187,9 +182,7 @@ def test_execute_with_attachment(
         # Should fail with file not found or format error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "error", "attachment", "file"]
-        )
+        assert any(msg in output for msg in ["not found", "error", "attachment", "file"])
 
 
 def test_execute_html_content_type(
@@ -219,9 +212,7 @@ def test_execute_binary_content_type(
 ):
     # Test with binary content type
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-t", "application/octet-stream", "/bin/ls"]
-        )
+        result = command.execute(client=client, args=["-t", "application/octet-stream", "/bin/ls"])
 
     # Should either succeed with binary type or fail
     if result == 0:
@@ -256,10 +247,7 @@ def test_execute_custom_encoding(
         assert len(output) >= 0
         if len(output) > 0:
             # Should contain encoding header
-            assert (
-                "base64" in output.lower()
-                or "content-transfer-encoding" in output.lower()
-            )
+            assert "base64" in output.lower() or "content-transfer-encoding" in output.lower()
     else:
         # Should fail with file not found or encoding error
         assert result == 1
@@ -271,16 +259,12 @@ def test_execute_nonexistent_file(
 ):
     # Test with non-existent file
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-t", "text/plain", "/nonexistent/file.txt"]
-        )
+        result = command.execute(client=client, args=["-t", "text/plain", "/nonexistent/file.txt"])
 
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not found", "no such file", "error", "cannot open"]
-    )
+    assert any(msg in output for msg in ["not found", "no such file", "error", "cannot open"])
 
 
 def test_execute_directory_instead_of_file(
@@ -304,9 +288,7 @@ def test_execute_permission_denied_file(
 ):
     # Test with permission denied file
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-t", "text/plain", "/root/.ssh/id_rsa"]
-        )
+        result = command.execute(client=client, args=["-t", "text/plain", "/root/.ssh/id_rsa"])
 
     # Should either succeed or fail with permission error
     if result == 0:
@@ -338,8 +320,7 @@ def test_execute_multipart_message(
         if len(output) > 0:
             # Should contain multipart structure
             assert any(
-                multipart in output.lower()
-                for multipart in ["multipart", "boundary", "--"]
+                multipart in output.lower() for multipart in ["multipart", "boundary", "--"]
             )
     else:
         # Should fail with file or format error
@@ -472,9 +453,7 @@ def test_execute_long_subject_line(
     # Test with very long subject line
     long_subject = "A" * 1000  # Very long subject
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-s", long_subject, "-t", "text/plain", "-"]
-        )
+        result = command.execute(client=client, args=["-s", long_subject, "-t", "text/plain", "-"])
 
     # Should either succeed with long subject or fail
     if result == 0:
@@ -518,9 +497,7 @@ def test_execute_memory_efficiency(
 ):
     # Test memory efficiency
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-t", "text/plain", "/nonexistent.txt"]
-        )
+        result = command.execute(client=client, args=["-t", "text/plain", "/nonexistent.txt"])
 
     # Should be memory efficient even on errors
     assert result == 1
@@ -535,17 +512,13 @@ def test_execute_error_recovery(
 ):
     # Test error recovery capabilities
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-t", "text/plain", "/invalid/path"]
-        )
+        result = command.execute(client=client, args=["-t", "text/plain", "/invalid/path"])
 
     # Should recover from errors gracefully
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["not found", "error", "invalid", "cannot open"]
-    )
+    assert any(msg in output for msg in ["not found", "error", "invalid", "cannot open"])
 
 
 def test_execute_signal_handling(
@@ -554,9 +527,7 @@ def test_execute_signal_handling(
 ):
     # Test signal handling during MIME creation
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-t", "text/plain", "/etc/hostname"]
-        )
+        result = command.execute(client=client, args=["-t", "text/plain", "/etc/hostname"])
 
     # Should handle signals appropriately
     if result == 0:
@@ -573,9 +544,7 @@ def test_execute_output_formatting(
 ):
     # Test MIME output formatting
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-t", "text/plain", "/etc/hostname"]
-        )
+        result = command.execute(client=client, args=["-t", "text/plain", "/etc/hostname"])
 
     # Should either succeed with proper formatting or fail
     if result == 0:
@@ -587,9 +556,7 @@ def test_execute_output_formatting(
             lines = output.split("\n")
             assert len(lines) >= 1
             # Should have headers followed by body
-            has_headers = any(
-                ":" in line for line in lines[:10]
-            )  # Headers in first 10 lines
+            has_headers = any(":" in line for line in lines[:10])  # Headers in first 10 lines
             if has_headers:
                 assert has_headers
     else:
@@ -603,9 +570,7 @@ def test_execute_cross_platform_compatibility(
 ):
     # Test cross-platform compatibility
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-t", "text/plain", "/etc/hostname"]
-        )
+        result = command.execute(client=client, args=["-t", "text/plain", "/etc/hostname"])
 
     # Should work across different platforms
     if result == 0:
@@ -616,6 +581,4 @@ def test_execute_cross_platform_compatibility(
         # Should fail consistently across platforms
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "error", "permission", "access"]
-        )
+        assert any(msg in output for msg in ["not found", "error", "permission", "access"])

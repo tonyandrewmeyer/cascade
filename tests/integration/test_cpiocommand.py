@@ -78,9 +78,7 @@ def test_execute_list_archive_contents(
     # Should fail gracefully for nonexistent archive
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_extract_archive(
@@ -96,9 +94,7 @@ def test_execute_extract_archive(
     # Should fail gracefully for nonexistent archive
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_create_archive_mode(
@@ -266,9 +262,7 @@ def test_execute_format_specification(
     with tempfile.NamedTemporaryFile(suffix=".cpio", delete=False) as output_file:
         output_path = output_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-o", "-H", "newc", "-O", output_path]
-        )
+        result = command.execute(client=client, args=["-o", "-H", "newc", "-O", output_path])
 
     # Should either wait for input or fail appropriately
     if result == 0:
@@ -287,9 +281,7 @@ def test_execute_pattern_matching(
     with tempfile.NamedTemporaryFile(suffix=".cpio", delete=False) as archive_file:
         archive_path = archive_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-i", "*.txt", "-I", archive_path]
-        )
+        result = command.execute(client=client, args=["-i", "*.txt", "-I", archive_path])
 
     # Should fail gracefully for nonexistent archive
     assert result == 1
@@ -448,8 +440,7 @@ def test_execute_invalid_option_combination(
     assert result == 1
     output = capture.get()
     assert any(
-        msg in output
-        for msg in ["invalid", "conflicting", "error", "usage", "incompatible"]
+        msg in output for msg in ["invalid", "conflicting", "error", "usage", "incompatible"]
     )
 
 
@@ -464,9 +455,7 @@ def test_execute_missing_required_argument(
     # Should fail with missing argument error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["argument", "required", "missing", "usage", "error"]
-    )
+    assert any(msg in output for msg in ["argument", "required", "missing", "usage", "error"])
 
 
 def test_execute_invalid_format(
@@ -477,9 +466,7 @@ def test_execute_invalid_format(
     with tempfile.NamedTemporaryFile(suffix=".cpio", delete=False) as output_file:
         output_path = output_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-o", "-H", "invalid", "-O", output_path]
-        )
+        result = command.execute(client=client, args=["-o", "-H", "invalid", "-O", output_path])
 
     # Should fail with invalid format error
     assert result == 1
@@ -516,9 +503,7 @@ def test_execute_directory_as_archive(
     # Should fail with directory error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["directory", "Is a directory", "error", "invalid"]
-    )
+    assert any(msg in output for msg in ["directory", "Is a directory", "error", "invalid"])
 
 
 def test_execute_empty_archive(

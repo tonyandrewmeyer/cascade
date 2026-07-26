@@ -24,9 +24,7 @@ class FindCommand(Command):
     help = "Find files matching pattern"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute find command."""
         if handle_help_flag(self, args):
             return 0
@@ -35,9 +33,7 @@ class FindCommand(Command):
             return 1
 
         # Process search path
-        search_path = resolve_path(
-            self.shell.current_directory, args[0], self.shell.home_dir
-        )
+        search_path = resolve_path(self.shell.current_directory, args[0], self.shell.home_dir)
         pattern = args[1] if len(args) > 1 else "*"
 
         # Use progress tracking

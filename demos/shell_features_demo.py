@@ -26,9 +26,7 @@ def run_shell_features_demo(tmp_dir: pathlib.Path):
     print(f"Connecting to Pebble at {socket_path}...")
     if not shell.connect():
         print("Failed to connect to Pebble. Make sure Pebble is running.")
-        print(
-            "To start Pebble server for demo: pebble run --socket /tmp/.pebble-demo.socket"
-        )
+        print("To start Pebble server for demo: pebble run --socket /tmp/.pebble-demo.socket")
         return 1
 
     print("Connected successfully!\n")

@@ -116,9 +116,7 @@ class TestThemeConfigManager:
         with tempfile.TemporaryDirectory() as temp_dir:
             manager = ThemeConfigManager(temp_dir)
 
-            with pytest.raises(
-                ThemeConfigError, match="Cannot overwrite built-in theme"
-            ):
+            with pytest.raises(ThemeConfigError, match="Cannot overwrite built-in theme"):
                 manager.save_theme("default", ThemeManager())
 
     def test_delete_custom_theme(self):
@@ -365,9 +363,7 @@ class TestErrorHandling:
             theme = manager.load_theme("incomplete")
             assert isinstance(theme, ThemeManager)
 
-    @pytest.mark.skip(
-        reason="File permission test is platform-specific and flaky on macOS"
-    )
+    @pytest.mark.skip(reason="File permission test is platform-specific and flaky on macOS")
     def test_file_permission_errors(self):
         """Test handling of file permission errors."""
         pass

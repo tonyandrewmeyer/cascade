@@ -62,9 +62,7 @@ class TestListCommand:
         command.execute(mock_client, ["/empty"])
 
         # Check that console.print was called with empty directory message (including Rich markup)
-        command.shell.console.print.assert_called_with(
-            "[dim]Directory /empty is empty[/dim]"
-        )
+        command.shell.console.print.assert_called_with("[dim]Directory /empty is empty[/dim]")
 
     def test_execute_error(self, command, mock_client):
         """Test ls command with error."""
@@ -76,7 +74,7 @@ class TestListCommand:
         assert result == 1
         # Check that the error message starts with the expected text
         command.shell.console.print.assert_called()
-        args, kwargs = command.shell.console.print.call_args
+        args, _kwargs = command.shell.console.print.call_args
         assert "cannot list directory:" in args[0]
 
 
@@ -357,9 +355,7 @@ class TestFindCommand:
                 output += str(call[0][0]) + "\n"
 
         # Should find both txt files
-        assert "/file1.txt" in output or any(
-            "/file1.txt" in str(call) for call in calls
-        )
+        assert "/file1.txt" in output or any("/file1.txt" in str(call) for call in calls)
         # Note: /subdir/file2.txt might not be found if recursive search isn't fully mocked
 
     def test_execute_insufficient_args(self, command, mock_client):
@@ -367,9 +363,7 @@ class TestFindCommand:
         command.execute(mock_client, [])
 
         # Should print usage message
-        command.shell.console.print.assert_called_with(
-            "Usage: find <search_path> [pattern]"
-        )
+        command.shell.console.print.assert_called_with("Usage: find <search_path> [pattern]")
 
 
 class TestStatCommand:
@@ -429,10 +423,7 @@ class TestStatCommand:
         error_found = False
         for call in calls:
             call_str = str(call[0][0]) if call[0] else ""
-            if (
-                "Error getting file info for /var/nonexistent: File not found"
-                in call_str
-            ):
+            if "Error getting file info for /var/nonexistent: File not found" in call_str:
                 error_found = True
                 break
         assert error_found, f"Expected error message not found in {calls}"

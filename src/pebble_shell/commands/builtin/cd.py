@@ -25,9 +25,7 @@ class CdCommand(Command):
     help = "Change directory. Usage: cd [path]. If no path is given, changes to home directory."
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute cd command."""
         # Handle help flag
         if handle_help_flag(self, args):
@@ -40,10 +38,7 @@ class CdCommand(Command):
 
         # Handle relative paths.
         if not target_dir.startswith("/") and not target_dir.startswith("~"):
-            if current_dir == "/":
-                target_dir = "/" + target_dir
-            else:
-                target_dir = current_dir + "/" + target_dir
+            target_dir = "/" + target_dir if current_dir == "/" else current_dir + "/" + target_dir
 
         # Normalise path (handle .., ., and so on).
         target_dir = self._normalise_path(target_dir)

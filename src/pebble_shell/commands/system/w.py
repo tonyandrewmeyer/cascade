@@ -31,9 +31,7 @@ class WCommand(Command):
     help = "Show who is logged in and what they are doing"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute w command."""
         if handle_help_flag(self, args):
             return 0
@@ -47,9 +45,7 @@ class WCommand(Command):
             for pid in pids:
                 try:
                     # Read process status fields
-                    status_fields = read_proc_status_fields(
-                        client, pid, ["Uid", "Name"]
-                    )
+                    status_fields = read_proc_status_fields(client, pid, ["Uid", "Name"])
                     uid = status_fields.get("Uid")
                     name = status_fields.get("Name")
 
@@ -75,9 +71,7 @@ class WCommand(Command):
                         "sshd",
                     ]
 
-                    if name and any(
-                        indicator in name.lower() for indicator in session_indicators
-                    ):
+                    if name and any(indicator in name.lower() for indicator in session_indicators):
                         if uid:
                             username = get_user_name_for_uid(client, uid) or f"uid{uid}"
                         else:
@@ -99,7 +93,7 @@ class WCommand(Command):
                             }
                         )
 
-                except Exception:  # noqa: PERF203, S112
+                except Exception:  # noqa: S112
                     continue
 
             if not sessions:

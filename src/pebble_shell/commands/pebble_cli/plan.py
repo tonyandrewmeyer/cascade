@@ -26,9 +26,7 @@ class PlanCommand(Command):
     help = "Show the current plan configuration. Usage: pebble plan [--format json|yaml|table]"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the plan command."""
         if handle_help_flag(self, args):
             return 0
@@ -49,15 +47,11 @@ class PlanCommand(Command):
                     format_type = args[i + 1]
                     i += 1
                 else:
-                    self.console.print(
-                        "Error: --format requires a value (json, yaml, or table)"
-                    )
+                    self.console.print("Error: --format requires a value (json, yaml, or table)")
                     return 1
 
                 if format_type not in ["json", "yaml", "table"]:
-                    self.console.print(
-                        "Error: --format must be one of: json, yaml, table"
-                    )
+                    self.console.print("Error: --format must be one of: json, yaml, table")
                     return 1
             else:
                 processed_args.append(arg)
@@ -86,9 +80,7 @@ class PlanCommand(Command):
 
     def _show_yaml_plan(self, plan_dict: ops.pebble.PlanDict):
         """Display plan in pretty-printed YAML format with syntax highlighting."""
-        yaml_str = yaml.safe_dump(
-            plan_dict, default_flow_style=False, indent=2, sort_keys=False
-        )
+        yaml_str = yaml.safe_dump(plan_dict, default_flow_style=False, indent=2, sort_keys=False)
         syntax = Syntax(
             yaml_str,
             "yaml",
@@ -158,9 +150,7 @@ class PlanCommand(Command):
                 period = check_data.get("period", "10s")
                 timeout = check_data.get("timeout", "3s")
 
-                checks_table.add_row(
-                    check_name, check_type, str(level), period, timeout
-                )
+                checks_table.add_row(check_name, check_type, str(level), period, timeout)
 
             self.console.print(
                 Panel(

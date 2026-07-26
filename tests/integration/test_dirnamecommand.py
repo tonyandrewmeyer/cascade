@@ -169,9 +169,7 @@ def test_execute_multiple_paths(
 ):
     # Test with multiple paths
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/usr/bin/sort", "/etc/passwd", "file.txt"]
-        )
+        result = command.execute(client=client, args=["/usr/bin/sort", "/etc/passwd", "file.txt"])
 
     # Should succeed and return dirname for each path
     assert result == 0
@@ -189,9 +187,7 @@ def test_execute_nested_deep_path(
 ):
     # Test with deeply nested path
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/very/deep/nested/path/file.txt"]
-        )
+        result = command.execute(client=client, args=["/very/deep/nested/path/file.txt"])
 
     # Should succeed and return parent directory
     assert result == 0
@@ -317,9 +313,7 @@ def test_execute_path_with_special_characters(
 ):
     # Test with path containing special characters
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/dir-with_special.chars/file@name"]
-        )
+        result = command.execute(client=client, args=["/dir-with_special.chars/file@name"])
 
     # Should succeed and handle special characters
     assert result == 0
@@ -402,16 +396,16 @@ def test_execute_long_path(
     command: pebble_shell.commands.DirnameCommand,
 ):
     # Test with very long path
-    long_path = "/very/long/path/with/many/components/that/goes/deep/into/filesystem/structure/file.txt"
+    long_path = (
+        "/very/long/path/with/many/components/that/goes/deep/into/filesystem/structure/file.txt"
+    )
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=[long_path])
 
     # Should succeed and return directory part
     assert result == 0
     output = capture.get().strip()
-    expected = (
-        "/very/long/path/with/many/components/that/goes/deep/into/filesystem/structure"
-    )
+    expected = "/very/long/path/with/many/components/that/goes/deep/into/filesystem/structure"
     assert output == expected
 
 

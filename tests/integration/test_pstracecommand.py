@@ -63,10 +63,7 @@ def test_execute_no_args(
     # Should fail with usage message
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["usage", "process required", "PID required", "pstrace"]
-    )
+    assert any(msg in output for msg in ["usage", "process required", "PID required", "pstrace"])
 
 
 def test_execute_invalid_pid(
@@ -81,8 +78,7 @@ def test_execute_invalid_pid(
     assert result == 1
     output = capture.get()
     assert any(
-        msg in output
-        for msg in ["No such process", "invalid PID", "process not found", "error"]
+        msg in output for msg in ["No such process", "invalid PID", "process not found", "error"]
     )
 
 
@@ -98,8 +94,7 @@ def test_execute_non_numeric_pid(
     assert result == 1
     output = capture.get()
     assert any(
-        msg in output
-        for msg in ["invalid PID", "not a number", "invalid argument", "error"]
+        msg in output for msg in ["invalid PID", "not a number", "invalid argument", "error"]
     )
 
 
@@ -114,10 +109,7 @@ def test_execute_negative_pid(
     # Should fail with negative PID error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["invalid PID", "negative", "must be positive", "error"]
-    )
+    assert any(msg in output for msg in ["invalid PID", "negative", "must be positive", "error"])
 
 
 def test_execute_zero_pid(
@@ -137,10 +129,7 @@ def test_execute_zero_pid(
         # Should fail if PID 0 not traceable
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["cannot trace", "permission", "invalid PID", "error"]
-        )
+        assert any(msg in output for msg in ["cannot trace", "permission", "invalid PID", "error"])
 
 
 def test_execute_self_pid(
@@ -276,10 +265,7 @@ def test_execute_time_option(
         output = capture.get()
         # Should show timing for system calls
         assert (
-            any(
-                time_info in output
-                for time_info in ["time", "seconds", "usec", "duration"]
-            )
+            any(time_info in output for time_info in ["time", "seconds", "usec", "duration"])
             or len(output.strip()) >= 0
         )
     else:
@@ -293,18 +279,13 @@ def test_execute_trace_specific_syscalls(
 ):
     # Test -e option to trace specific system calls
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-e", "trace=read,write", "-p", "1"]
-        )
+        result = command.execute(client=client, args=["-e", "trace=read,write", "-p", "1"])
 
     # Should either trace specific syscalls or fail gracefully
     if result == 0:
         output = capture.get()
         # Should show only read/write system calls
-        assert (
-            any(syscall in output for syscall in ["read", "write"])
-            or len(output.strip()) >= 0
-        )
+        assert any(syscall in output for syscall in ["read", "write"]) or len(output.strip()) >= 0
     else:
         # Should fail if filtering not supported or permission denied
         assert result == 1
@@ -373,9 +354,7 @@ def test_execute_signal_handling(
 ):
     # Test signal handling during tracing
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-e", "signal=SIGTERM", "-p", "1"]
-        )
+        result = command.execute(client=client, args=["-e", "signal=SIGTERM", "-p", "1"])
 
     # Should either trace signals or fail gracefully
     if result == 0:
@@ -442,10 +421,7 @@ def test_execute_verbose_mode(
         output = capture.get()
         # Should show detailed trace information
         assert (
-            any(
-                verbose_info in output
-                for verbose_info in ["verbose", "detailed", "info"]
-            )
+            any(verbose_info in output for verbose_info in ["verbose", "detailed", "info"])
             or len(output.strip()) >= 0
         )
     else:
@@ -480,9 +456,7 @@ def test_execute_memory_mapping_trace(
 ):
     # Test memory mapping trace
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-e", "trace=mmap,munmap", "-p", "1"]
-        )
+        result = command.execute(client=client, args=["-e", "trace=mmap,munmap", "-p", "1"])
 
     # Should either trace memory operations or fail gracefully
     if result == 0:
@@ -510,10 +484,7 @@ def test_execute_network_trace(
         output = capture.get()
         # Should show network system calls
         assert (
-            any(
-                net_call in output
-                for net_call in ["socket", "connect", "bind", "listen"]
-            )
+            any(net_call in output for net_call in ["socket", "connect", "bind", "listen"])
             or len(output.strip()) >= 0
         )
     else:
@@ -576,10 +547,7 @@ def test_execute_ipc_trace(
         output = capture.get()
         # Should show IPC system calls
         assert (
-            any(
-                ipc_call in output
-                for ipc_call in ["pipe", "msgget", "semget", "shmget"]
-            )
+            any(ipc_call in output for ipc_call in ["pipe", "msgget", "semget", "shmget"])
             or len(output.strip()) >= 0
         )
     else:
@@ -662,9 +630,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["No such process", "process not found", "error"]
-    )
+    assert any(msg in output for msg in ["No such process", "process not found", "error"])
 
 
 def test_execute_memory_efficiency(

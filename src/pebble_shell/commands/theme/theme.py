@@ -33,9 +33,7 @@ class ThemeCommand(Command):
     help = "Manage display themes. Usage: theme [list|show|set <theme-name>|preview <theme-name>]"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute theme command."""
         if handle_help_flag(self, args):
             return 0
@@ -56,9 +54,7 @@ class ThemeCommand(Command):
                 return 1
             return self._set_theme(args[1])
         elif subcommand == "preview":
-            if not validate_min_args(
-                self.shell, args[1:], 1, "theme preview <theme-name>"
-            ):
+            if not validate_min_args(self.shell, args[1:], 1, "theme preview <theme-name>"):
                 return 1
             return self._preview_theme(args[1])
         else:
@@ -130,13 +126,9 @@ class ThemeCommand(Command):
         )
 
         self.console.print()
+        self.console.print(get_theme().muted_text("Use 'theme set <name>' to change theme"))
         self.console.print(
-            get_theme().muted_text("Use 'theme set <name>' to change theme")
-        )
-        self.console.print(
-            get_theme().muted_text(
-                "Use 'theme preview <name>' to see a theme without changing"
-            )
+            get_theme().muted_text("Use 'theme preview <name>' to see a theme without changing")
         )
 
     def _set_theme(self, theme_name: str) -> int:
@@ -162,9 +154,7 @@ class ThemeCommand(Command):
                     style=get_theme().error,
                 )
             )
-            self.console.print(
-                get_theme().muted_text("Use 'theme list' to see available themes")
-            )
+            self.console.print(get_theme().muted_text("Use 'theme list' to see available themes"))
             return 1
 
         self.console.print(
@@ -206,10 +196,7 @@ class ThemeCommand(Command):
             return 1
 
         table = (
-            create_standard_table()
-            .secondary_column("Element Type")
-            .data_column("Preview")
-            .build()
+            create_standard_table().secondary_column("Element Type").data_column("Preview").build()
         )
 
         examples = [

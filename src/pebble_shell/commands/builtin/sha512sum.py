@@ -23,9 +23,7 @@ class Sha512sumCommand(_HashCommand):
     name = "sha512sum"
     help = "Compute SHA512 hash of a file or stdin"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the sha512sum command."""
         if handle_help_flag(self, args):
             return 0

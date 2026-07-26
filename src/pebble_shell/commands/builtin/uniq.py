@@ -27,9 +27,7 @@ class UniqCommand(Command):
     help = "Report or filter repeated lines. Usage: uniq [-c] [-d] [-u] [file]"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the uniq command to filter or count repeated lines."""
         if handle_help_flag(self, args):
             return 0
@@ -58,9 +56,7 @@ class UniqCommand(Command):
             return 1
 
         lines = []
-        file_path = resolve_path(
-            self.shell.current_directory, files[0], self.shell.home_dir
-        )
+        file_path = resolve_path(self.shell.current_directory, files[0], self.shell.home_dir)
         content = safe_read_file(client, self.shell.error_console, file_path)
         if content is None:
             return 1

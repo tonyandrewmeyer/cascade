@@ -25,9 +25,7 @@ class PrintenvCommand(Command):
     help = "Print environment variables"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ) -> int:
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]) -> int:
         """Execute the printenv command to display environment variables."""
         if handle_help_flag(self, args):
             return 0

@@ -20,16 +20,12 @@ class StopChecksCommand(Command):
     help = "Stop one or more health checks"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the stop-checks command."""
         if handle_help_flag(self, args):
             return 0
 
-        if validate_min_args(
-            self.shell, args, 1, "stop-checks <check-name> [check-name2 ...]"
-        ):
+        if validate_min_args(self.shell, args, 1, "stop-checks <check-name> [check-name2 ...]"):
             return 1
 
         try:

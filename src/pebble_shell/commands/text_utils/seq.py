@@ -88,9 +88,7 @@ Options:
             increment = float(positional_args[1])
             last = float(positional_args[2])
         else:
-            self.console.print(
-                get_theme().error_text("seq: invalid number of arguments")
-            )
+            self.console.print(get_theme().error_text("seq: invalid number of arguments"))
             return 1
 
         if increment == 0:
@@ -125,9 +123,7 @@ Options:
             self.console.print(get_theme().error_text(f"seq: {e}"))
             return 1
 
-    def _generate_sequence(
-        self, first: float, increment: float, last: float
-    ) -> list[float]:
+    def _generate_sequence(self, first: float, increment: float, last: float) -> list[float]:
         """Generate the sequence of numbers."""
         # Calculate number of steps
         if increment > 0 and first <= last:

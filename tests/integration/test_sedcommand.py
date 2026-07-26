@@ -62,9 +62,7 @@ def test_execute_no_args(
     # Should fail with usage message
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["usage", "Usage", "sed", "expression", "script"]
-    )
+    assert any(msg in output for msg in ["usage", "Usage", "sed", "expression", "script"])
 
 
 def test_execute_simple_substitution_with_file(
@@ -87,10 +85,7 @@ def test_execute_simple_substitution_with_file(
         # Should fail if file doesn't exist or access denied
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["No such file", "cannot read", "error", "permission"]
-        )
+        assert any(msg in output for msg in ["No such file", "cannot read", "error", "permission"])
 
 
 def test_execute_global_substitution(
@@ -159,9 +154,7 @@ def test_execute_address_range_substitution(
 ):
     # Test substitution with address range
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["1,5s/localhost/localserver/", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["1,5s/localhost/localserver/", "/etc/hosts"])
 
     # Should either succeed with range substitution or fail gracefully
     if result == 0:
@@ -178,9 +171,7 @@ def test_execute_pattern_matching_substitution(
 ):
     # Test pattern matching substitution
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/localhost/s/127/192/", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["/localhost/s/127/192/", "/etc/hosts"])
 
     # Should either succeed with pattern-based substitution or fail gracefully
     if result == 0:
@@ -219,9 +210,7 @@ def test_execute_in_place_editing(
     temp_dir = tempfile.mkdtemp()
     nonexistent_path = temp_dir + "/nonexistent"
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-i.bak", "s/test/TEST/", nonexistent_path]
-        )
+        result = command.execute(client=client, args=["-i.bak", "s/test/TEST/", nonexistent_path])
 
     # Should fail gracefully for nonexistent file
     assert result == 1
@@ -235,9 +224,7 @@ def test_execute_append_text(
 ):
     # Test appending text
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["1a\\", "Added line", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["1a\\", "Added line", "/etc/hosts"])
 
     # Should either succeed appending text or fail gracefully
     if result == 0:
@@ -254,9 +241,7 @@ def test_execute_insert_text(
 ):
     # Test inserting text
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["1i\\", "Inserted line", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["1i\\", "Inserted line", "/etc/hosts"])
 
     # Should either succeed inserting text or fail gracefully
     if result == 0:
@@ -273,9 +258,7 @@ def test_execute_change_lines(
 ):
     # Test changing lines
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["1c\\", "Changed line", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["1c\\", "Changed line", "/etc/hosts"])
 
     # Should either succeed changing lines or fail gracefully
     if result == 0:
@@ -370,9 +353,7 @@ def test_execute_branching(
 ):
     # Test branching operations
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=[":label;s/a/A/;t label", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=[":label;s/a/A/;t label", "/etc/hosts"])
 
     # Should either succeed with branching or fail gracefully
     if result == 0:
@@ -389,9 +370,7 @@ def test_execute_quiet_mode(
 ):
     # Test quiet mode
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-n", "/localhost/p", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["-n", "/localhost/p", "/etc/hosts"])
 
     # Should either succeed in quiet mode or fail gracefully
     if result == 0:
@@ -414,9 +393,7 @@ def test_execute_extended_regex(
 ):
     # Test extended regular expressions
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-E", "s/[0-9]+/NUMBER/g", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["-E", "s/[0-9]+/NUMBER/g", "/etc/hosts"])
 
     # Should either succeed with extended regex or fail gracefully
     if result == 0:
@@ -477,9 +454,7 @@ def test_execute_nonexistent_file(
 ):
     # Test with nonexistent file
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["s/test/TEST/", "/nonexistent/file.txt"]
-        )
+        result = command.execute(client=client, args=["s/test/TEST/", "/nonexistent/file.txt"])
 
     # Should fail with file not found error
     assert result == 1
@@ -493,9 +468,7 @@ def test_execute_permission_denied_file(
 ):
     # Test with permission denied file
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["s/test/TEST/", "/root/.ssh/id_rsa"]
-        )
+        result = command.execute(client=client, args=["s/test/TEST/", "/root/.ssh/id_rsa"])
 
     # Should either succeed or fail with permission error
     if result == 1:
@@ -562,9 +535,7 @@ def test_execute_output_format_validation(
 ):
     # Test output format validation
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["s/localhost/localserver/", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["s/localhost/localserver/", "/etc/hosts"])
 
     # Should produce properly formatted output
     if result == 0:
@@ -752,9 +723,7 @@ def test_execute_command_line_parsing(
 ):
     # Test command line parsing
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["s/test/TEST/", "/etc/hosts", "/etc/passwd"]
-        )
+        result = command.execute(client=client, args=["s/test/TEST/", "/etc/hosts", "/etc/passwd"])
 
     # Should handle multiple input files
     if result == 0:

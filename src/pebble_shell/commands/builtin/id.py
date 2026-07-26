@@ -29,9 +29,7 @@ class IdCommand(Command):
     help = "Show user and group IDs"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the id command to show user and group IDs."""
         if handle_help_flag(self, args):
             return 0

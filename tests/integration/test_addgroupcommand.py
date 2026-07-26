@@ -82,9 +82,7 @@ def test_execute_add_group_basic(
         # Should fail if not root or group exists
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission", "denied", "root", "exist", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "root", "exist", "error"])
 
 
 def test_execute_system_group_option(
@@ -245,9 +243,7 @@ def test_execute_nonexistent_user(
     # Should fail with user not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["user", "not found", "does not exist", "error"]
-    )
+    assert any(msg in output for msg in ["user", "not found", "does not exist", "error"])
 
 
 def test_execute_nonexistent_target_group(
@@ -261,9 +257,7 @@ def test_execute_nonexistent_target_group(
     # Should fail with group not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["group", "not found", "does not exist", "error"]
-    )
+    assert any(msg in output for msg in ["group", "not found", "does not exist", "error"])
 
 
 def test_execute_permission_denied(
@@ -316,9 +310,7 @@ def test_execute_reserved_group_name(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["exist", "reserved", "permission", "error"]
-        )
+        assert any(msg in output for msg in ["exist", "reserved", "permission", "error"])
 
 
 def test_execute_gid_range_validation(
@@ -346,9 +338,7 @@ def test_execute_system_gid_range(
 ):
     # Test system GID range
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--system", "--gid", "999", "sysgroup"]
-        )
+        result = command.execute(client=client, args=["--system", "--gid", "999", "sysgroup"])
 
     # Should either succeed with system GID or fail
     if result == 0:

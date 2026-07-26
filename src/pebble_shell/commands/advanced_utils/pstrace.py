@@ -89,9 +89,7 @@ Examples:
             try:
                 pid = int(positional_args[0])
             except ValueError:
-                self.console.print(
-                    f"[red]pstrace: invalid PID '{positional_args[0]}'[/red]"
-                )
+                self.console.print(f"[red]pstrace: invalid PID '{positional_args[0]}'[/red]")
                 return 1
 
         try:

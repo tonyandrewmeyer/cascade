@@ -33,9 +33,7 @@ def test_help(command: pebble_shell.commands.DeluserCommand):
         command.show_help()
     output = capture.get()
     assert "deluser" in output
-    assert any(
-        phrase in output.lower() for phrase in ["delete", "remove", "user", "account"]
-    )
+    assert any(phrase in output.lower() for phrase in ["delete", "remove", "user", "account"])
 
 
 @pytest.mark.parametrize("args", [["-h"], ["--help"]])
@@ -49,9 +47,7 @@ def test_execute_help(
     assert result == 0
     output = capture.get()
     assert "deluser" in output
-    assert any(
-        phrase in output.lower() for phrase in ["delete", "remove", "user", "account"]
-    )
+    assert any(phrase in output.lower() for phrase in ["delete", "remove", "user", "account"])
 
 
 def test_execute_no_args(
@@ -79,10 +75,7 @@ def test_execute_delete_nonexistent_user(
     # Should fail with user not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["not found", "does not exist", "no such user", "error"]
-    )
+    assert any(msg in output for msg in ["not found", "does not exist", "no such user", "error"])
 
 
 def test_execute_delete_system_user(
@@ -103,8 +96,7 @@ def test_execute_delete_system_user(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["permission", "denied", "system", "protected", "error"]
+            msg in output for msg in ["permission", "denied", "system", "protected", "error"]
         )
 
 
@@ -168,9 +160,7 @@ def test_execute_backup_to_option(
     # Test backing up to specific location
     temp_dir = tempfile.mkdtemp()
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--backup-to", temp_dir, "testuser"]
-        )
+        result = command.execute(client=client, args=["--backup-to", temp_dir, "testuser"])
 
     # Should either succeed backing up to location or fail
     if result == 0:
@@ -310,9 +300,7 @@ def test_execute_root_user_protection(
     # Should fail with protection error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["protect", "cannot", "root", "system", "error"]
-    )
+    assert any(msg in output for msg in ["protect", "cannot", "root", "system", "error"])
 
 
 def test_execute_logged_in_user(
@@ -331,9 +319,7 @@ def test_execute_logged_in_user(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["logged in", "active", "not found", "error"]
-        )
+        assert any(msg in output for msg in ["logged in", "active", "not found", "error"])
 
 
 def test_execute_user_with_processes(
@@ -364,9 +350,7 @@ def test_execute_nonexistent_group(
     # Should fail with group not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["group", "not found", "does not exist", "error"]
-    )
+    assert any(msg in output for msg in ["group", "not found", "does not exist", "error"])
 
 
 def test_execute_permission_denied(
@@ -386,10 +370,7 @@ def test_execute_permission_denied(
         # Should fail if not root
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["permission", "denied", "root", "not found", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "root", "not found", "error"])
 
 
 def test_execute_invalid_option(
@@ -424,9 +405,7 @@ def test_execute_conflicting_options(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["conflict", "invalid", "not found", "error"]
-        )
+        assert any(msg in output for msg in ["conflict", "invalid", "not found", "error"])
 
 
 def test_execute_backup_invalid_location(
@@ -442,9 +421,7 @@ def test_execute_backup_invalid_location(
     # Should fail with invalid backup location
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["backup", "path", "not found", "invalid", "error"]
-    )
+    assert any(msg in output for msg in ["backup", "path", "not found", "invalid", "error"])
 
 
 def test_execute_memory_efficiency(

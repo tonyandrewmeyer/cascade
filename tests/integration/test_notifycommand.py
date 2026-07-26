@@ -71,9 +71,7 @@ def test_execute_simple_notification(
 ):
     # Test sending simple notification
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--type", "custom", "--key", "test.event"]
-        )
+        result = command.execute(client=client, args=["--type", "custom", "--key", "test.event"])
 
     # Should either succeed sending notification or fail if Pebble unavailable
     if result == 0:
@@ -126,8 +124,7 @@ def test_execute_notification_with_data(
         output = capture.get()
         # Should show notification sent with data
         assert any(
-            msg in output
-            for msg in ["Notification sent", "With data", "Data included", "Sent"]
+            msg in output for msg in ["Notification sent", "With data", "Data included", "Sent"]
         )
     else:
         assert result == 1
@@ -209,17 +206,14 @@ def test_execute_error_notification(
 ):
     # Test error notification
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--type", "error", "--key", "system.error"]
-        )
+        result = command.execute(client=client, args=["--type", "error", "--key", "system.error"])
 
     # Should either succeed with error notification or fail gracefully
     if result == 0:
         output = capture.get()
         # Should show error notification
         assert any(
-            msg in output
-            for msg in ["Error notification sent", "Error sent", "Notification sent"]
+            msg in output for msg in ["Error notification sent", "Error sent", "Notification sent"]
         )
     else:
         assert result == 1
@@ -311,9 +305,7 @@ def test_execute_json_data_format(
     if result == 0:
         output = capture.get()
         # Should send notification with JSON data
-        assert any(
-            msg in output for msg in ["Notification sent", "JSON data", "Data included"]
-        )
+        assert any(msg in output for msg in ["Notification sent", "JSON data", "Data included"])
     else:
         assert result == 1
 
@@ -339,10 +331,7 @@ def test_execute_malformed_json_data(
     # Should fail with JSON parsing error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["invalid JSON", "malformed data", "JSON error", "error"]
-    )
+    assert any(msg in output for msg in ["invalid JSON", "malformed data", "JSON error", "error"])
 
 
 def test_execute_string_data_format(
@@ -367,10 +356,7 @@ def test_execute_string_data_format(
     if result == 0:
         output = capture.get()
         # Should send notification with string data
-        assert any(
-            msg in output
-            for msg in ["Notification sent", "String data", "Data included"]
-        )
+        assert any(msg in output for msg in ["Notification sent", "String data", "Data included"])
     else:
         assert result == 1
 
@@ -435,8 +421,7 @@ def test_execute_zero_repeat_count(
         output = capture.get()
         # Should handle zero repeat (no notifications)
         assert any(
-            msg in output
-            for msg in ["0 notifications sent", "No notifications", "Zero repeat"]
+            msg in output for msg in ["0 notifications sent", "No notifications", "Zero repeat"]
         )
     else:
         assert result == 1
@@ -466,9 +451,7 @@ def test_execute_delay_option(
     if result == 0:
         output = capture.get()
         # Should send notifications with delay
-        assert any(
-            msg in output for msg in ["notifications sent", "With delay", "Delayed"]
-        )
+        assert any(msg in output for msg in ["notifications sent", "With delay", "Delayed"])
     else:
         assert result == 1
 
@@ -514,9 +497,7 @@ def test_execute_invalid_priority(
     # Should fail with invalid priority error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["invalid priority", "unknown priority", "error"]
-    )
+    assert any(msg in output for msg in ["invalid priority", "unknown priority", "error"])
 
 
 def test_execute_expiry_option(
@@ -534,10 +515,7 @@ def test_execute_expiry_option(
     if result == 0:
         output = capture.get()
         # Should send notification with expiry
-        assert any(
-            msg in output
-            for msg in ["Notification sent", "Expiry set", "TTL configured"]
-        )
+        assert any(msg in output for msg in ["Notification sent", "Expiry set", "TTL configured"])
     else:
         assert result == 1
 
@@ -626,9 +604,7 @@ def test_execute_pebble_connection_handling(
 ):
     # Test Pebble connection handling
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--type", "custom", "--key", "test.event"]
-        )
+        result = command.execute(client=client, args=["--type", "custom", "--key", "test.event"])
 
     # Should handle Pebble connection appropriately
     if result == 0:
@@ -639,10 +615,7 @@ def test_execute_pebble_connection_handling(
         # Should fail gracefully if connection issues
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["Connection failed", "Pebble not available", "error"]
-        )
+        assert any(msg in output for msg in ["Connection failed", "Pebble not available", "error"])
 
 
 def test_execute_notification_queuing(
@@ -659,9 +632,7 @@ def test_execute_notification_queuing(
     if result == 0:
         output = capture.get()
         # Should queue notification
-        assert any(
-            msg in output for msg in ["Notification queued", "Added to queue", "Queued"]
-        )
+        assert any(msg in output for msg in ["Notification queued", "Added to queue", "Queued"])
     else:
         assert result == 1
 
@@ -680,9 +651,7 @@ def test_execute_notification_deduplication(
     if result == 0:
         output = capture.get()
         # Should handle deduplication
-        assert any(
-            msg in output for msg in ["Notification sent", "Deduplicated", "Unique"]
-        )
+        assert any(msg in output for msg in ["Notification sent", "Deduplicated", "Unique"])
     else:
         assert result == 1
 
@@ -701,9 +670,7 @@ def test_execute_async_notification(
     if result == 0:
         output = capture.get()
         # Should send notification asynchronously
-        assert any(
-            msg in output for msg in ["Notification sent", "Async", "Background"]
-        )
+        assert any(msg in output for msg in ["Notification sent", "Async", "Background"])
     else:
         assert result == 1
 
@@ -752,9 +719,7 @@ def test_execute_memory_efficiency(
 ):
     # Test memory efficiency with notifications
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--type", "custom", "--key", "test.event"]
-        )
+        result = command.execute(client=client, args=["--type", "custom", "--key", "test.event"])
 
     # Should be memory efficient
     if result == 0:

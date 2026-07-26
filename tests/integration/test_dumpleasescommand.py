@@ -33,8 +33,7 @@ def test_help(command: pebble_shell.commands.DumpleasesCommand):
         command.show_help()
     output = capture.get()
     assert any(
-        phrase in output.lower()
-        for phrase in ["dump", "lease", "dhcp", "network", "address"]
+        phrase in output.lower() for phrase in ["dump", "lease", "dhcp", "network", "address"]
     )
 
 
@@ -48,9 +47,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["dump", "lease", "dhcp", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["dump", "lease", "dhcp", "usage"])
 
 
 def test_execute_no_lease_file_specified(
@@ -78,9 +75,7 @@ def test_execute_nonexistent_lease_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not found", "no such file", "error", "cannot open"]
-    )
+    assert any(msg in output for msg in ["not found", "no such file", "error", "cannot open"])
 
 
 def test_execute_default_lease_file(
@@ -112,9 +107,7 @@ def test_execute_default_lease_file(
         # Should fail with file not found or permission error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "permission", "denied", "error"]
-        )
+        assert any(msg in output for msg in ["not found", "permission", "denied", "error"])
 
 
 def test_execute_alternative_lease_file(
@@ -234,9 +227,7 @@ def test_execute_verbose_mode(
 ):
     # Test verbose mode (if supported)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-v", "/var/lib/dhcp/dhcpd.leases"]
-        )
+        result = command.execute(client=client, args=["-v", "/var/lib/dhcp/dhcpd.leases"])
 
     # Should either succeed with verbose output or fail with option error
     if result == 0:
@@ -256,9 +247,7 @@ def test_execute_absolute_time_mode(
 ):
     # Test absolute time mode (if supported)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-a", "/var/lib/dhcp/dhcpd.leases"]
-        )
+        result = command.execute(client=client, args=["-a", "/var/lib/dhcp/dhcpd.leases"])
 
     # Should either succeed with absolute times or fail
     if result == 0:
@@ -306,8 +295,7 @@ def test_execute_active_leases_only(
         if len(output) > 0:
             # Should contain active lease information
             has_active = any(
-                status in output.lower()
-                for status in ["active", "binding", "free", "backup"]
+                status in output.lower() for status in ["active", "binding", "free", "backup"]
             )
             if has_active:
                 assert has_active
@@ -332,8 +320,7 @@ def test_execute_lease_time_parsing(
         if len(output) > 0:
             # Should contain time information
             has_time = any(
-                time_field in output.lower()
-                for time_field in ["starts", "ends", "tstp", "cltt"]
+                time_field in output.lower() for time_field in ["starts", "ends", "tstp", "cltt"]
             )
             if has_time:
                 assert has_time
@@ -374,9 +361,7 @@ def test_execute_invalid_option(
 ):
     # Test invalid option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-z", "/var/lib/dhcp/dhcpd.leases"]
-        )
+        result = command.execute(client=client, args=["-z", "/var/lib/dhcp/dhcpd.leases"])
 
     # Should fail with invalid option error
     assert result == 1
@@ -403,9 +388,7 @@ def test_execute_multiple_lease_files(
         # Should fail with file not found or argument error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "argument", "error", "multiple"]
-        )
+        assert any(msg in output for msg in ["not found", "argument", "error", "multiple"])
 
 
 def test_execute_symlink_handling(
@@ -414,9 +397,7 @@ def test_execute_symlink_handling(
 ):
     # Test symbolic link handling
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/var/run/dhcpd.leases"]
-        )  # Often a symlink
+        result = command.execute(client=client, args=["/var/run/dhcpd.leases"])  # Often a symlink
 
     # Should either succeed following symlinks or fail
     if result == 0:
@@ -455,9 +436,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["not found", "error", "invalid", "cannot open"]
-    )
+    assert any(msg in output for msg in ["not found", "error", "invalid", "cannot open"])
 
 
 def test_execute_signal_handling(
@@ -516,6 +495,4 @@ def test_execute_cross_platform_compatibility(
         # Should fail consistently across platforms
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "error", "permission", "access"]
-        )
+        assert any(msg in output for msg in ["not found", "error", "permission", "access"])

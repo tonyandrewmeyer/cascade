@@ -34,8 +34,7 @@ def test_help(command: pebble_shell.commands.ScriptCommand):
     output = capture.get()
     assert "script" in output
     assert any(
-        phrase in output.lower()
-        for phrase in ["record", "terminal", "session", "typescript"]
+        phrase in output.lower() for phrase in ["record", "terminal", "session", "typescript"]
     )
 
 
@@ -51,8 +50,7 @@ def test_execute_help(
     output = capture.get()
     assert "script" in output
     assert any(
-        phrase in output.lower()
-        for phrase in ["record", "terminal", "session", "typescript"]
+        phrase in output.lower() for phrase in ["record", "terminal", "session", "typescript"]
     )
 
 
@@ -72,8 +70,7 @@ def test_execute_no_args_default_file(
         if len(output) > 0:
             # Should mention typescript or recording
             assert any(
-                word in output.lower()
-                for word in ["script", "started", "recording", "typescript"]
+                word in output.lower() for word in ["script", "started", "recording", "typescript"]
             )
     else:
         # Should fail with usage message
@@ -110,9 +107,7 @@ def test_execute_append_mode(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test append mode
-    with tempfile.NamedTemporaryFile(
-        suffix="_append_session.txt", delete=False
-    ) as append_file:
+    with tempfile.NamedTemporaryFile(suffix="_append_session.txt", delete=False) as append_file:
         append_path = append_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-a", append_path])
@@ -124,9 +119,7 @@ def test_execute_append_mode(
         assert len(output) >= 0
         if len(output) > 0:
             # Should mention append or recording
-            assert any(
-                word in output.lower() for word in ["append", "script", "recording"]
-            )
+            assert any(word in output.lower() for word in ["append", "script", "recording"])
     else:
         assert result == 1
 
@@ -138,9 +131,7 @@ def test_execute_timing_option(
     # Test timing information recording
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-t", timing_path, session_path])
@@ -152,9 +143,7 @@ def test_execute_timing_option(
         assert len(output) >= 0
         if len(output) > 0:
             # Should mention timing or recording
-            assert any(
-                word in output.lower() for word in ["timing", "script", "recording"]
-            )
+            assert any(word in output.lower() for word in ["timing", "script", "recording"])
     else:
         assert result == 1
 
@@ -164,9 +153,7 @@ def test_execute_quiet_mode(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test quiet mode
-    with tempfile.NamedTemporaryFile(
-        suffix="_quiet_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_quiet_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-q", tmp_name])
@@ -185,9 +172,7 @@ def test_execute_command_option(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test running specific command
-    with tempfile.NamedTemporaryFile(
-        suffix="_command_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_command_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-c", "echo hello", tmp_name])
@@ -209,9 +194,7 @@ def test_execute_flush_option(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test flush output option
-    with tempfile.NamedTemporaryFile(
-        suffix="_flush_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_flush_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-f", tmp_name])
@@ -230,9 +213,7 @@ def test_execute_return_option(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test return child exit code option
-    with tempfile.NamedTemporaryFile(
-        suffix="_return_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_return_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-e", tmp_name])
@@ -277,9 +258,7 @@ def test_execute_invalid_output_file(
     # Should fail with file creation error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["cannot", "create", "path", "directory", "error"]
-    )
+    assert any(msg in output for msg in ["cannot", "create", "path", "directory", "error"])
 
 
 def test_execute_permission_denied_file(
@@ -339,9 +318,7 @@ def test_execute_conflicting_options(
     with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-a", "-c", "echo test", tmp_name]
-        )
+        result = command.execute(client=client, args=["-a", "-c", "echo test", tmp_name])
 
     # Should either handle conflicts or fail appropriately
     if result == 0:
@@ -357,9 +334,7 @@ def test_execute_terminal_handling(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test terminal handling
-    with tempfile.NamedTemporaryFile(
-        suffix="_terminal_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_terminal_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=[tmp_name])
@@ -379,9 +354,7 @@ def test_execute_pty_allocation(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test PTY allocation
-    with tempfile.NamedTemporaryFile(
-        suffix="_pty_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_pty_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=[tmp_name])
@@ -401,9 +374,7 @@ def test_execute_signal_handling(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test signal handling during recording
-    with tempfile.NamedTemporaryFile(
-        suffix="_signal_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_signal_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-c", "echo test", tmp_name])
@@ -421,9 +392,7 @@ def test_execute_subprocess_management(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test subprocess management
-    with tempfile.NamedTemporaryFile(
-        suffix="_subprocess_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_subprocess_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-c", "sleep 0.1", tmp_name])
@@ -442,9 +411,7 @@ def test_execute_io_redirection(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test I/O redirection handling
-    with tempfile.NamedTemporaryFile(
-        suffix="_io_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_io_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-c", "echo input", tmp_name])
@@ -463,9 +430,7 @@ def test_execute_environment_preservation(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test environment preservation
-    with tempfile.NamedTemporaryFile(
-        suffix="_env_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_env_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-c", "echo $HOME", tmp_name])
@@ -484,9 +449,7 @@ def test_execute_memory_efficiency(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test memory efficiency
-    with tempfile.NamedTemporaryFile(
-        suffix="_memory_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_memory_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-c", "echo test", tmp_name])
@@ -522,14 +485,10 @@ def test_execute_concurrent_execution(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test concurrent execution safety
-    with tempfile.NamedTemporaryFile(
-        suffix="_concurrent_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_concurrent_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-c", "echo concurrent", tmp_name]
-        )
+        result = command.execute(client=client, args=["-c", "echo concurrent", tmp_name])
 
     # Should handle concurrent execution safely
     if result == 0:
@@ -544,9 +503,7 @@ def test_execute_cross_platform_compatibility(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test cross-platform compatibility
-    with tempfile.NamedTemporaryFile(
-        suffix="_platform_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_platform_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-c", "echo platform", tmp_name])
@@ -565,9 +522,7 @@ def test_execute_file_format_validation(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test output file format validation
-    with tempfile.NamedTemporaryFile(
-        suffix="_format_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_format_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-c", "echo format", tmp_name])
@@ -586,9 +541,7 @@ def test_execute_session_cleanup(
     command: pebble_shell.commands.ScriptCommand,
 ):
     # Test session cleanup
-    with tempfile.NamedTemporaryFile(
-        suffix="_cleanup_session.txt", delete=False
-    ) as tmp_file:
+    with tempfile.NamedTemporaryFile(suffix="_cleanup_session.txt", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-c", "echo cleanup", tmp_name])

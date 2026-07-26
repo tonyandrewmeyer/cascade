@@ -100,9 +100,7 @@ class TestSafePebbleOperation:
         def test_operation():
             raise ops.pebble.PathError("kind", "Not found")
 
-        result = safe_pebble_operation(
-            console, test_operation, "test operation", "/test/path"
-        )
+        result = safe_pebble_operation(console, test_operation, "test operation", "/test/path")
 
         assert result is None
         console.print.assert_called_once()
@@ -231,9 +229,7 @@ class TestShowUsageError:
         """Test showing usage error with additional message."""
         console = MagicMock(spec=Console)
 
-        result = show_usage_error(
-            console, "ls", "ls [options] [file...]", "invalid option"
-        )
+        result = show_usage_error(console, "ls", "ls [options] [file...]", "invalid option")
 
         assert result == 1
         assert console.print.call_count == 2

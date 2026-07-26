@@ -203,9 +203,7 @@ class ShellHistory:
         old_text, new_text = parts
         last_command = self.history[-1]
         if old_text not in last_command:
-            raise HistoryExpansionError(
-                f"'{old_text}' not found in last command: {last_command}"
-            )
+            raise HistoryExpansionError(f"'{old_text}' not found in last command: {last_command}")
         return last_command.replace(old_text, new_text, 1)
 
     def _expand_bang_history(self, command: str) -> str:
@@ -269,16 +267,9 @@ class ShellHistory:
             return []
 
         start_idx = 0 if start is None else max(0, start - 1)  # Convert to 0-based
-        end_idx = (
-            len(self.history)
-            if count is None
-            else min(len(self.history), start_idx + count)
-        )
+        end_idx = len(self.history) if count is None else min(len(self.history), start_idx + count)
 
-        return [
-            (i + 1, cmd)
-            for i, cmd in enumerate(self.history[start_idx:end_idx], start_idx)
-        ]
+        return [(i + 1, cmd) for i, cmd in enumerate(self.history[start_idx:end_idx], start_idx)]
 
 
 class HistoryExpansionError(Exception):
@@ -299,9 +290,7 @@ def get_shell_history() -> ShellHistory:
     return _shell_history  # type: ignore[return-value]
 
 
-def init_shell_history(
-    max_size: int = 1000, history_file: str | None = None
-) -> ShellHistory:
+def init_shell_history(max_size: int = 1000, history_file: str | None = None) -> ShellHistory:
     """Initialize the global shell history.
 
     Args:

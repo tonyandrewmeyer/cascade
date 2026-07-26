@@ -52,9 +52,7 @@ Examples:
             try:
                 net_dev = read_proc_file(client, "/proc/net/dev")
             except ProcReadError:
-                self.console.print(
-                    "[red]iplink: cannot read network interface information[/red]"
-                )
+                self.console.print("[red]iplink: cannot read network interface information[/red]")
                 return 1
 
             lines = net_dev.strip().split("\n")
@@ -67,14 +65,8 @@ Examples:
                         # Get interface flags and info
                         try:
                             operstate_path = f"/sys/class/net/{iface_name}/operstate"
-                            operstate = safe_read_file(
-                                client, operstate_path, self.shell
-                            )
-                            state = (
-                                "UP"
-                                if operstate and operstate.strip() == "up"
-                                else "DOWN"
-                            )
+                            operstate = safe_read_file(client, operstate_path, self.shell)
+                            state = "UP" if operstate and operstate.strip() == "up" else "DOWN"
                         except Exception:
                             # Broad exception needed for network interface probing
                             state = "UNKNOWN"
@@ -90,9 +82,7 @@ Examples:
                         try:
                             addr_path = f"/sys/class/net/{iface_name}/address"
                             mac_addr = safe_read_file(client, addr_path, self.shell)
-                            mac_addr = (
-                                mac_addr.strip() if mac_addr else "00:00:00:00:00:00"
-                            )
+                            mac_addr = mac_addr.strip() if mac_addr else "00:00:00:00:00:00"
                         except Exception:
                             # Broad exception needed for network interface probing
                             mac_addr = "00:00:00:00:00:00"
@@ -106,9 +96,7 @@ Examples:
                         self.console.print(
                             f"{index}: {iface_name}: <{flags}> mtu {mtu_value} qdisc noqueue state {state}"
                         )
-                        self.console.print(
-                            f"    link/ether {mac_addr} brd ff:ff:ff:ff:ff:ff"
-                        )
+                        self.console.print(f"    link/ether {mac_addr} brd ff:ff:ff:ff:ff:ff")
                         index += 1
 
             return 0

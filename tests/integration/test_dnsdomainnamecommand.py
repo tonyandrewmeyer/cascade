@@ -32,9 +32,7 @@ def test_help(command: pebble_shell.commands.DnsdomainnameCommand):
         command.show_help()
     output = capture.get()
     assert "dnsdomainname" in output
-    assert any(
-        phrase in output.lower() for phrase in ["dns", "domain", "name", "hostname"]
-    )
+    assert any(phrase in output.lower() for phrase in ["dns", "domain", "name", "hostname"])
 
 
 @pytest.mark.parametrize("args", [["-h"], ["--help"]])
@@ -48,9 +46,7 @@ def test_execute_help(
     assert result == 0
     output = capture.get()
     assert "dnsdomainname" in output
-    assert any(
-        phrase in output.lower() for phrase in ["dns", "domain", "name", "hostname"]
-    )
+    assert any(phrase in output.lower() for phrase in ["dns", "domain", "name", "hostname"])
 
 
 def test_execute_no_args_show_domain(

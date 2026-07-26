@@ -14,9 +14,7 @@ def pytest_configure(config):
         "markers", "slow: marks tests as slow (deselect with '-m \"not slow\"')"
     )
     config.addinivalue_line("markers", "integration: marks tests as integration tests")
-    config.addinivalue_line(
-        "markers", "pebble: marks tests that require a Pebble server"
-    )
+    config.addinivalue_line("markers", "pebble: marks tests that require a Pebble server")
 
 
 def pytest_collection_modifyitems(config, items):
@@ -121,6 +119,4 @@ def pytest_addoption(parser):
 
 def pytest_ignore_collect(collection_path, config):
     """Skip integration tests if not explicitly requested."""
-    return "test_integration" in str(collection_path) and not config.getoption(
-        "--run-slow"
-    )
+    return "test_integration" in str(collection_path) and not config.getoption("--run-slow")

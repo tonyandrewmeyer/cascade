@@ -90,10 +90,7 @@ def test_execute_single_check_details(
         # Should fail if check doesn't exist or Pebble unavailable
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["Check operation failed", "check not found", "error"]
-        )
+        assert any(msg in output for msg in ["Check operation failed", "check not found", "error"])
 
 
 def test_execute_nonexistent_check(
@@ -144,9 +141,7 @@ def test_execute_check_status_display(
         # Should show status information
         if "Status:" in output:
             # Should contain status values like up, down, unknown
-            assert any(
-                status in output for status in ["up", "down", "unknown", "Status:"]
-            )
+            assert any(status in output for status in ["up", "down", "unknown", "Status:"])
     else:
         assert result == 1
 
@@ -372,9 +367,7 @@ def test_execute_check_user_group_display(
     if result == 0:
         output = capture.get()
         # Should show user/group configuration
-        if any(
-            field in output for field in ["User:", "Group:", "User-ID:", "Group-ID:"]
-        ):
+        if any(field in output for field in ["User:", "Group:", "User-ID:", "Group-ID:"]):
             # Should contain user/group information
             pass
     else:
@@ -549,9 +542,7 @@ def test_execute_special_characters_in_check_name(
 ):
     # Test check names with special characters
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["check-with-dashes_and_underscores"]
-        )
+        result = command.execute(client=client, args=["check-with-dashes_and_underscores"])
 
     # Should either handle special characters or fail appropriately
     assert result in [0, 1]
@@ -581,9 +572,7 @@ def test_execute_api_error_handling(
     # Should handle API errors gracefully
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Check operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Check operation failed", "error", "failed"])
     else:
         # Should succeed if Pebble API is available
         assert result == 0
@@ -601,8 +590,7 @@ def test_execute_permission_handling(
     if result == 1:
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["permission denied", "Check operation failed", "error"]
+            msg in output for msg in ["permission denied", "Check operation failed", "error"]
         )
     else:
         assert result == 0

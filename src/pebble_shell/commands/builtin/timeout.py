@@ -23,16 +23,12 @@ class TimeoutCommand(Command):
     help = "Run a command with a time limit. Usage: timeout SECONDS COMMAND [ARGS...]"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the timeout command to run commands with time constraints."""
         if handle_help_flag(self, args):
             return 0
         if not args or len(args) < 3:
-            self.console.print(
-                "Usage: timeout [--preserve-status] SECONDS COMMAND [ARGS...]"
-            )
+            self.console.print("Usage: timeout [--preserve-status] SECONDS COMMAND [ARGS...]")
             return 1
         try:
             seconds = float(args[0])

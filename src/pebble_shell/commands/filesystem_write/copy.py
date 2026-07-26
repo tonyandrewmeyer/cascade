@@ -33,9 +33,7 @@ class CopyCommand(Command):
     help = "Copy files and directories. Usage: cp [-r] <source> <destination> or cp [-r] <source1> [source2...] <directory>"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute cp command."""
         if handle_help_flag(self, args):
             return 0
@@ -60,9 +58,7 @@ class CopyCommand(Command):
 
         expanded_sources: list[str] = []
         for source in source_files:
-            expanded = expand_globs_in_tokens(
-                client, [source], self.shell.current_directory
-            )
+            expanded = expand_globs_in_tokens(client, [source], self.shell.current_directory)
             if expanded:
                 expanded_sources.extend(expanded)
             else:
@@ -77,15 +73,11 @@ class CopyCommand(Command):
             resolve_path(self.shell.current_directory, f, self.shell.home_dir)
             for f in expanded_sources
         ]
-        destination = resolve_path(
-            self.shell.current_directory, destination, self.shell.home_dir
-        )
+        destination = resolve_path(self.shell.current_directory, destination, self.shell.home_dir)
 
         # Check if destination is directory
         dest_info = get_file_info(client, destination)
-        dest_is_dir = (
-            dest_info is not None and dest_info.type == ops.pebble.FileType.DIRECTORY
-        )
+        dest_is_dir = dest_info is not None and dest_info.type == ops.pebble.FileType.DIRECTORY
 
         if len(sources) > 1 and not dest_is_dir:
             self.console.print("cp: target is not a directory")

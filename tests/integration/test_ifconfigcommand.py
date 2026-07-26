@@ -89,8 +89,7 @@ def test_execute_show_all_interfaces_verbose(
     # Should show interface details
     assert (
         any(
-            keyword in output.lower()
-            for keyword in ["inet", "ether", "mtu", "flags", "interface"]
+            keyword in output.lower() for keyword in ["inet", "ether", "mtu", "flags", "interface"]
         )
         or len(output.strip()) >= 0
     )
@@ -111,10 +110,7 @@ def test_execute_specific_interface_loopback(
     assert len(output.strip()) > 0
     # Should contain loopback-specific information
     assert (
-        any(
-            indicator in output.lower()
-            for indicator in ["127.0.0.1", "loopback", "lo", "inet"]
-        )
+        any(indicator in output.lower() for indicator in ["127.0.0.1", "loopback", "lo", "inet"])
         or len(output.strip()) >= 0
     )
 
@@ -131,8 +127,7 @@ def test_execute_nonexistent_interface(
     if result == 1:
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["No such device", "not found", "error", "does not exist"]
+            msg in output for msg in ["No such device", "not found", "error", "does not exist"]
         )
     else:
         # May succeed with empty output
@@ -156,9 +151,7 @@ def test_execute_interface_up_configuration(
         # Should fail if no permission or interface management not available
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission", "denied", "not permitted", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "not permitted", "error"])
 
 
 def test_execute_interface_down_configuration(
@@ -178,9 +171,7 @@ def test_execute_interface_down_configuration(
         # Should fail if no permission or interface management not available
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission", "denied", "not permitted", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "not permitted", "error"])
 
 
 def test_execute_ip_address_assignment(
@@ -227,9 +218,7 @@ def test_execute_broadcast_address_setting(
 ):
     # Test broadcast address setting
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["lo", "broadcast", "192.168.1.255"]
-        )
+        result = command.execute(client=client, args=["lo", "broadcast", "192.168.1.255"])
 
     # Should either succeed or fail with permission error
     if result == 0:
@@ -294,8 +283,7 @@ def test_execute_output_format_validation(
         _ = output.strip().split("\n")
         # Should contain interface-related information
         assert any(
-            keyword in output.lower()
-            for keyword in ["inet", "ether", "flags", "mtu", "lo", "eth"]
+            keyword in output.lower() for keyword in ["inet", "ether", "flags", "mtu", "lo", "eth"]
         )
 
 
@@ -314,8 +302,7 @@ def test_execute_ipv6_support(
     if "inet6" in output.lower():
         # Should display IPv6 addresses properly
         assert any(
-            ipv6_indicator in output.lower()
-            for ipv6_indicator in ["::1", "inet6", "scope"]
+            ipv6_indicator in output.lower() for ipv6_indicator in ["::1", "inet6", "scope"]
         )
 
 
@@ -406,9 +393,7 @@ def test_execute_invalid_ip_address_format(
     # Should fail with invalid IP address error
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["invalid", "address", "error", "bad", "format"]
-        )
+        assert any(msg in output for msg in ["invalid", "address", "error", "bad", "format"])
     else:
         # May succeed if validation is minimal
         assert result == 0
@@ -425,9 +410,7 @@ def test_execute_invalid_netmask_format(
     # Should fail with invalid netmask error
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["invalid", "netmask", "error", "bad", "format"]
-        )
+        assert any(msg in output for msg in ["invalid", "netmask", "error", "bad", "format"])
     else:
         # May succeed if validation is minimal
         assert result == 0
@@ -446,8 +429,7 @@ def test_execute_permission_handling(
         output = capture.get()
         # Should show permission-related error
         assert any(
-            msg in output
-            for msg in ["permission", "denied", "not permitted", "root", "error"]
+            msg in output for msg in ["permission", "denied", "not permitted", "root", "error"]
         )
     else:
         # May succeed if running with appropriate privileges
@@ -498,10 +480,7 @@ def test_execute_error_recovery(
     if result == 1:
         output = capture.get()
         # Should provide meaningful error message
-        assert any(
-            msg in output
-            for msg in ["No such device", "not found", "error", "interface"]
-        )
+        assert any(msg in output for msg in ["No such device", "not found", "error", "interface"])
     else:
         # May succeed with empty output
         assert result == 0

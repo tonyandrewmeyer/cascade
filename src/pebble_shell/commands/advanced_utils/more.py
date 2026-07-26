@@ -107,16 +107,14 @@ Examples:
             return 0
 
         except ops.pebble.PathError:
-            self.console.print(
-                f"[red]more: cannot open '{file_path}': No such file[/red]"
-            )
+            self.console.print(f"[red]more: cannot open '{file_path}': No such file[/red]")
             return 1
         except Exception as e:
             self.console.print(f"[red]more: {e}[/red]")
             return 1
 
     def _simple_paginate(self, lines: list[str], show_help: bool):
-        """Simple pagination for more command."""
+        """Return simple pagination for more command."""
         page_size = 20
         current_line = 0
 
@@ -143,9 +141,7 @@ Examples:
                 if user_input.lower() == "q":
                     break
                 elif user_input.lower() == "h":
-                    self.console.print(
-                        "\nHelp: Space=next page, Enter=next line, q=quit, h=help"
-                    )
+                    self.console.print("\nHelp: Space=next page, Enter=next line, q=quit, h=help")
                     continue
                 elif user_input == "":  # Enter for next line
                     current_line += 1

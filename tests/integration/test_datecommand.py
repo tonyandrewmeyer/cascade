@@ -55,9 +55,7 @@ def test_execute_basic(
     assert result == 0
     # Expected output is like:
     # Sat Jul 26 12:57:42  2025
-    output_time = datetime.datetime.strptime(
-        capture.get().strip(), "%a %b %d %H:%M:%S %Y"
-    )
+    output_time = datetime.datetime.strptime(capture.get().strip(), "%a %b %d %H:%M:%S %Y")
     assert (datetime.datetime.now() - output_time) < datetime.timedelta(seconds=5)
 
 

@@ -109,9 +109,7 @@ def test_execute_regular_file_not_symlink(
     # Should fail since /etc/passwd is typically not a symlink
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not a symbolic link", "not a symlink", "invalid"]
-    )
+    assert any(msg in output for msg in ["not a symbolic link", "not a symlink", "invalid"])
 
 
 def test_execute_canonicalize_option_short(

@@ -150,9 +150,7 @@ Examples:
 
         except ops.pebble.PathError:
             self.console.print(
-                get_theme().error_text(
-                    f"split: {input_file}: No such file or directory"
-                )
+                get_theme().error_text(f"split: {input_file}: No such file or directory")
             )
             return 1
         except Exception as e:
@@ -268,9 +266,7 @@ Examples:
             if current_size + line_size > bytes_per_line and current_chunk:
                 # Save current chunk
                 chunk_content = "".join(current_chunk)
-                suffix = self._generate_suffix(
-                    file_index, suffix_length, numeric_suffix
-                )
+                suffix = self._generate_suffix(file_index, suffix_length, numeric_suffix)
                 output_filename = f"{prefix}{suffix}"
 
                 if verbose:

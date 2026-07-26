@@ -31,9 +31,7 @@ class PebblesayCommand(Command):
     help = "Display ASCII art with a speech bubble. Usage: pebblesay MESSAGE"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the pebblesay command to display ASCII art with messages."""
         if handle_help_flag(self, args):
             return 0
@@ -140,9 +138,7 @@ class PebblesayCommand(Command):
             line = Text()
             for col in range(width):
                 # Create pebble placement with better distribution
-                pebble_probability = self._get_pebble_probability(
-                    row, col, height, width
-                )
+                pebble_probability = self._get_pebble_probability(row, col, height, width)
 
                 if random.random() < pebble_probability:  # noqa: S311
                     char, style = random.choice(pebble_chars)  # noqa: S311
@@ -163,9 +159,7 @@ class PebblesayCommand(Command):
 
         return art
 
-    def _get_pebble_probability(
-        self, row: int, col: int, height: int, width: int
-    ) -> float:
+    def _get_pebble_probability(self, row: int, col: int, height: int, width: int) -> float:
         # Create a more natural distribution
         center_x, center_y = width // 2, height // 2
 

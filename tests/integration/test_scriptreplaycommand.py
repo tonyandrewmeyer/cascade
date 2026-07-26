@@ -33,10 +33,7 @@ def test_help(command: pebble_shell.commands.ScriptreplayCommand):
         command.show_help()
     output = capture.get()
     assert "scriptreplay" in output
-    assert any(
-        phrase in output.lower()
-        for phrase in ["replay", "script", "timing", "typescript"]
-    )
+    assert any(phrase in output.lower() for phrase in ["replay", "script", "timing", "typescript"])
 
 
 @pytest.mark.parametrize("args", [["-h"], ["--help"]])
@@ -50,10 +47,7 @@ def test_execute_help(
     assert result == 0
     output = capture.get()
     assert "scriptreplay" in output
-    assert any(
-        phrase in output.lower()
-        for phrase in ["replay", "script", "timing", "typescript"]
-    )
+    assert any(phrase in output.lower() for phrase in ["replay", "script", "timing", "typescript"])
 
 
 def test_execute_no_args(
@@ -92,8 +86,7 @@ def test_execute_replay_with_timing_file(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["No such file", "cannot", "error", "not found", "invalid"]
+            msg in output for msg in ["No such file", "cannot", "error", "not found", "invalid"]
         )
 
 
@@ -124,14 +117,10 @@ def test_execute_speed_divisor_option(
     # Test speed divisor option
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-d", "2", timing_path, session_path]
-        )
+        result = command.execute(client=client, args=["-d", "2", timing_path, session_path])
 
     # Should either succeed with speed divisor or fail gracefully
     if result == 0:
@@ -149,14 +138,10 @@ def test_execute_speed_multiplier_option(
     # Test speed multiplier option
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-m", "2", timing_path, session_path]
-        )
+        result = command.execute(client=client, args=["-m", "2", timing_path, session_path])
 
     # Should either succeed with speed multiplier or fail gracefully
     if result == 0:
@@ -174,9 +159,7 @@ def test_execute_timing_option(
     # Test timing option
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-t", timing_path, session_path])
@@ -195,9 +178,7 @@ def test_execute_stdout_option(
     command: pebble_shell.commands.ScriptreplayCommand,
 ):
     # Test stdout option
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
@@ -220,14 +201,10 @@ def test_execute_maxdelay_option(
     # Test maximum delay option
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-M", "1", timing_path, session_path]
-        )
+        result = command.execute(client=client, args=["-M", "1", timing_path, session_path])
 
     # Should either succeed with max delay or fail gracefully
     if result == 0:
@@ -243,21 +220,15 @@ def test_execute_nonexistent_timing_file(
     command: pebble_shell.commands.ScriptreplayCommand,
 ):
     # Test with nonexistent timing file
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/nonexistent/timing.txt", session_path]
-        )
+        result = command.execute(client=client, args=["/nonexistent/timing.txt", session_path])
 
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_nonexistent_session_file(
@@ -268,16 +239,12 @@ def test_execute_nonexistent_session_file(
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=[timing_path, "/nonexistent/session.txt"]
-        )
+        result = command.execute(client=client, args=[timing_path, "/nonexistent/session.txt"])
 
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_invalid_timing_file(
@@ -285,9 +252,7 @@ def test_execute_invalid_timing_file(
     command: pebble_shell.commands.ScriptreplayCommand,
 ):
     # Test with invalid timing file format
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["/etc/passwd", session_path])
@@ -303,14 +268,10 @@ def test_execute_permission_denied_timing_file(
     command: pebble_shell.commands.ScriptreplayCommand,
 ):
     # Test with permission denied timing file
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/root/.ssh/id_rsa", session_path]
-        )
+        result = command.execute(client=client, args=["/root/.ssh/id_rsa", session_path])
 
     # Should either succeed or fail with permission error
     if result == 0:
@@ -320,10 +281,7 @@ def test_execute_permission_denied_timing_file(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["permission", "denied", "cannot", "error", "invalid"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "cannot", "error", "invalid"])
 
 
 def test_execute_permission_denied_session_file(
@@ -352,9 +310,7 @@ def test_execute_directory_as_timing_file(
     command: pebble_shell.commands.ScriptreplayCommand,
 ):
     # Test with directory instead of timing file
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["/etc", session_path])
@@ -388,14 +344,10 @@ def test_execute_invalid_speed_divisor(
     # Test invalid speed divisor
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-d", "abc", timing_path, session_path]
-        )
+        result = command.execute(client=client, args=["-d", "abc", timing_path, session_path])
 
     # Should fail with invalid divisor error
     assert result == 1
@@ -410,14 +362,10 @@ def test_execute_invalid_speed_multiplier(
     # Test invalid speed multiplier
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-m", "xyz", timing_path, session_path]
-        )
+        result = command.execute(client=client, args=["-m", "xyz", timing_path, session_path])
 
     # Should fail with invalid multiplier error
     assert result == 1
@@ -432,14 +380,10 @@ def test_execute_zero_speed_divisor(
     # Test zero speed divisor
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-d", "0", timing_path, session_path]
-        )
+        result = command.execute(client=client, args=["-d", "0", timing_path, session_path])
 
     # Should fail with zero divisor error
     assert result == 1
@@ -454,14 +398,10 @@ def test_execute_negative_speed_values(
     # Test negative speed values
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-d", "-2", timing_path, session_path]
-        )
+        result = command.execute(client=client, args=["-d", "-2", timing_path, session_path])
 
     # Should fail with negative value error
     assert result == 1
@@ -476,14 +416,10 @@ def test_execute_invalid_maxdelay(
     # Test invalid maximum delay
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-M", "invalid", timing_path, session_path]
-        )
+        result = command.execute(client=client, args=["-M", "invalid", timing_path, session_path])
 
     # Should fail with invalid delay error
     assert result == 1
@@ -498,9 +434,7 @@ def test_execute_invalid_option(
     # Test invalid option
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["-z", timing_path, session_path])
@@ -518,9 +452,7 @@ def test_execute_conflicting_options(
     # Test conflicting options
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(
@@ -542,9 +474,7 @@ def test_execute_timing_format_validation(
     command: pebble_shell.commands.ScriptreplayCommand,
 ):
     # Test timing format validation
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=["/dev/null", session_path])
@@ -581,9 +511,7 @@ def test_execute_terminal_compatibility(
     # Test terminal compatibility
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=[timing_path, session_path])
@@ -605,9 +533,7 @@ def test_execute_memory_efficiency(
     # Test memory efficiency
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=[timing_path, session_path])
@@ -645,9 +571,7 @@ def test_execute_signal_handling(
     # Test signal handling during replay
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=[timing_path, session_path])
@@ -667,9 +591,7 @@ def test_execute_concurrent_execution(
     # Test concurrent execution safety
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=[timing_path, session_path])
@@ -689,9 +611,7 @@ def test_execute_cross_platform_compatibility(
     # Test cross-platform compatibility
     with tempfile.NamedTemporaryFile(suffix="_timing.txt", delete=False) as timing_file:
         timing_path = timing_file.name
-    with tempfile.NamedTemporaryFile(
-        suffix="_session.txt", delete=False
-    ) as session_file:
+    with tempfile.NamedTemporaryFile(suffix="_session.txt", delete=False) as session_file:
         session_path = session_file.name
     with command.shell.console.capture() as capture:
         result = command.execute(client=client, args=[timing_path, session_path])

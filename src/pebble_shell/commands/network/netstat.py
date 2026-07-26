@@ -63,83 +63,91 @@ Note: This command shows information from the remote container environment.
         """
         self.shell.console.print(help_text)
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute netstat command."""
         # Parse arguments using common parsing code
         parse_result = parse_flags(
             args,
             {
-                "a": bool,              # all
+                "a": bool,  # all
                 "all": bool,
-                "l": bool,              # listening
+                "l": bool,  # listening
                 "listening": bool,
-                "n": bool,              # numeric
+                "n": bool,  # numeric
                 "numeric": bool,
                 "numeric-hosts": bool,
                 "numeric-ports": bool,
                 "numeric-users": bool,
-                "p": bool,              # program
+                "p": bool,  # program
                 "program": bool,
-                "t": bool,              # tcp
+                "t": bool,  # tcp
                 "tcp": bool,
-                "u": bool,              # udp
+                "u": bool,  # udp
                 "udp": bool,
-                "w": bool,              # raw
+                "w": bool,  # raw
                 "raw": bool,
-                "x": bool,              # unix
+                "x": bool,  # unix
                 "unix": bool,
-                "r": bool,              # route
+                "r": bool,  # route
                 "route": bool,
-                "i": bool,              # interfaces
+                "i": bool,  # interfaces
                 "interfaces": bool,
-                "g": bool,              # groups
+                "g": bool,  # groups
                 "groups": bool,
-                "s": bool,              # statistics
+                "s": bool,  # statistics
                 "statistics": bool,
-                "e": bool,              # extend
+                "e": bool,  # extend
                 "extend": bool,
-                "v": bool,              # verbose
+                "v": bool,  # verbose
                 "verbose": bool,
-                "c": bool,              # continuous
+                "c": bool,  # continuous
                 "continuous": bool,
-                "W": bool,              # wide
+                "W": bool,  # wide
                 "wide": bool,
-                "h": bool,              # help
+                "h": bool,  # help
                 "help": bool,
             },
             self.shell,
         )
         if parse_result is None:
             return 1
-        flags, positional_args = parse_result
-            
+        flags, _positional_args = parse_result
+
         if flags["h"] or flags["help"]:
             self.show_help()
             return 0
-            
+
         # Handle special modes
         if flags["r"] or flags["route"]:
-            self.shell.console.print("[yellow]netstat: --route mode not yet implemented. Use 'route' command.[/yellow]")
+            self.shell.console.print(
+                "[yellow]netstat: --route mode not yet implemented. Use 'route' command.[/yellow]"
+            )
             return 0
-            
+
         if flags["i"] or flags["interfaces"]:
-            self.shell.console.print("[yellow]netstat: --interfaces mode not yet implemented. Use 'ifconfig' command.[/yellow]")
+            self.shell.console.print(
+                "[yellow]netstat: --interfaces mode not yet implemented. Use 'ifconfig' command.[/yellow]"
+            )
             return 0
-            
+
         if flags["g"] or flags["groups"]:
-            self.shell.console.print("[yellow]netstat: --groups mode not yet implemented.[/yellow]")
+            self.shell.console.print(
+                "[yellow]netstat: --groups mode not yet implemented.[/yellow]"
+            )
             return 0
-            
+
         if flags["s"] or flags["statistics"]:
-            self.shell.console.print("[yellow]netstat: --statistics mode not yet implemented.[/yellow]")
+            self.shell.console.print(
+                "[yellow]netstat: --statistics mode not yet implemented.[/yellow]"
+            )
             return 0
-            
+
         if flags["c"] or flags["continuous"]:
-            self.shell.console.print("[yellow]netstat: --continuous mode not supported in this environment.[/yellow]")
+            self.shell.console.print(
+                "[yellow]netstat: --continuous mode not supported in this environment.[/yellow]"
+            )
             return 0
-            
+
         # Determine protocols to show
         protocols = []
         if flags["t"] or flags["tcp"]:
@@ -150,34 +158,34 @@ Note: This command shows information from the remote container environment.
             protocols.append("raw")
         if flags["x"] or flags["unix"]:
             protocols.append("unix")
-            
+
         # Default to TCP if no protocols specified
         if not protocols:
             protocols = ["tcp"]
-            
+
         # Show connections for each protocol
         for protocol in protocols:
             try:
                 connections = parse_proc_net_connections(client, protocol)
-                
+
                 # Filter based on listening/all flags
                 if flags["l"] or flags["listening"]:
                     # Show only listening connections
-                    connections = [c for c in connections if c.get('state') == 'LISTEN']
+                    connections = [c for c in connections if c.get("state") == "LISTEN"]
                 elif not (flags["a"] or flags["all"]):
                     # Default: show non-listening connections
-                    connections = [c for c in connections if c.get('state') != 'LISTEN']
+                    connections = [c for c in connections if c.get("state") != "LISTEN"]
                 # If -a/--all is specified, show all connections (no filtering)
-                
+
                 if connections:
                     self._display_connections(connections, protocol, flags)
                 elif flags["v"] or flags["verbose"]:
                     self.shell.console.print(f"No {protocol} connections found")
-                    
+
             except ProcReadError as e:
                 if flags["v"] or flags["verbose"]:
                     self.shell.console.print(f"Error reading {protocol} connections: {e}")
-                
+
         return 0
 
     def _display_connections(self, connections: list[dict[str, str]], protocol: str, flags: dict):
@@ -200,7 +208,7 @@ Note: This command shows information from the remote container environment.
         table.primary_id_column("Local Address")
         table.primary_id_column("Foreign Address")
         table.status_column("State")
-        
+
         # Add PID/Program column if requested
         if flags["p"] or flags["program"]:
             table.add_column("PID/Program name", style="green", no_wrap=True)
@@ -214,7 +222,7 @@ Note: This command shows information from the remote container environment.
                 connection["remote_address"],
                 connection.get("state", ""),
             ]
-            
+
             if flags["p"] or flags["program"]:
                 # PID/Program info not available from /proc in container
                 row.append("-")
@@ -222,12 +230,12 @@ Note: This command shows information from the remote container environment.
             table.add_row(*row)
 
         # Show protocol header if multiple protocols
-        header = f"Active Internet connections"
+        header = "Active Internet connections"
         if flags["l"] or flags["listening"]:
             header += " (only servers)"
         elif not (flags["a"] or flags["all"]):
             header += " (w/o servers)"
-            
+
         self.shell.console.print(
             Panel(
                 table.build(),
@@ -246,7 +254,7 @@ Note: This command shows information from the remote container environment.
         table.status_column("State")
         table.add_column("I-Node", style="blue", no_wrap=True, justify="right")
         table.data_column("Path")
-        
+
         # Add PID/Program column if requested
         if flags["p"] or flags["program"]:
             table.add_column("PID/Program name", style="green", no_wrap=True)
@@ -261,7 +269,7 @@ Note: This command shows information from the remote container environment.
                 connection.get("inode", ""),
                 connection.get("path", ""),
             ]
-            
+
             if flags["p"] or flags["program"]:
                 row.append("-")
 
@@ -272,7 +280,7 @@ Note: This command shows information from the remote container environment.
             header += " (only servers)"
         elif not (flags["a"] or flags["all"]):
             header += " (w/o servers)"
-            
+
         self.shell.console.print(
             Panel(
                 table.build(),

@@ -266,9 +266,7 @@ def test_execute_permission_error_handling(
     if result == 1:
         output = capture.get()
         # Should show appropriate error message
-        assert any(
-            msg in output for msg in ["permission", "denied", "error", "No such file"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "error", "No such file"])
     else:
         # May succeed if file is readable
         assert result == 0
@@ -280,9 +278,7 @@ def test_execute_mixed_valid_invalid_files(
 ):
     # Test with mix of valid and invalid files
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/etc/passwd", "/nonexistent/file"]
-        )
+        result = command.execute(client=client, args=["/etc/passwd", "/nonexistent/file"])
 
     # Should either process valid files and skip invalid, or fail entirely
     if result == 0:

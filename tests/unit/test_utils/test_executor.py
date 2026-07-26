@@ -89,9 +89,7 @@ class TestPipelineExecutor:
         result = executor.execute_pipeline([cmd])
 
         assert result is True
-        mock_commands["echo"].execute.assert_called_once_with(
-            executor.client, ["hello"]
-        )
+        mock_commands["echo"].execute.assert_called_once_with(executor.client, ["hello"])
 
     def test_execute_exit_command(self, executor):
         """Test executing exit command."""
@@ -258,9 +256,7 @@ class TestPipelineExecutor:
     def test_handle_piped_cut(self, executor):
         """Test handling cut with piped input."""
         output = CommandOutput()
-        cmd = ParsedCommand(
-            command="cut", args=["-f", "2", "-d", ":"], type=CommandType.SIMPLE
-        )
+        cmd = ParsedCommand(command="cut", args=["-f", "2", "-d", ":"], type=CommandType.SIMPLE)
 
         pipe_input = "user1:1000:group\nuser2:1001:group\nuser3:1002:group"
 
@@ -273,9 +269,7 @@ class TestPipelineExecutor:
     def test_handle_piped_cut_invalid_field(self, executor):
         """Test handling cut with invalid field specification."""
         output = CommandOutput()
-        cmd = ParsedCommand(
-            command="cut", args=["-f", "invalid"], type=CommandType.SIMPLE
-        )
+        cmd = ParsedCommand(command="cut", args=["-f", "invalid"], type=CommandType.SIMPLE)
 
         pipe_input = "test line"
 
@@ -313,9 +307,7 @@ class TestPipelineExecutor:
     def test_handle_piped_grep_invalid_regex(self, executor):
         """Test handling grep with invalid regex."""
         output = CommandOutput()
-        cmd = ParsedCommand(
-            command="grep", args=["/[invalid/"], type=CommandType.SIMPLE
-        )
+        cmd = ParsedCommand(command="grep", args=["/[invalid/"], type=CommandType.SIMPLE)
 
         pipe_input = "test line"
 
@@ -640,9 +632,7 @@ class TestExecutorExceptionPaths:
     def test_run_command_help_with_args(self, executor):
         """Test help command with arguments."""
         output = CommandOutput()
-        cmd = ParsedCommand(
-            command="help", args=["filesystem"], type=CommandType.SIMPLE
-        )
+        cmd = ParsedCommand(command="help", args=["filesystem"], type=CommandType.SIMPLE)
 
         with patch.object(executor, "_show_help") as mock_help:
             result = executor._run_command(cmd, None, output)
@@ -652,9 +642,7 @@ class TestExecutorExceptionPaths:
     def test_run_command_path_error_exception(self, executor):
         """Test PathError exception handling."""
         output = CommandOutput()
-        cmd = ParsedCommand(
-            command="ls", args=["/nonexistent"], type=CommandType.SIMPLE
-        )
+        cmd = ParsedCommand(command="ls", args=["/nonexistent"], type=CommandType.SIMPLE)
 
         # Mock command to raise PathError
         mock_command = Mock()
@@ -715,9 +703,7 @@ class TestExecutorExceptionPaths:
                 mock_run.side_effect = capture_output
                 result = executor._execute_single_command(cmd)
 
-                mock_write.assert_called_once_with(
-                    "output.txt", "hello\n", append=False
-                )
+                mock_write.assert_called_once_with("output.txt", "hello\n", append=False)
                 assert result == 0
 
     def test_execute_single_command_redirect_append(self, executor):
@@ -779,9 +765,7 @@ class TestExecutorExceptionPaths:
         cmd2 = ParsedCommand(command="sort", args=[], type=CommandType.SIMPLE)
         cmd1.next_command = cmd2
 
-        with patch.object(
-            executor, "_execute_pipeline", return_value=0
-        ) as mock_pipeline:
+        with patch.object(executor, "_execute_pipeline", return_value=0) as mock_pipeline:
             result = executor._execute_command_sequence(cmd1)
 
             mock_pipeline.assert_called_once()

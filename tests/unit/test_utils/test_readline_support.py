@@ -127,9 +127,7 @@ class TestReadlineWrapper:
 
         result = wrapper.get_history_item(0)
         assert result == "test command"
-        mock_readline.get_history_item.assert_called_once_with(
-            1
-        )  # readline is 1-indexed
+        mock_readline.get_history_item.assert_called_once_with(1)  # readline is 1-indexed
 
     @patch("pebble_shell.utils.readline_support.readline")
     def test_get_history_item_index_error(self, mock_readline: Mock) -> None:
@@ -223,9 +221,7 @@ class TestShellCompleter:
 
     @patch("pebble_shell.utils.readline_support.readline")
     @patch("glob.glob")
-    def test_complete_path_empty_text(
-        self, mock_glob: Mock, mock_readline: Mock
-    ) -> None:
+    def test_complete_path_empty_text(self, mock_glob: Mock, mock_readline: Mock) -> None:
         """Test completing paths with empty text."""
         mock_readline.get_line_buffer.return_value = "cat "
         mock_glob.return_value = ["file1.txt", "file2.txt"]
@@ -236,9 +232,7 @@ class TestShellCompleter:
 
     @patch("pebble_shell.utils.readline_support.readline")
     @patch("glob.glob")
-    def test_complete_path_with_slash(
-        self, mock_glob: Mock, mock_readline: Mock
-    ) -> None:
+    def test_complete_path_with_slash(self, mock_glob: Mock, mock_readline: Mock) -> None:
         """Test completing paths ending with slash."""
         mock_readline.get_line_buffer.return_value = "cat /home/"
         mock_glob.return_value = ["/home/file.txt"]
@@ -249,9 +243,7 @@ class TestShellCompleter:
 
     @patch("pebble_shell.utils.readline_support.readline")
     @patch("glob.glob")
-    def test_complete_path_glob_error(
-        self, mock_glob: Mock, mock_readline: Mock
-    ) -> None:
+    def test_complete_path_glob_error(self, mock_glob: Mock, mock_readline: Mock) -> None:
         """Test handling glob errors in path completion."""
         mock_readline.get_line_buffer.return_value = "cat test"
         mock_glob.side_effect = OSError("Permission denied")

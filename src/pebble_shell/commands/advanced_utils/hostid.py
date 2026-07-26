@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Union
 import socket
 import struct
+from typing import TYPE_CHECKING, Union
 
 import ops
 
@@ -17,8 +17,6 @@ from .._base import Command
 
 if TYPE_CHECKING:
     import shimmer
-
-    from pebble_shell.shell import PebbleShell
 
 
 # TODO: Use the prototype from Shimmer.
@@ -99,7 +97,7 @@ Examples:
         except Exception as e:
             self.console.print(f"[red]hostid: unexpected error: {e}[/red]")
             return 1
-    
+
     def _hostname_to_hostid(self, hostname: str) -> str:
         """Convert hostname to hostid using IPv4 address like gethostid()."""
         try:
@@ -110,9 +108,9 @@ Examples:
                 # Convert IPv4 address to 32-bit integer
                 ip_int = struct.unpack("!I", socket.inet_aton(ipv4_addr))[0]
                 return f"{ip_int:08x}"
-        except (socket.gaierror, socket.error, OSError):
+        except (socket.gaierror, OSError):
             pass
-        
+
         # Fallback: use hash of hostname (similar to original but more consistent)
         hostname_hash = abs(hash(hostname)) & 0xFFFFFFFF
         return f"{hostname_hash:08x}"

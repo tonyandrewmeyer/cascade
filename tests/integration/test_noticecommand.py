@@ -78,8 +78,7 @@ def test_execute_get_notice_by_id(
         output = capture.get()
         # Should show notice information
         assert any(
-            msg in output
-            for msg in ["Notice ID: 1", "Type:", "Key:", "Data:", "Notice details"]
+            msg in output for msg in ["Notice ID: 1", "Type:", "Key:", "Data:", "Notice details"]
         )
     else:
         # Should fail if notice not found or Pebble unavailable
@@ -122,8 +121,7 @@ def test_execute_get_notice_nonexistent_id(
     assert result == 1
     output = capture.get()
     assert any(
-        msg in output
-        for msg in ["Notice not found", "No notice with ID", "not found", "error"]
+        msg in output for msg in ["Notice not found", "No notice with ID", "not found", "error"]
     )
 
 
@@ -152,9 +150,7 @@ def test_execute_acknowledge_action(
         # Should fail if notice not found or operation failed
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Notice not found", "Acknowledge failed", "error"]
-        )
+        assert any(msg in output for msg in ["Notice not found", "Acknowledge failed", "error"])
 
 
 def test_execute_dismiss_action(
@@ -182,9 +178,7 @@ def test_execute_dismiss_action(
         # Should fail if notice not found or operation failed
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Notice not found", "Dismiss failed", "error"]
-        )
+        assert any(msg in output for msg in ["Notice not found", "Dismiss failed", "error"])
 
 
 def test_execute_clear_action(
@@ -212,9 +206,7 @@ def test_execute_clear_action(
         # Should fail if notice not found or operation failed
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Notice not found", "Clear failed", "error"]
-        )
+        assert any(msg in output for msg in ["Notice not found", "Clear failed", "error"])
 
 
 def test_execute_invalid_action(
@@ -223,9 +215,7 @@ def test_execute_invalid_action(
 ):
     # Test with invalid action
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--action", "invalid-action", "1"]
-        )
+        result = command.execute(client=client, args=["--action", "invalid-action", "1"])
 
     # Should fail with invalid action error
     assert result == 1
@@ -274,8 +264,7 @@ def test_execute_show_notice_json(
         output = capture.get()
         # Should show JSON formatted notice
         assert any(
-            json_indicator in output
-            for json_indicator in ['{"id"', '"type"', '"key"', '"data"']
+            json_indicator in output for json_indicator in ['{"id"', '"type"', '"key"', '"data"']
         )
     else:
         assert result == 1
@@ -294,8 +283,7 @@ def test_execute_show_notice_yaml(
         output = capture.get()
         # Should show YAML formatted notice
         assert any(
-            yaml_indicator in output
-            for yaml_indicator in ["id:", "type:", "key:", "data:"]
+            yaml_indicator in output for yaml_indicator in ["id:", "type:", "key:", "data:"]
         )
     else:
         assert result == 1
@@ -313,9 +301,7 @@ def test_execute_filter_by_type(
     if result == 0:
         output = capture.get()
         # Should show filtered notice information
-        assert any(
-            msg in output for msg in ["Type: custom", "Notice ID: 1", "Filtered"]
-        )
+        assert any(msg in output for msg in ["Type: custom", "Notice ID: 1", "Filtered"])
     else:
         assert result == 1
 
@@ -332,10 +318,7 @@ def test_execute_filter_by_key(
     if result == 0:
         output = capture.get()
         # Should show filtered notice information
-        assert any(
-            msg in output
-            for msg in ["Key: service.started", "Notice ID: 1", "Filtered"]
-        )
+        assert any(msg in output for msg in ["Key: service.started", "Notice ID: 1", "Filtered"])
     else:
         assert result == 1
 
@@ -352,10 +335,7 @@ def test_execute_wait_for_notice(
     if result == 0:
         output = capture.get()
         # Should show notice when it appears
-        assert any(
-            msg in output
-            for msg in ["Notice ID: 1", "Notice appeared", "Wait completed"]
-        )
+        assert any(msg in output for msg in ["Notice ID: 1", "Notice appeared", "Wait completed"])
     else:
         # Should fail if timeout or error
         assert result == 1
@@ -474,9 +454,7 @@ def test_execute_notice_priority_handling(
     if result == 0:
         output = capture.get()
         # Should show priority information
-        assert any(
-            msg in output for msg in ["Priority: high", "High priority", "Priority"]
-        )
+        assert any(msg in output for msg in ["Priority: high", "High priority", "Priority"])
     else:
         assert result == 1
 
@@ -513,8 +491,7 @@ def test_execute_batch_operations(
         output = capture.get()
         # Should show batch operation results
         assert any(
-            msg in output
-            for msg in ["Batch operation", "Multiple notices", "Acknowledged"]
+            msg in output for msg in ["Batch operation", "Multiple notices", "Acknowledged"]
         )
     else:
         assert result == 1
@@ -532,9 +509,7 @@ def test_execute_notice_history(
     if result == 0:
         output = capture.get()
         # Should show notice history
-        assert any(
-            msg in output for msg in ["History:", "Previous occurrences", "Timeline"]
-        )
+        assert any(msg in output for msg in ["History:", "Previous occurrences", "Timeline"])
     else:
         assert result == 1
 
@@ -556,10 +531,7 @@ def test_execute_pebble_connection_handling(
         # Should fail gracefully if connection issues
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["Connection failed", "Pebble not available", "error"]
-        )
+        assert any(msg in output for msg in ["Connection failed", "Pebble not available", "error"])
 
 
 def test_execute_error_recovery(

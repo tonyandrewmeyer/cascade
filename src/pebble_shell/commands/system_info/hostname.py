@@ -65,7 +65,7 @@ Options:
         )
         if parse_result is None:
             return 1
-        flags, positional_args = parse_result
+        flags, _positional_args = parse_result
 
         fqdn = flags.get("f", False)
         short = flags.get("s", False)
@@ -131,9 +131,7 @@ EXAMPLES:
 
             # Fallback: try to get hostname from /proc/sys/kernel/hostname
             try:
-                with self.client.pull(
-                    "/proc/sys/kernel/hostname", encoding="utf-8"
-                ) as f:
+                with self.client.pull("/proc/sys/kernel/hostname", encoding="utf-8") as f:
                     hostname = f.read().strip()
                 if hostname:
                     self.console.print(hostname)
@@ -306,7 +304,7 @@ EXAMPLES:
         return "localhost"
 
     def _is_valid_ip(self, ip: str) -> bool:
-        """Simple IP address validation."""
+        """Return simple IP address validation."""
         parts = ip.split(".")
         if len(parts) != 4:
             return False
@@ -325,17 +323,13 @@ EXAMPLES:
             # Try to read from /proc/sys/kernel/ files
             if field == "nodename":
                 try:
-                    with self.client.pull(
-                        "/proc/sys/kernel/hostname", encoding="utf-8"
-                    ) as f:
+                    with self.client.pull("/proc/sys/kernel/hostname", encoding="utf-8") as f:
                         return f.read().strip()
                 except ops.pebble.PathError:
                     pass
             elif field == "release":
                 try:
-                    with self.client.pull(
-                        "/proc/sys/kernel/osrelease", encoding="utf-8"
-                    ) as f:
+                    with self.client.pull("/proc/sys/kernel/osrelease", encoding="utf-8") as f:
                         return f.read().strip()
                 except ops.pebble.PathError:
                     pass

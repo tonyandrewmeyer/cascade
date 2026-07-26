@@ -41,7 +41,7 @@ class CatvCommand(Command):
                     # Show control characters visibly
                     visible = content.replace("\t", "^I").replace("\n", "$\n")
                     self.console.print(visible, end="")
-            except Exception as e:  # noqa: PERF203  # needed for robust file processing
+            except Exception as e:  # needed for robust file processing
                 self.console.print(f"catv: {file_path}: {e}")
                 return 1
 

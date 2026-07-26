@@ -32,8 +32,7 @@ def test_help(command: pebble_shell.commands.IpaddrCommand):
         command.show_help()
     output = capture.get()
     assert any(
-        phrase in output.lower()
-        for phrase in ["ip", "addr", "address", "interface", "network"]
+        phrase in output.lower() for phrase in ["ip", "addr", "address", "interface", "network"]
     )
 
 
@@ -48,8 +47,7 @@ def test_execute_help(
     assert result == 0
     output = capture.get()
     assert any(
-        phrase in output.lower()
-        for phrase in ["ip", "addr", "address", "interface", "usage"]
+        phrase in output.lower() for phrase in ["ip", "addr", "address", "interface", "usage"]
     )
 
 
@@ -72,10 +70,7 @@ def test_execute_show_all_addresses(
             assert len(lines) >= 1
             # Should contain network interface indicators
             interface_found = any(
-                any(
-                    indicator in line
-                    for indicator in [":", "inet", "link", "lo", "eth", "wlan"]
-                )
+                any(indicator in line for indicator in [":", "inet", "link", "lo", "eth", "wlan"])
                 for line in lines
                 if line.strip()
             )
@@ -229,10 +224,7 @@ def test_execute_flush_addresses(
         # Should fail if not root or interface protected
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["permission", "denied", "root", "error", "not found"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "root", "error", "not found"])
 
 
 def test_execute_add_address(
@@ -241,9 +233,7 @@ def test_execute_add_address(
 ):
     # Test adding IP address (should require privileges)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["add", "192.168.1.100/24", "dev", "lo"]
-        )
+        result = command.execute(client=client, args=["add", "192.168.1.100/24", "dev", "lo"])
 
     # Should either succeed or fail with permission error
     if result == 0:
@@ -254,10 +244,7 @@ def test_execute_add_address(
         # Should fail if not root
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["permission", "denied", "root", "error", "not found"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "root", "error", "not found"])
 
 
 def test_execute_delete_address(
@@ -266,9 +253,7 @@ def test_execute_delete_address(
 ):
     # Test deleting IP address (should require privileges)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["del", "192.168.1.100/24", "dev", "lo"]
-        )
+        result = command.execute(client=client, args=["del", "192.168.1.100/24", "dev", "lo"])
 
     # Should either succeed or fail with permission/not found error
     if result == 0:
@@ -300,9 +285,7 @@ def test_execute_invalid_ip_address(
 ):
     # Test with invalid IP address format
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["add", "999.999.999.999/24", "dev", "lo"]
-        )
+        result = command.execute(client=client, args=["add", "999.999.999.999/24", "dev", "lo"])
 
     # Should fail with invalid address error
     assert result == 1
@@ -316,9 +299,7 @@ def test_execute_invalid_subnet_mask(
 ):
     # Test with invalid subnet mask
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["add", "192.168.1.1/99", "dev", "lo"]
-        )
+        result = command.execute(client=client, args=["add", "192.168.1.1/99", "dev", "lo"])
 
     # Should fail with invalid netmask error
     assert result == 1
@@ -412,8 +393,7 @@ def test_execute_loopback_interface_validation(
         if len(output) > 0:
             # Should contain loopback information
             assert any(
-                indicator in output.lower()
-                for indicator in ["lo", "loopback", "127.0.0.1", "::1"]
+                indicator in output.lower() for indicator in ["lo", "loopback", "127.0.0.1", "::1"]
             )
     else:
         assert result == 1
@@ -435,8 +415,7 @@ def test_execute_interface_state_detection(
         if len(output) > 0:
             # Should contain state information
             has_state = any(
-                state in output.upper()
-                for state in ["UP", "DOWN", "UNKNOWN", "LOWER_UP"]
+                state in output.upper() for state in ["UP", "DOWN", "UNKNOWN", "LOWER_UP"]
             )
             if has_state:
                 assert has_state
@@ -473,9 +452,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["invalid", "unknown", "error", "usage", "command"]
-    )
+    assert any(msg in output for msg in ["invalid", "unknown", "error", "usage", "command"])
 
 
 def test_execute_signal_handling(

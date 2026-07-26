@@ -29,38 +29,26 @@ class TestDoubleBracketTestCommand:
 
     def test_pattern_matching_with_wildcards(self):
         """Test pattern matching with wildcards."""
-        result = self.command.execute(
-            self.mock_client, ["hello.txt", "==", "*.txt", "]]"]
-        )
+        result = self.command.execute(self.mock_client, ["hello.txt", "==", "*.txt", "]]"])
         assert result == 0
 
-        result = self.command.execute(
-            self.mock_client, ["hello.doc", "==", "*.txt", "]]"]
-        )
+        result = self.command.execute(self.mock_client, ["hello.doc", "==", "*.txt", "]]"])
         assert result == 1
 
     def test_pattern_non_matching(self):
         """Test pattern non-matching."""
-        result = self.command.execute(
-            self.mock_client, ["hello.doc", "!=", "*.txt", "]]"]
-        )
+        result = self.command.execute(self.mock_client, ["hello.doc", "!=", "*.txt", "]]"])
         assert result == 0
 
-        result = self.command.execute(
-            self.mock_client, ["hello.txt", "!=", "*.txt", "]]"]
-        )
+        result = self.command.execute(self.mock_client, ["hello.txt", "!=", "*.txt", "]]"])
         assert result == 1
 
     def test_regex_matching(self):
         """Test regular expression matching."""
-        result = self.command.execute(
-            self.mock_client, ["123", "=~", r"^[0-9]+$", "]]"]
-        )
+        result = self.command.execute(self.mock_client, ["123", "=~", r"^[0-9]+$", "]]"])
         assert result == 0
 
-        result = self.command.execute(
-            self.mock_client, ["abc", "=~", r"^[0-9]+$", "]]"]
-        )
+        result = self.command.execute(self.mock_client, ["abc", "=~", r"^[0-9]+$", "]]"])
         assert result == 1
 
     def test_invalid_regex(self):
@@ -98,9 +86,7 @@ class TestDoubleBracketTestCommand:
 
     def test_negation_with_pattern(self):
         """Test negation with pattern matching."""
-        result = self.command.execute(
-            self.mock_client, ["!", "hello.txt", "==", "*.doc", "]]"]
-        )
+        result = self.command.execute(self.mock_client, ["!", "hello.txt", "==", "*.doc", "]]"])
         assert result == 0  # NOT (hello.txt matches *.doc) = true
 
     def test_file_operations_same_as_bracket(self):
@@ -155,15 +141,11 @@ class TestDoubleBracketTestCommand:
     def test_complex_pattern_matching(self):
         """Test complex pattern matching scenarios."""
         # Test multiple wildcards
-        result = self.command.execute(
-            self.mock_client, ["test.log.backup", "==", "*.log.*", "]]"]
-        )
+        result = self.command.execute(self.mock_client, ["test.log.backup", "==", "*.log.*", "]]"])
         assert result == 0
 
         # Test character classes (basic fnmatch support)
-        result = self.command.execute(
-            self.mock_client, ["file1", "==", "file[0-9]", "]]"]
-        )
+        result = self.command.execute(self.mock_client, ["file1", "==", "file[0-9]", "]]"])
         assert result == 0
 
     def test_regex_with_special_characters(self):

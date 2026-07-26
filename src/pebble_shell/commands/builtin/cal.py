@@ -27,9 +27,7 @@ class CalCommand(Command):
     help = "Display calendar"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ) -> int:
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]) -> int:
         """Execute the cal command."""
         if handle_help_flag(self, args):
             return 0

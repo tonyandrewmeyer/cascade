@@ -304,9 +304,7 @@ def test_execute_special_characters_in_check_name(
 ):
     # Test check names with special characters
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["check-with-dashes_and_underscores"]
-        )
+        result = command.execute(client=client, args=["check-with-dashes_and_underscores"])
 
     # Should either handle special characters or fail appropriately
     assert result in [0, 1]

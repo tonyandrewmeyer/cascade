@@ -42,7 +42,7 @@ class IpcsCommand(Command):
         )
         if result is None:
             return 1
-        flags, positional_args = result
+        flags, _positional_args = result
 
         show_shm = flags.get("m", False)
         show_msg = flags.get("q", False)
@@ -108,9 +108,7 @@ class IpcsCommand(Command):
     def _show_message_queues(self, client: ClientType) -> bool:
         """Show message queues."""
         self.console.print("[bold]------ Message Queues --------[/bold]")
-        self.console.print(
-            "key        msqid      owner      perms      used-bytes   messages"
-        )
+        self.console.print("key        msqid      owner      perms      used-bytes   messages")
 
         msg_info = safe_read_file(client, "/proc/sysvipc/msg", self.shell)
         if msg_info:

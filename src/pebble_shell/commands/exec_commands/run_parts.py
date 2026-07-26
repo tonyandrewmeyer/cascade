@@ -112,9 +112,7 @@ Examples:
 
             if not executable_files:
                 if verbose:
-                    self.console.print(
-                        f"run-parts: no executable files found in {directory}"
-                    )
+                    self.console.print(f"run-parts: no executable files found in {directory}")
                 return 0
 
             # Test mode - just list files
@@ -170,9 +168,7 @@ Examples:
                             return exit_code
 
                 except Exception as e:
-                    self.console.print(
-                        f"[red]run-parts: failed to execute {file_path}: {e}[/red]"
-                    )
+                    self.console.print(f"[red]run-parts: failed to execute {file_path}: {e}[/red]")
                     overall_exit_code = 1
                     if exit_on_error:
                         return 1

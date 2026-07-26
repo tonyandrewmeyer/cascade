@@ -24,9 +24,7 @@ class TouchCommand(Command):
     help = "Create empty files or update timestamps"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute touch command."""
         if handle_help_flag(self, args):
             self.show_help()
@@ -35,8 +33,7 @@ class TouchCommand(Command):
             return 1
 
         file_paths = [
-            resolve_path(self.shell.current_directory, f, self.shell.home_dir)
-            for f in args
+            resolve_path(self.shell.current_directory, f, self.shell.home_dir) for f in args
         ]
 
         for file_path in file_paths:

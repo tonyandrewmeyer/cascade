@@ -32,9 +32,7 @@ def test_help(command: pebble_shell.commands.LsmodCommand):
         command.show_help()
     output = capture.get()
     assert "lsmod" in output
-    assert any(
-        phrase in output.lower() for phrase in ["module", "kernel", "list", "loaded"]
-    )
+    assert any(phrase in output.lower() for phrase in ["module", "kernel", "list", "loaded"])
 
 
 @pytest.mark.parametrize("args", [["-h"], ["--help"]])
@@ -48,9 +46,7 @@ def test_execute_help(
     assert result == 0
     output = capture.get()
     assert "lsmod" in output
-    assert any(
-        phrase in output.lower() for phrase in ["module", "kernel", "list", "loaded"]
-    )
+    assert any(phrase in output.lower() for phrase in ["module", "kernel", "list", "loaded"])
 
 
 def test_execute_no_args_list_modules(
@@ -128,9 +124,7 @@ def test_execute_module_format_validation(
                 first_line = non_empty_lines[0]
                 if "Module" in first_line:
                     # Header line format
-                    assert any(
-                        word in first_line for word in ["Module", "Size", "Used"]
-                    )
+                    assert any(word in first_line for word in ["Module", "Size", "Used"])
     else:
         assert result == 1
 
@@ -254,9 +248,7 @@ def test_execute_proc_modules_access(
         # Should fail if /proc/modules not accessible
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["cannot", "access", "proc", "permission", "error"]
-        )
+        assert any(msg in output for msg in ["cannot", "access", "proc", "permission", "error"])
 
 
 def test_execute_empty_module_list(

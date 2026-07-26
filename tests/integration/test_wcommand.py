@@ -257,10 +257,7 @@ def test_execute_current_time_display(
         # Should show current time
         if output.strip():
             # Should contain time information (HH:MM format)
-            assert (
-                any(char in output for char in [":", "AM", "PM"])
-                or len(output.strip()) == 0
-            )
+            assert any(char in output for char in [":", "AM", "PM"]) or len(output.strip()) == 0
     else:
         assert result == 1
 

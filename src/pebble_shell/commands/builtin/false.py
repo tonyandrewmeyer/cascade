@@ -23,9 +23,7 @@ class FalseCommand(Command):
     help = "Exit with failure (exit code 1)"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the false command."""
         if handle_help_flag(self, args):
             return 0

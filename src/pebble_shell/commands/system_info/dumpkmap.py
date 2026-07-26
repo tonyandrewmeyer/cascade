@@ -56,9 +56,7 @@ Examples:
 
             # Check X11 keyboard settings
             try:
-                with client.pull(
-                    "/etc/X11/xorg.conf.d/00-keyboard.conf", encoding="utf-8"
-                ) as f:
+                with client.pull("/etc/X11/xorg.conf.d/00-keyboard.conf", encoding="utf-8") as f:
                     content = f.read()
                     for line in content.splitlines():
                         line = line.strip()
@@ -100,9 +98,7 @@ Examples:
 
             # Display results
             if keymap_info:
-                self.console.print(
-                    get_theme().highlight_text("Keyboard Mapping Information:")
-                )
+                self.console.print(get_theme().highlight_text("Keyboard Mapping Information:"))
                 for info in keymap_info:
                     self.console.print(f"  {info}")
             else:

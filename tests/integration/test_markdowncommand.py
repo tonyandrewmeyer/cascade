@@ -87,9 +87,7 @@ def test_execute_simple_markdown_file(
         # Should fail if file not accessible
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["No such file", "permission denied", "error"]
-        )
+        assert any(msg in output for msg in ["No such file", "permission denied", "error"])
 
 
 def test_execute_nonexistent_file(
@@ -211,9 +209,7 @@ def test_execute_table_of_contents_option(
         # Should show content with table of contents
         assert len(output.strip()) > 0
         # Should contain TOC indicators
-        assert any(
-            toc in output for toc in ["Table of Contents", "TOC", "Contents", "Index"]
-        )
+        assert any(toc in output for toc in ["Table of Contents", "TOC", "Contents", "Index"])
     else:
         assert result == 1
 
@@ -258,9 +254,7 @@ def test_execute_markdown_headers(
 ):
     # Test rendering of markdown headers
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/etc/passwd"]
-        )  # May contain # comments
+        result = command.execute(client=client, args=["/etc/passwd"])  # May contain # comments
 
     # Should handle header-like content appropriately
     if result == 0:
@@ -345,9 +339,7 @@ def test_execute_markdown_tables(
 ):
     # Test rendering of markdown tables
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/etc/passwd"]
-        )  # Colon-separated format
+        result = command.execute(client=client, args=["/etc/passwd"])  # Colon-separated format
 
     # Should handle table-like content appropriately
     if result == 0:
@@ -406,9 +398,7 @@ def test_execute_permission_denied_file(
     # Should fail with permission error
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission denied", "cannot open", "error"]
-        )
+        assert any(msg in output for msg in ["permission denied", "cannot open", "error"])
     else:
         # May succeed if file is readable
         assert result == 0
@@ -596,9 +586,7 @@ def test_execute_output_encoding(
 ):
     # Test output encoding handling
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--encoding", "utf-8", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["--encoding", "utf-8", "/etc/hosts"])
 
     # Should handle encoding appropriately
     if result == 0:
@@ -682,9 +670,7 @@ def test_execute_malformed_markdown_handling(
 ):
     # Test handling of malformed markdown
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/etc/passwd"]
-        )  # Not real markdown
+        result = command.execute(client=client, args=["/etc/passwd"])  # Not real markdown
 
     # Should handle malformed markdown gracefully
     if result == 0:
@@ -718,9 +704,7 @@ def test_execute_compatibility_mode(
 ):
     # Test compatibility with different markdown dialects
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--compat", "github", "/etc/hosts"]
-        )
+        result = command.execute(client=client, args=["--compat", "github", "/etc/hosts"])
 
     # Should maintain compatibility with different dialects
     if result == 0:

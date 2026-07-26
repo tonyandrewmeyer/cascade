@@ -92,9 +92,7 @@ Examples:
                         # Try to get device numbers
                         devno = self._get_device_number(client, directory)
                         if devno:
-                            self.console.print(
-                                f"{directory} is a mountpoint (device: {devno})"
-                            )
+                            self.console.print(f"{directory} is a mountpoint (device: {devno})")
                         else:
                             self.console.print(f"{directory} is a mountpoint")
                     else:

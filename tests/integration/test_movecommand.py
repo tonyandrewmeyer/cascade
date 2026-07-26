@@ -64,7 +64,5 @@ def test_execute_move_nonexistent_source(
 ):
     tmp_dest = tmp_path / "test_move"
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["/nonexistent/file", str(tmp_dest)]
-        )
+        result = command.execute(client=client, args=["/nonexistent/file", str(tmp_dest)])
     assert result == 1

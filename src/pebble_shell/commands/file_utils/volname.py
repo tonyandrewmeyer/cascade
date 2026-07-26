@@ -91,9 +91,9 @@ Examples:
                     best_device = ""
 
                     for mount_point, mount_device in mounts:
-                        if device_path.startswith(mount_point) and len(
-                            mount_point
-                        ) > len(best_match):
+                        if device_path.startswith(mount_point) and len(mount_point) > len(
+                            best_match
+                        ):
                             best_match = mount_point
                             best_device = mount_device
 
@@ -107,9 +107,7 @@ Examples:
                         for label_file in label_files:
                             try:
                                 content = safe_read_file(client, label_file, self.shell)
-                                volume_name = (
-                                    content.decode("utf-8").strip() if content else None
-                                )
+                                volume_name = content.decode("utf-8").strip() if content else None
                                 if volume_name:
                                     break
                             except ops.pebble.PathError:

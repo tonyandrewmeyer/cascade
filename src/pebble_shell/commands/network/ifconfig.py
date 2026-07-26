@@ -47,17 +47,17 @@ Interface Options (not supported in container):
     netmask addr    Set IP network mask
     broadcast addr  Set broadcast address
     hw class addr   Set hardware (MAC) address
-    
+
 Address Families:
     inet            TCP/IP (default)
     inet6           IPv6
-    
+
 Examples:
     ifconfig              # Show active interfaces
     ifconfig -a           # Show all interfaces
     ifconfig eth0         # Show specific interface
     ifconfig -s           # Short format
-    
+
 Note: Interface modification commands are not supported in container environment.
       This is a read-only version for viewing interface status.
         """
@@ -69,10 +69,10 @@ Note: Interface modification commands are not supported in container environment
         parse_result = parse_flags(
             args,
             {
-                "a": bool,              # all interfaces
-                "s": bool,              # short format
-                "v": bool,              # verbose
-                "h": bool,              # help
+                "a": bool,  # all interfaces
+                "s": bool,  # short format
+                "v": bool,  # verbose
+                "h": bool,  # help
                 "help": bool,
             },
             self.shell,
@@ -80,23 +80,36 @@ Note: Interface modification commands are not supported in container environment
         if parse_result is None:
             return 1
         flags, positional_args = parse_result
-            
+
         if flags["h"] or flags["help"]:
             self.show_help()
             return 0
-            
+
         # Check for interface modification attempts
         if len(positional_args) > 1:
             # Check for common modification keywords
             modification_keywords = [
-                "up", "down", "arp", "promisc", "allmulti", "mtu", 
-                "netmask", "broadcast", "hw", "inet", "inet6"
+                "up",
+                "down",
+                "arp",
+                "promisc",
+                "allmulti",
+                "mtu",
+                "netmask",
+                "broadcast",
+                "hw",
+                "inet",
+                "inet6",
             ]
             if any(keyword in positional_args[1:] for keyword in modification_keywords):
-                self.shell.console.print("[red]ifconfig: interface modification not supported in container environment[/red]")
-                self.shell.console.print("[yellow]This is a read-only version for viewing interface status.[/yellow]")
+                self.shell.console.print(
+                    "[red]ifconfig: interface modification not supported in container environment[/red]"
+                )
+                self.shell.console.print(
+                    "[yellow]This is a read-only version for viewing interface status.[/yellow]"
+                )
                 return 1
-                
+
         interface = positional_args[0] if positional_args else None
         show_all = flags["a"]
         short_format = flags["s"]
@@ -136,9 +149,7 @@ Note: Interface modification commands are not supported in container environment
                         }
 
             if interface and interface not in interfaces:
-                self.console.print(
-                    f"[red]ifconfig: interface '{interface}' not found[/red]"
-                )
+                self.console.print(f"[red]ifconfig: interface '{interface}' not found[/red]")
                 return 1
 
             # Display interface information
@@ -149,7 +160,7 @@ Note: Interface modification commands are not supported in container environment
                     # Skip down interfaces unless -a is specified
                     if not show_all and not self._is_interface_up(client, iface_name):
                         continue
-                        
+
                     self._display_interface(client, iface_name, stats, verbose)
                     if len(interfaces) > 1:
                         self.console.print()
@@ -168,34 +179,38 @@ Note: Interface modification commands are not supported in container environment
             return operstate and operstate.strip() == "up"
         except Exception:
             return False
-            
+
     def _display_short_format(self, interfaces: dict):
         """Display interfaces in short format like netstat -i."""
         self.console.print("Kernel Interface table")
-        self.console.print("Iface   MTU Met   RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg")
-        
+        self.console.print(
+            "Iface   MTU Met   RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg"
+        )
+
         for iface_name, stats in interfaces.items():
             # Format: interface name (8 chars), MTU, Metric, RX/TX stats, Flags
             iface_str = iface_name[:8].ljust(8)
             mtu_str = "1500".rjust(5)  # Default MTU
-            met_str = "0".rjust(3)     # Metric
-            
-            rx_ok = str(stats['rx_packets']).rjust(7)
-            rx_err = str(stats['rx_errors']).rjust(6)
-            rx_drp = "0".rjust(6)      # Not available in /proc/net/dev
+            met_str = "0".rjust(3)  # Metric
+
+            rx_ok = str(stats["rx_packets"]).rjust(7)
+            rx_err = str(stats["rx_errors"]).rjust(6)
+            rx_drp = "0".rjust(6)  # Not available in /proc/net/dev
             rx_ovr = "0".rjust(6)
-            
-            tx_ok = str(stats['tx_packets']).rjust(8)
-            tx_err = str(stats['tx_errors']).rjust(6)
+
+            tx_ok = str(stats["tx_packets"]).rjust(8)
+            tx_err = str(stats["tx_errors"]).rjust(6)
             tx_drp = "0".rjust(6)
             tx_ovr = "0".rjust(6)
-            
+
             flags = "BMU"  # Broadcast, Multicast, Up (simplified)
-            
+
             line = f"{iface_str} {mtu_str} {met_str} {rx_ok} {rx_err} {rx_drp} {rx_ovr} {tx_ok} {tx_err} {tx_drp} {tx_ovr} {flags}"
             self.console.print(line)
-            
-    def _display_interface(self, client: ClientType, iface_name: str, stats: dict, verbose: bool = False):
+
+    def _display_interface(
+        self, client: ClientType, iface_name: str, stats: dict, verbose: bool = False
+    ):
         """Display information for a single interface."""
         self.console.print(f"[bold]{iface_name}[/bold]:", end="")
 

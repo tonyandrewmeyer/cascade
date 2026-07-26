@@ -22,9 +22,7 @@ class FreeCommand(Command):
     help = "Display memory usage"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute free command with rich table output."""
         if handle_help_flag(self, args):
             return 0
@@ -37,9 +35,7 @@ class FreeCommand(Command):
             self.console.print(f"Error reading memory information: {e}")
             return 1
 
-    def _display_memory_info(
-        self, memory_info: dict[str, int], args: list[str]
-    ) -> None:
+    def _display_memory_info(self, memory_info: dict[str, int], args: list[str]) -> None:
         """Display memory information in a rich table."""
         human_readable = "-h" in args or "--human" in args
         total = memory_info.get("MemTotal", 0)
@@ -80,7 +76,5 @@ class FreeCommand(Command):
                 str(available),
             )
             if swap_total > 0:
-                table.add_row(
-                    "Swap", str(swap_total), str(swap_used), str(swap_free), "-", "-"
-                )
+                table.add_row("Swap", str(swap_total), str(swap_used), str(swap_free), "-", "-")
         self.console.print(table.build())

@@ -26,16 +26,12 @@ class LsofCommand(Command):
     help = "List open files. Usage: lsof"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the lsof command to list open files."""
         if handle_help_flag(self, args):
             return 0
         console = self.console
-        table = Table(
-            show_header=True, header_style="bold magenta", box=None, expand=False
-        )
+        table = Table(show_header=True, header_style="bold magenta", box=None, expand=False)
         table.add_column("PID", style="cyan", no_wrap=True)
         table.add_column("USER", style="white", no_wrap=True)
         table.add_column("FD", style="white", no_wrap=True)
@@ -85,9 +81,7 @@ class LsofCommand(Command):
                             size_off = line.split()[1]
                 table.add_row(pid, user, fd, ftype, device, size_off, node, name)
         if table.row_count == 0:
-            console.print(
-                Panel("No open files found.", title="[b]lsof[/b]", style="cyan")
-            )
+            console.print(Panel("No open files found.", title="[b]lsof[/b]", style="cyan"))
             return 1
         console.print(table)
         return 0

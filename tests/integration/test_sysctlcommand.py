@@ -89,10 +89,7 @@ def test_execute_all_parameters(
     # Should contain extensive kernel parameter information
     assert len(output.strip()) > 0
     # Should contain various kernel subsystem parameters
-    assert any(
-        subsystem in output.lower()
-        for subsystem in ["kernel", "net", "vm", "fs", "dev"]
-    )
+    assert any(subsystem in output.lower() for subsystem in ["kernel", "net", "vm", "fs", "dev"])
     # Should contain parameter=value format
     assert "=" in output
 
@@ -209,9 +206,7 @@ def test_execute_write_parameter(
         # Should fail if no permission
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission", "denied", "read-only", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "read-only", "error"])
 
 
 def test_execute_write_network_parameter(
@@ -346,9 +341,7 @@ def test_execute_load_from_file(
         # Should fail if file doesn't exist or no permission
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["No such file", "permission", "error", "cannot"]
-        )
+        assert any(msg in output for msg in ["No such file", "permission", "error", "cannot"])
 
 
 def test_execute_system_configuration_load(
@@ -380,9 +373,7 @@ def test_execute_nonexistent_parameter(
     # Should fail with parameter not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "unknown", "cannot stat", "error"]
-    )
+    assert any(msg in output for msg in ["No such file", "unknown", "cannot stat", "error"])
 
 
 def test_execute_invalid_parameter_format(
@@ -405,9 +396,7 @@ def test_execute_write_invalid_value(
 ):
     # Test writing invalid value to parameter
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-w", "net.ipv4.ip_forward=invalid"]
-        )
+        result = command.execute(client=client, args=["-w", "net.ipv4.ip_forward=invalid"])
 
     # Should fail with invalid value error
     assert result == 1
@@ -435,9 +424,7 @@ def test_execute_deprecated_parameters(
 ):
     # Test handling of deprecated parameters
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["net.ipv4.conf.all.send_redirects"]
-        )
+        result = command.execute(client=client, args=["net.ipv4.conf.all.send_redirects"])
 
     # Should either show parameter or handle deprecation gracefully
     if result == 0:
@@ -651,9 +638,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["No such file", "cannot stat", "error", "unknown"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot stat", "error", "unknown"])
 
 
 def test_execute_permission_handling(
@@ -668,9 +653,7 @@ def test_execute_permission_handling(
     if result == 1:
         output = capture.get()
         # Should show permission-related error
-        assert any(
-            msg in output for msg in ["permission", "denied", "read-only", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "read-only", "error"])
     else:
         # May succeed if running with appropriate privileges
         assert result == 0

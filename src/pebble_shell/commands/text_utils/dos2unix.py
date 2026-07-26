@@ -54,9 +54,7 @@ class Dos2unixCommand(Command):
                         get_theme().success_text(f"dos2unix: converted {file_path}")
                     )
                 except ops.pebble.PathError as e:
-                    self.console.print(
-                        get_theme().error_text(f"dos2unix: {file_path}: {e}")
-                    )
+                    self.console.print(get_theme().error_text(f"dos2unix: {file_path}: {e}"))
                     return 1
 
             return 0

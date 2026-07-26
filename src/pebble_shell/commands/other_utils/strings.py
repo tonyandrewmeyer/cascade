@@ -43,7 +43,7 @@ class StringsCommand(Command):
                     strings = re.findall(r"[!-~]{4,}", content)
                     for string in strings:
                         self.console.print(string)
-            except Exception as e:  # noqa: PERF203  # needed for robust file processing
+            except Exception as e:  # needed for robust file processing
                 self.console.print(f"strings: {file_path}: {e}")
                 return 1
 

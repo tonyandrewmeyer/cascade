@@ -37,9 +37,7 @@ class TestPlanCommand:
 
     def test_execute_help(self, command, mock_client):
         """Test help flag execution."""
-        with patch(
-            "pebble_shell.utils.command_helpers.handle_help_flag", return_value=True
-        ):
+        with patch("pebble_shell.utils.command_helpers.handle_help_flag", return_value=True):
             result = command.execute(mock_client, ["--help"])
             assert result == 0
 
@@ -125,9 +123,7 @@ class TestServicesCommand:
 
     def test_execute_help(self, command, mock_client):
         """Test help flag execution."""
-        with patch(
-            "pebble_shell.utils.command_helpers.handle_help_flag", return_value=True
-        ):
+        with patch("pebble_shell.utils.command_helpers.handle_help_flag", return_value=True):
             result = command.execute(mock_client, ["--help"])
             assert result == 0
 
@@ -188,9 +184,7 @@ class TestStartCommand:
 
     def test_execute_help(self, command, mock_client):
         """Test help flag execution."""
-        with patch(
-            "pebble_shell.utils.command_helpers.handle_help_flag", return_value=True
-        ):
+        with patch("pebble_shell.utils.command_helpers.handle_help_flag", return_value=True):
             result = command.execute(mock_client, ["--help"])
             assert result == 0
 
@@ -238,9 +232,7 @@ class TestStopCommand:
 
     def test_execute_help(self, command, mock_client):
         """Test help flag execution."""
-        with patch(
-            "pebble_shell.utils.command_helpers.handle_help_flag", return_value=True
-        ):
+        with patch("pebble_shell.utils.command_helpers.handle_help_flag", return_value=True):
             result = command.execute(mock_client, ["--help"])
             assert result == 0
 
@@ -288,9 +280,7 @@ class TestRestartCommand:
 
     def test_execute_help(self, command, mock_client):
         """Test help flag execution."""
-        with patch(
-            "pebble_shell.utils.command_helpers.handle_help_flag", return_value=True
-        ):
+        with patch("pebble_shell.utils.command_helpers.handle_help_flag", return_value=True):
             result = command.execute(mock_client, ["--help"])
             assert result == 0
 
@@ -338,9 +328,7 @@ class TestSignalCommand:
 
     def test_execute_help(self, command, mock_client):
         """Test help flag execution."""
-        with patch(
-            "pebble_shell.utils.command_helpers.handle_help_flag", return_value=True
-        ):
+        with patch("pebble_shell.utils.command_helpers.handle_help_flag", return_value=True):
             result = command.execute(mock_client, ["--help"])
             assert result == 0
 

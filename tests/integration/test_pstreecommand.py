@@ -61,10 +61,7 @@ def test_execute_no_args_default_tree(
         # Should be 1 if no processes found or proc access error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["No processes found", "Error building process tree"]
-        )
+        assert any(msg in output for msg in ["No processes found", "Error building process tree"])
 
 
 def test_execute_proc_access_error_handling(
@@ -78,10 +75,7 @@ def test_execute_proc_access_error_handling(
     # In container environments without full /proc access, should fail gracefully
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["No processes found", "Error building process tree"]
-        )
+        assert any(msg in output for msg in ["No processes found", "Error building process tree"])
     else:
         # If it succeeds, should have valid process tree output
         assert result == 0
@@ -102,10 +96,7 @@ def test_execute_with_args_ignored(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["No processes found", "Error building process tree"]
-        )
+        assert any(msg in output for msg in ["No processes found", "Error building process tree"])
 
 
 def test_execute_tree_structure_validation(
@@ -156,10 +147,7 @@ def test_execute_partial_proc_read_errors(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["No processes found", "Error building process tree"]
-        )
+        assert any(msg in output for msg in ["No processes found", "Error building process tree"])
 
 
 def test_execute_process_hierarchy_display(
