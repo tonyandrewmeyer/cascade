@@ -112,6 +112,7 @@ exclude_lines = [
 dev = [
     "pytest>=8.4.1",
     "pytest-cov>=6.2.1",
+    "zizmor>=1.28.0",
 ]
 
 [tool.ruff.lint]
