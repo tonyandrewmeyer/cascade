@@ -105,6 +105,7 @@ dev = [
 ]
 
 [tool.ruff]
+src = ["src", "tests"]
 line-length = 99
 target-version = "py310"
 
@@ -163,3 +164,9 @@ quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-builtins]
+builtins-ignorelist = ["id", "min", "map", "range", "type", "TimeoutError", "ConnectionError", "Warning", "input", "format"]
