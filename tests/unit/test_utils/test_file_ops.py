@@ -3,7 +3,6 @@
 from unittest.mock import Mock, patch
 
 import ops
-
 from src.pebble_shell.utils.file_ops import (
     copy_directory_recursive,
     copy_file_with_progress,
