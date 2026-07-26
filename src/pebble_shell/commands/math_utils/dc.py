@@ -99,9 +99,7 @@ Examples:
                 return 0
             else:
                 # TODO: We could add this in the future.
-                self.console.print(
-                    "[yellow]dc: interactive mode not supported[/yellow]"
-                )
+                self.console.print("[yellow]dc: interactive mode not supported[/yellow]")
                 return 1
 
         except ops.pebble.PathError as e:

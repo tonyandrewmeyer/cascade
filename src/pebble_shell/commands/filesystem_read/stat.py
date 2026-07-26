@@ -24,9 +24,7 @@ class StatCommand(Command):
     help = "Show file/directory statistics"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute stat command."""
         if handle_help_flag(self, args):
             return 0
@@ -45,9 +43,7 @@ class StatCommand(Command):
             try:
                 # Get the directory containing the file
                 dir_path = file_path.rsplit("/", 1)[0] if "/" in file_path else "."
-                file_name = (
-                    file_path.rsplit("/", 1)[1] if "/" in file_path else file_path
-                )
+                file_name = file_path.rsplit("/", 1)[1] if "/" in file_path else file_path
 
                 files = client.list_files(dir_path)
                 for file_info in files:
@@ -59,9 +55,7 @@ class StatCommand(Command):
                     return 1
 
             except Exception as e:
-                self.shell.console.print(
-                    f"Error getting file info for {file_path}: {e}"
-                )
+                self.shell.console.print(f"Error getting file info for {file_path}: {e}")
                 return 1
 
         return 0

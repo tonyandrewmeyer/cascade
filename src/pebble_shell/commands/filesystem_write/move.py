@@ -30,9 +30,7 @@ class MoveCommand(Command):
     help = "Move/rename files or directories"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute mv command."""
         if handle_help_flag(self, args):
             return 0
@@ -41,18 +39,13 @@ class MoveCommand(Command):
             return 1
 
         sources = [
-            resolve_path(self.shell.current_directory, f, self.shell.home_dir)
-            for f in args[:-1]
+            resolve_path(self.shell.current_directory, f, self.shell.home_dir) for f in args[:-1]
         ]
-        destination = resolve_path(
-            self.shell.current_directory, args[-1], self.shell.home_dir
-        )
+        destination = resolve_path(self.shell.current_directory, args[-1], self.shell.home_dir)
 
         # Check if destination is directory
         dest_info = get_file_info(client, destination)
-        dest_is_dir = (
-            dest_info is not None and dest_info.type == ops.pebble.FileType.DIRECTORY
-        )
+        dest_is_dir = dest_info is not None and dest_info.type == ops.pebble.FileType.DIRECTORY
 
         if len(sources) > 1 and not dest_is_dir:
             self.console.print("mv: target is not a directory")
@@ -67,9 +60,7 @@ class MoveCommand(Command):
         ) as progress:
             task = progress.add_task("Moving files...", total=len(sources))
             for source in sources:
-                code = self._move_item(
-                    client, source, destination, dest_is_dir, progress, task
-                )
+                code = self._move_item(client, source, destination, dest_is_dir, progress, task)
                 if code != 0:
                     exit_code = code
 

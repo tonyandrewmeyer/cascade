@@ -54,9 +54,7 @@ def safe_push_file(
         return False
 
 
-def list_directory_safe(
-    client: PebbleClient, path: str
-) -> list[ops.pebble.FileInfo] | None:
+def list_directory_safe(client: PebbleClient, path: str) -> list[ops.pebble.FileInfo] | None:
     """List directory contents with error handling.
 
     Args:
@@ -203,11 +201,8 @@ def copy_directory_recursive(
                     client, console, src_path, dst_path, progress, task_id
                 ):
                     success = False
-            elif (
-                file_info.type == ops.pebble.FileType.DIRECTORY
-                and not copy_directory_recursive(
-                    client, console, src_path, dst_path, progress, task_id
-                )
+            elif file_info.type == ops.pebble.FileType.DIRECTORY and not copy_directory_recursive(
+                client, console, src_path, dst_path, progress, task_id
             ):
                 success = False
 
@@ -314,14 +309,10 @@ def move_file_with_progress(
 
     # Copy to destination.
     if file_info.type == ops.pebble.FileType.FILE:
-        if not copy_file_with_progress(
-            client, console, source, dest, progress, task_id
-        ):
+        if not copy_file_with_progress(client, console, source, dest, progress, task_id):
             return False
     elif file_info.type == ops.pebble.FileType.DIRECTORY:
-        if not copy_directory_recursive(
-            client, console, source, dest, progress, task_id
-        ):
+        if not copy_directory_recursive(client, console, source, dest, progress, task_id):
             return False
     else:
         console.print(f"'{source}': unsupported file type")

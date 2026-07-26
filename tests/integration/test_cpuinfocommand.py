@@ -93,9 +93,7 @@ def test_execute_topology_format(
     if result == 0:
         # Should contain table headers for topology format
         output = capture.get()
-        assert any(
-            header in output for header in ["CPU", "Physical ID", "Core ID", "Siblings"]
-        )
+        assert any(header in output for header in ["CPU", "Physical ID", "Core ID", "Siblings"])
     else:
         # Should be 1 if /proc/cpuinfo is not accessible
         assert result == 1
@@ -232,9 +230,7 @@ def test_execute_all_cpus_with_topology(
     # Topology should take precedence over -a flag
     if result == 0:
         output = capture.get()
-        assert any(
-            header in output for header in ["CPU", "Physical ID", "Core ID", "Siblings"]
-        )
+        assert any(header in output for header in ["CPU", "Physical ID", "Core ID", "Siblings"])
     else:
         assert result == 1
         assert "Error reading CPU information" in capture.get()

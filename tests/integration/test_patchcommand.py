@@ -99,9 +99,7 @@ def test_execute_patch_with_target_file(
 ):
     # Test patching specific target file
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["/etc/passwd", "/nonexistent/patch.diff"]
-        )
+        result = command.execute(client=client, args=["/etc/passwd", "/nonexistent/patch.diff"])
 
     # Should fail due to nonexistent patch file
     assert result == 1
@@ -179,9 +177,7 @@ def test_execute_output_file_option(
     with tempfile.NamedTemporaryFile(suffix="_output.txt", delete=False) as output_file:
         output_path = output_file.name
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["-o", output_path, "-i", "/etc/passwd"]
-        )
+        result = command.execute(client=client, args=["-o", output_path, "-i", "/etc/passwd"])
 
     # Should fail since /etc/passwd is not a valid patch file
     assert result == 1
@@ -269,9 +265,7 @@ def test_execute_permission_error_handling(
     assert result == 1
     output = capture.get()
     # Should show appropriate error message
-    assert any(
-        msg in output for msg in ["permission", "denied", "error", "No such file"]
-    )
+    assert any(msg in output for msg in ["permission", "denied", "error", "No such file"])
 
 
 def test_execute_patch_file_reading_error(
@@ -294,9 +288,7 @@ def test_execute_target_file_reading_error(
 ):
     # Test error handling when target file cannot be read
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-i", "/etc/passwd", "/nonexistent/target"]
-        )
+        result = command.execute(client=client, args=["-i", "/etc/passwd", "/nonexistent/target"])
 
     # Should fail with target file error
     assert result == 1

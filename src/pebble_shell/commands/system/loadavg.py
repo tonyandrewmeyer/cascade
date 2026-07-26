@@ -26,9 +26,7 @@ class LoadavgCommand(Command):
     help = "Display detailed load average information from /proc/loadavg"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute loadavg command."""
         if handle_help_flag(self, args):
             return 0
@@ -146,9 +144,7 @@ class LoadavgCommand(Command):
             "Number of processes currently running",
         )
 
-        table.add_row(
-            "Total Processes", str(total_processes), "Total number of processes"
-        )
+        table.add_row("Total Processes", str(total_processes), "Total number of processes")
 
         # Uptime
         if uptime_seconds > 0:
@@ -188,8 +184,6 @@ class LoadavgCommand(Command):
 
         # Show traditional format
         self.console.print("\nTraditional format:")
-        self.console.print(
-            f"load average: {load_1min:.2f}, {load_5min:.2f}, {load_15min:.2f}"
-        )
+        self.console.print(f"load average: {load_1min:.2f}, {load_5min:.2f}, {load_15min:.2f}")
         self.console.print(f"processes: {running_processes}/{total_processes}")
         self.console.print(f"last pid: {last_pid}")

@@ -71,9 +71,7 @@ Examples:
         flags, positional_args = parse_result
 
         must_exist = flags.get("e", False) or flags.get("canonicalize-existing", False)
-        allow_missing = flags.get("m", False) or flags.get(
-            "canonicalize-missing", False
-        )
+        allow_missing = flags.get("m", False) or flags.get("canonicalize-missing", False)
         no_symlinks = flags.get("s", False) or flags.get("strip", False)
         use_null = flags.get("z", False) or flags.get("zero", False)
 
@@ -137,9 +135,7 @@ Examples:
                 and not allow_missing
                 and safe_read_file(client, resolved, self.shell) is None
             ):
-                self.console.print(
-                    f"[red]realpath: {path}: No such file or directory[/red]"
-                )
+                self.console.print(f"[red]realpath: {path}: No such file or directory[/red]")
                 return None
 
             return resolved

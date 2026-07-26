@@ -62,8 +62,6 @@ def test_execute_list_nonexistent(
     command: pebble_shell.commands.TarCommand,
 ):
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["-tf", "/nonexistent/archive.tar"]
-        )
+        result = command.execute(client=client, args=["-tf", "/nonexistent/archive.tar"])
     # Should fail for nonexistent file
     assert result == 1

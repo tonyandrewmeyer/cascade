@@ -33,9 +33,7 @@ def test_help(command: pebble_shell.commands.AdduserCommand):
         command.show_help()
     output = capture.get()
     assert "adduser" in output
-    assert any(
-        phrase in output.lower() for phrase in ["add", "user", "create", "account"]
-    )
+    assert any(phrase in output.lower() for phrase in ["add", "user", "create", "account"])
 
 
 @pytest.mark.parametrize("args", [["-h"], ["--help"]])
@@ -49,9 +47,7 @@ def test_execute_help(
     assert result == 0
     output = capture.get()
     assert "adduser" in output
-    assert any(
-        phrase in output.lower() for phrase in ["add", "user", "create", "account"]
-    )
+    assert any(phrase in output.lower() for phrase in ["add", "user", "create", "account"])
 
 
 def test_execute_no_args(
@@ -87,9 +83,7 @@ def test_execute_add_user_basic(
         # Should fail if not root or user exists
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission", "denied", "root", "exist", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "root", "exist", "error"])
 
 
 def test_execute_system_user_option(
@@ -134,9 +128,7 @@ def test_execute_disabled_password_option(
 ):
     # Test user creation with disabled password
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--disabled-password", "disableduser"]
-        )
+        result = command.execute(client=client, args=["--disabled-password", "disableduser"])
 
     # Should either succeed with disabled password or fail
     if result == 0:
@@ -153,9 +145,7 @@ def test_execute_disabled_login_option(
 ):
     # Test user creation with disabled login
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--disabled-login", "nologinuser"]
-        )
+        result = command.execute(client=client, args=["--disabled-login", "nologinuser"])
 
     # Should either succeed with disabled login or fail
     if result == 0:
@@ -173,9 +163,7 @@ def test_execute_home_directory_option(
     # Test user creation with custom home directory
     custom_home = tempfile.mkdtemp()
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--home", custom_home, "customuser"]
-        )
+        result = command.execute(client=client, args=["--home", custom_home, "customuser"])
 
     # Should either succeed with custom home or fail
     if result == 0:
@@ -192,9 +180,7 @@ def test_execute_shell_option(
 ):
     # Test user creation with custom shell
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--shell", "/bin/bash", "bashuser"]
-        )
+        result = command.execute(client=client, args=["--shell", "/bin/bash", "bashuser"])
 
     # Should either succeed with custom shell or fail
     if result == 0:
@@ -247,9 +233,7 @@ def test_execute_ingroup_option(
 ):
     # Test user creation in specific group
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--ingroup", "users", "groupuser"]
-        )
+        result = command.execute(client=client, args=["--ingroup", "users", "groupuser"])
 
     # Should either succeed adding to group or fail
     if result == 0:
@@ -266,9 +250,7 @@ def test_execute_gecos_option(
 ):
     # Test user creation with GECOS field
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--gecos", "Test User,,,", "gecosuser"]
-        )
+        result = command.execute(client=client, args=["--gecos", "Test User,,,", "gecosuser"])
 
     # Should either succeed with GECOS or fail
     if result == 0:
@@ -375,9 +357,7 @@ def test_execute_nonexistent_group(
 ):
     # Test adding user to nonexistent group
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--ingroup", "nonexistentgroup", "testuser"]
-        )
+        result = command.execute(client=client, args=["--ingroup", "nonexistentgroup", "testuser"])
 
     # Should fail with group not found error
     assert result == 1
@@ -391,9 +371,7 @@ def test_execute_nonexistent_shell(
 ):
     # Test setting nonexistent shell
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--shell", "/nonexistent/shell", "testuser"]
-        )
+        result = command.execute(client=client, args=["--shell", "/nonexistent/shell", "testuser"])
 
     # Should either succeed or fail depending on validation
     if result == 0:
@@ -411,9 +389,7 @@ def test_execute_invalid_home_directory(
 ):
     # Test invalid home directory path
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--home", "relative/path", "testuser"]
-        )
+        result = command.execute(client=client, args=["--home", "relative/path", "testuser"])
 
     # Should either succeed or fail depending on validation
     if result == 0:

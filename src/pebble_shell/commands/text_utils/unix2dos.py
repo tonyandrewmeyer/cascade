@@ -54,9 +54,7 @@ class Unix2dosCommand(Command):
                         get_theme().success_text(f"unix2dos: converted {file_path}")
                     )
                 except ops.pebble.PathError as e:
-                    self.console.print(
-                        get_theme().error_text(f"unix2dos: {file_path}: {e}")
-                    )
+                    self.console.print(get_theme().error_text(f"unix2dos: {file_path}: {e}"))
                     return 1
 
             return 0

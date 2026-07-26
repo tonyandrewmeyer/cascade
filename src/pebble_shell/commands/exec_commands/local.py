@@ -24,9 +24,7 @@ class LocalCommand(Command):
     help = "Run a local command. Usage: local <command> [args...]"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the local command."""
         if handle_help_flag(self, args):
             return 0

@@ -88,23 +88,26 @@ def parse_flags(
         if arg.startswith("--") and len(arg) > 2:
             # Handle long flags like "--help", "--verbose"
             long_flag = arg[2:]  # Remove the "--"
-            
+
             # Handle flags with = syntax like "--output=file"
             if "=" in long_flag:
                 long_flag, value = long_flag.split("=", 1)
             else:
                 value = None
-            
+
             if long_flag in valid_flags:
                 flag_type = valid_flags[long_flag]
-                
+
                 if flag_type is bool:
                     if value is not None:
                         if shell:
                             from .theme import get_theme
+
                             theme = get_theme()
                             shell.console.print(
-                                theme.error_text(f"Error: Flag --{long_flag} doesn't accept arguments")
+                                theme.error_text(
+                                    f"Error: Flag --{long_flag} doesn't accept arguments"
+                                )
                             )
                         return None
                     flags[long_flag] = True
@@ -113,23 +116,29 @@ def parse_flags(
                         if i + 1 >= len(args):
                             if shell:
                                 from .theme import get_theme
+
                                 theme = get_theme()
                                 shell.console.print(
-                                    theme.error_text(f"Error: Flag --{long_flag} requires an argument")
+                                    theme.error_text(
+                                        f"Error: Flag --{long_flag} requires an argument"
+                                    )
                                 )
                             return None
                         value = args[i + 1]
                         i += 1  # Skip the flag argument
-                    
+
                     if flag_type is int:
                         try:
                             flags[long_flag] = int(value)
                         except ValueError:
                             if shell:
                                 from .theme import get_theme
+
                                 theme = get_theme()
                                 shell.console.print(
-                                    theme.error_text(f"Error: Flag --{long_flag} requires an integer argument")
+                                    theme.error_text(
+                                        f"Error: Flag --{long_flag} requires an integer argument"
+                                    )
                                 )
                             return None
                     else:
@@ -137,12 +146,11 @@ def parse_flags(
             else:
                 if shell:
                     from .theme import get_theme
+
                     theme = get_theme()
-                    shell.console.print(
-                        theme.error_text(f"Error: Invalid option --{long_flag}")
-                    )
+                    shell.console.print(theme.error_text(f"Error: Invalid option --{long_flag}"))
                 return None
-                
+
         elif arg.startswith("-") and len(arg) > 1:
             # Handle short flags like "-l", "-la" (combined)
             flag_chars = arg[1:]  # Remove the dash
@@ -159,6 +167,7 @@ def parse_flags(
                             # Can't combine non-bool flags with others
                             if shell:
                                 from .theme import get_theme
+
                                 theme = get_theme()
                                 shell.console.print(
                                     theme.error_text(
@@ -170,6 +179,7 @@ def parse_flags(
                         if i + 1 >= len(args):
                             if shell:
                                 from .theme import get_theme
+
                                 theme = get_theme()
                                 shell.console.print(
                                     theme.error_text(
@@ -185,6 +195,7 @@ def parse_flags(
                             except ValueError:
                                 if shell:
                                     from .theme import get_theme
+
                                     theme = get_theme()
                                     shell.console.print(
                                         theme.error_text(
@@ -199,6 +210,7 @@ def parse_flags(
                 else:
                     if shell:
                         from .theme import get_theme
+
                         theme = get_theme()
                         shell.console.print(
                             theme.error_text(f"Error: Invalid option -{flag_char}")
@@ -469,9 +481,7 @@ def find_files_by_pattern(
         return []
 
 
-def parse_lines_argument(
-    args: list[str], default_lines: int = 10
-) -> tuple[int, list[str]]:
+def parse_lines_argument(args: list[str], default_lines: int = 10) -> tuple[int, list[str]]:
     """Parse a numeric lines argument from command args.
 
     Args:

@@ -129,18 +129,14 @@ Examples:
             )
 
             if show_all or show_network:
-                self.console.print(
-                    f"Network:   {network.network_address}/{network.prefixlen}"
-                )
+                self.console.print(f"Network:   {network.network_address}/{network.prefixlen}")
 
             if (show_all or show_netmask) and isinstance(
                 network, ipaddress.IPv4Network | ipaddress.IPv6Network
             ):
                 self.console.print(f"Netmask:   {network.netmask}")
 
-            if (show_all or show_broadcast) and isinstance(
-                network, ipaddress.IPv4Network
-            ):
+            if (show_all or show_broadcast) and isinstance(network, ipaddress.IPv4Network):
                 self.console.print(f"Broadcast: {network.broadcast_address}")
 
             if show_all or show_hostmask:
@@ -177,10 +173,7 @@ Examples:
 
             if show_all or show_hosts:
                 num_hosts = network.num_addresses
-                if (
-                    isinstance(network, ipaddress.IPv4Network)
-                    and network.prefixlen < 31
-                ):
+                if isinstance(network, ipaddress.IPv4Network) and network.prefixlen < 31:
                     num_hosts -= 2  # Subtract network and broadcast
                 self.console.print(f"Hosts:     {num_hosts}")
 

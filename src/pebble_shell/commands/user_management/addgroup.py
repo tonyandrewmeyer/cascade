@@ -121,9 +121,7 @@ Examples:
         # Check if group already exists
         for line in group_content.strip().split("\n"):
             if line and line.split(":")[0] == group_name:
-                self.console.print(
-                    f"[red]addgroup: group '{group_name}' already exists[/red]"
-                )
+                self.console.print(f"[red]addgroup: group '{group_name}' already exists[/red]")
                 return 1
 
         # Determine GID
@@ -152,9 +150,7 @@ Examples:
 
         # Write files (in Cascade, we simulate this)
         if not quiet:
-            self.console.print(
-                f"[green]Adding group '{group_name}' (GID {gid})[/green]"
-            )
+            self.console.print(f"[green]Adding group '{group_name}' (GID {gid})[/green]")
 
         self.console.print("[yellow]addgroup: would write to /etc/group:[/yellow]")
         self.console.print(f"[dim]{group_entry}[/dim]")
@@ -163,9 +159,7 @@ Examples:
         self.console.print(f"[dim]{gshadow_entry}[/dim]")
 
         if not quiet:
-            self.console.print(
-                f"[green]Group '{group_name}' created successfully[/green]"
-            )
+            self.console.print(f"[green]Group '{group_name}' created successfully[/green]")
 
         return 0
 
@@ -186,9 +180,7 @@ Examples:
                 break
 
         if not user_exists:
-            self.console.print(
-                f"[red]addgroup: user '{user_name}' does not exist[/red]"
-            )
+            self.console.print(f"[red]addgroup: user '{user_name}' does not exist[/red]")
             return 1
 
         # Read /etc/group to verify group exists and add user
@@ -230,23 +222,18 @@ Examples:
                         f"[green]Adding user '{user_name}' to group '{group_name}'[/green]"
                     )
 
-                self.console.print(
-                    "[yellow]addgroup: would update /etc/group line:[/yellow]"
-                )
+                self.console.print("[yellow]addgroup: would update /etc/group line:[/yellow]")
                 self.console.print(f"[dim]{new_line}[/dim]")
             else:
                 new_lines.append(line)
 
         if not group_found:
-            self.console.print(
-                f"[red]addgroup: group '{group_name}' does not exist[/red]"
-            )
+            self.console.print(f"[red]addgroup: group '{group_name}' does not exist[/red]")
             return 1
 
         if not quiet:
             self.console.print(
-                f"[green]User '{user_name}' added to group '{group_name}' "
-                f"successfully[/green]"
+                f"[green]User '{user_name}' added to group '{group_name}' successfully[/green]"
             )
 
         return 0

@@ -89,9 +89,7 @@ def test_execute_with_valid_json_file(
 ):
     # This test may pass or fail depending on if there are JSON files available
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/etc/passwd"]
-        )  # Not JSON, should fail
+        result = command.execute(client=client, args=["/etc/passwd"])  # Not JSON, should fail
 
     # Should fail since /etc/passwd is not JSON
     assert result == 1
@@ -187,9 +185,7 @@ def test_execute_multiple_args_extra_ignored(
 ):
     # Test with more than 2 arguments (extras should be ignored)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/etc/passwd", ".foo", "extra", "args"]
-        )
+        result = command.execute(client=client, args=["/etc/passwd", ".foo", "extra", "args"])
 
     # Should use first file and first keypath, ignore extras
     assert result == 1

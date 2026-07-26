@@ -43,9 +43,7 @@ def handle_pebble_path_error(
     console.print(panel)
 
 
-def handle_pebble_api_error(
-    console: Console, operation: str, error: ops.pebble.APIError
-) -> None:
+def handle_pebble_api_error(console: Console, operation: str, error: ops.pebble.APIError) -> None:
     """Handle Pebble APIError with standardized formatting.
 
     Args:
@@ -134,9 +132,7 @@ def show_file_not_found_error(console: Console, path: str, command: str = "") ->
     console.print(f"[red]{error_message}[/red]")
 
 
-def show_permission_error(
-    console: Console, path: str, operation: str, command: str = ""
-) -> None:
+def show_permission_error(console: Console, path: str, operation: str, command: str = "") -> None:
     """Show a standardized permission error message.
 
     Args:
@@ -151,9 +147,7 @@ def show_permission_error(
     console.print(f"[red]{error_message}[/red]")
 
 
-def validate_file_exists(
-    console: Console, client: Any, path: str, command: str = ""
-) -> bool:
+def validate_file_exists(console: Console, client: Any, path: str, command: str = "") -> bool:
     """Validate that a file exists with standardized error handling.
 
     Args:
@@ -176,9 +170,7 @@ def validate_file_exists(
         return False
 
 
-def show_usage_error(
-    console: Console, command: str, usage: str, message: str = ""
-) -> int:
+def show_usage_error(console: Console, command: str, usage: str, message: str = "") -> int:
     """Show a standardized usage error with command usage information.
 
     Args:
@@ -198,7 +190,7 @@ def show_usage_error(
 
 
 def with_error_context(operation_name: str, context: str = ""):
-    """Decorator to add standardized error handling to command methods.
+    """Return decorator to add standardized error handling to command methods.
 
     Args:
         operation_name: Human-readable name of the operation

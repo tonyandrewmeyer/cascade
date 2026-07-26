@@ -311,9 +311,7 @@ def test_execute_long_option_canonicalize_existing(
 ):
     # Test --canonicalize-existing long option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--canonicalize-existing", "/etc/passwd"]
-        )
+        result = command.execute(client=client, args=["--canonicalize-existing", "/etc/passwd"])
 
     # Should behave same as -e option
     if result == 0:
@@ -329,9 +327,7 @@ def test_execute_long_option_canonicalize_missing(
 ):
     # Test --canonicalize-missing long option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--canonicalize-missing", "/nonexistent"]
-        )
+        result = command.execute(client=client, args=["--canonicalize-missing", "/nonexistent"])
 
     # Should behave same as -m option
     if result == 0:

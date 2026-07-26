@@ -78,9 +78,7 @@ Examples:
                 key, value = arg.split("=", 1)
                 operands[key] = value
             else:
-                self.console.print(
-                    get_theme().error_text(f"dd: invalid operand '{arg}'")
-                )
+                self.console.print(get_theme().error_text(f"dd: invalid operand '{arg}'"))
                 return 1
 
         # Default values
@@ -92,9 +90,7 @@ Examples:
         count = int(operands.get("count", -1)) if operands.get("count") else -1
         skip = int(operands.get("skip", 0)) if operands.get("skip") else 0
         seek = int(operands.get("seek", 0)) if operands.get("seek") else 0
-        conversions = (
-            operands.get("conv", "").split(",") if operands.get("conv") else []
-        )
+        conversions = operands.get("conv", "").split(",") if operands.get("conv") else []
 
         # Use block_size if specified, otherwise use separate ibs/obs
         if block_size:
@@ -106,9 +102,7 @@ Examples:
                 input_data = safe_read_file(client, input_file, self.shell)
                 if input_data is None:
                     self.console.print(
-                        get_theme().error_text(
-                            f"dd: {input_file}: No such file or directory"
-                        )
+                        get_theme().error_text(f"dd: {input_file}: No such file or directory")
                     )
                     return 1
             else:
@@ -143,9 +137,7 @@ Examples:
                     output_stream = BytesIO(output_data)
                     client.push(output_file, output_stream)
                 except Exception as e:
-                    self.console.print(
-                        get_theme().error_text(f"dd: {output_file}: {e}")
-                    )
+                    self.console.print(get_theme().error_text(f"dd: {output_file}: {e}"))
                     return 1
             else:
                 # Output to stdout (convert to text for display)
@@ -158,18 +150,10 @@ Examples:
                     self.console.print(f"[hex]{hex_output}[/hex]")
 
             # Print statistics
-            blocks_read = (
-                math.ceil(len(input_data) / input_block_size) if input_data else 0
-            )
-            blocks_written = (
-                math.ceil(len(output_data) / output_block_size) if output_data else 0
-            )
-            self.console.print(
-                f"{blocks_read} blocks read", file=self.shell.console.file
-            )
-            self.console.print(
-                f"{blocks_written} blocks written", file=self.shell.console.file
-            )
+            blocks_read = math.ceil(len(input_data) / input_block_size) if input_data else 0
+            blocks_written = math.ceil(len(output_data) / output_block_size) if output_data else 0
+            self.console.print(f"{blocks_read} blocks read", file=self.shell.console.file)
+            self.console.print(f"{blocks_written} blocks written", file=self.shell.console.file)
 
             return 0
 

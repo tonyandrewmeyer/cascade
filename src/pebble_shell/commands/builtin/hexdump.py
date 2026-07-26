@@ -25,9 +25,7 @@ class HexdumpCommand(Command):
     help = "Display file contents in hexadecimal. Usage: hexdump [-C] [file]"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute hexdump command."""
         if handle_help_flag(self, args):
             return 0
@@ -43,9 +41,7 @@ class HexdumpCommand(Command):
             return 1
         exit_code = 0
         for filename in files:
-            path = resolve_path(
-                self.shell.current_directory, filename, self.shell.home_dir
-            )
+            path = resolve_path(self.shell.current_directory, filename, self.shell.home_dir)
             try:
                 with client.pull(path, encoding=None) as f:
                     assert isinstance(f, bytes)

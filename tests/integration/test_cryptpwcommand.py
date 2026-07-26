@@ -174,9 +174,7 @@ def test_execute_custom_salt_md5(
 ):
     # Test MD5 with custom salt
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-m", "password123", "customsalt"]
-        )
+        result = command.execute(client=client, args=["-m", "password123", "customsalt"])
 
     # Should succeed with MD5 and custom salt
     assert result == 0
@@ -195,9 +193,7 @@ def test_execute_rounds_option(
 ):
     # Test rounds option for SHA algorithms
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-S", "-R", "10000", "password123"]
-        )
+        result = command.execute(client=client, args=["-S", "-R", "10000", "password123"])
 
     # Should either succeed with rounds or fail if not supported
     if result == 0:
@@ -360,9 +356,7 @@ def test_execute_out_of_range_rounds(
 ):
     # Test out of range rounds value
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-S", "-R", "999999999", "password123"]
-        )
+        result = command.execute(client=client, args=["-S", "-R", "999999999", "password123"])
 
     # Should either handle large rounds or fail appropriately
     if result == 0:
@@ -423,9 +417,7 @@ def test_execute_hash_format_validation(
     assert len(encrypted) == 13  # DES hash length
     assert encrypted.startswith("ab")
     # Should contain only valid hash characters
-    valid_chars = set(
-        "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    )
+    valid_chars = set("./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
     assert all(c in valid_chars for c in encrypted)
 
 

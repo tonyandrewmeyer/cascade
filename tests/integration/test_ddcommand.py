@@ -114,9 +114,7 @@ def test_execute_of_operand_file_write(
 ):
     # Test of=FILE operand (output to file)
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["if=/etc/passwd", "of=/tmp/test_output"]
-        )
+        result = command.execute(client=client, args=["if=/etc/passwd", "of=/tmp/test_output"])
 
     # Should either succeed (writing to file) or fail if path not writable
     if result == 0:
@@ -288,9 +286,7 @@ def test_execute_ibs_obs_separate_block_sizes(
 ):
     # Test ibs=BYTES and obs=BYTES operands separately
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["if=/etc/passwd", "ibs=256", "obs=1024"]
-        )
+        result = command.execute(client=client, args=["if=/etc/passwd", "ibs=256", "obs=1024"])
 
     # Should either succeed with separate input/output block sizes or fail gracefully
     if result == 0:
@@ -356,9 +352,7 @@ def test_execute_operand_parsing(
 ):
     # Test operand parsing with various formats
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["if=/etc/passwd", "bs=1k", "count=2"]
-        )
+        result = command.execute(client=client, args=["if=/etc/passwd", "bs=1k", "count=2"])
 
     # Should parse size suffixes (k, M, G) if supported
     if result == 0:

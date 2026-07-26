@@ -33,8 +33,7 @@ def test_help(command: pebble_shell.commands.ReformineCommand):
         command.show_help()
     output = capture.get()
     assert any(
-        phrase in output.lower()
-        for phrase in ["reform", "mime", "message", "email", "reformat"]
+        phrase in output.lower() for phrase in ["reform", "mime", "message", "email", "reformat"]
     )
 
 
@@ -48,9 +47,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["reform", "mime", "message", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["reform", "mime", "message", "usage"])
 
 
 def test_execute_no_arguments(
@@ -64,9 +61,7 @@ def test_execute_no_arguments(
     # Should fail with missing arguments error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["argument", "required", "usage", "error", "option"]
-    )
+    assert any(msg in output for msg in ["argument", "required", "usage", "error", "option"])
 
 
 def test_execute_extract_mime_structure(
@@ -187,9 +182,7 @@ def test_execute_rewrite_addresses(
 ):
     # Test rewriting email addresses
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-R", "old@example.com", "new@example.com"]
-        )
+        result = command.execute(client=client, args=["-R", "old@example.com", "new@example.com"])
 
     # Should either succeed rewriting addresses or fail
     if result == 0:
@@ -232,9 +225,7 @@ def test_execute_nonexistent_input_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not found", "no such file", "error", "cannot open"]
-    )
+    assert any(msg in output for msg in ["not found", "no such file", "error", "cannot open"])
 
 
 def test_execute_directory_instead_of_file(
@@ -278,9 +269,7 @@ def test_execute_invalid_mime_format(
 ):
     # Test with invalid MIME format
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-s", "/etc/passwd"]
-        )  # Not MIME format
+        result = command.execute(client=client, args=["-s", "/etc/passwd"])  # Not MIME format
 
     # Should either succeed or fail with format error
     if result == 0:
@@ -305,9 +294,7 @@ def test_execute_extract_nonexistent_section(
     # Should fail with section not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["section", "not found", "invalid", "error", "999"]
-    )
+    assert any(msg in output for msg in ["section", "not found", "invalid", "error", "999"])
 
 
 def test_execute_invalid_section_number(
@@ -373,9 +360,7 @@ def test_execute_multiple_operations(
         # Should fail with operation conflict or file error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["conflict", "multiple", "operation", "error"]
-        )
+        assert any(msg in output for msg in ["conflict", "multiple", "operation", "error"])
 
 
 def test_execute_decode_with_charset(
@@ -559,9 +544,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["not found", "error", "invalid", "cannot open"]
-    )
+    assert any(msg in output for msg in ["not found", "error", "invalid", "cannot open"])
 
 
 def test_execute_signal_handling(

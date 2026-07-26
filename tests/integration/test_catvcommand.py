@@ -337,9 +337,7 @@ def test_execute_nonexistent_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot open", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot open", "error", "not found"])
 
 
 def test_execute_permission_denied_file(
@@ -556,9 +554,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["No such file", "error", "cannot", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "error", "cannot", "not found"])
 
 
 def test_execute_signal_handling(

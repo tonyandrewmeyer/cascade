@@ -28,9 +28,7 @@ class YqCommand(Command):
     help = "Pretty-print YAML files with optional jq-like keypath filtering. Usage: yq <file> [.foo.bar]"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the yq command to format and filter YAML files."""
         if handle_help_flag(self, args):
             return 0

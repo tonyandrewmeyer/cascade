@@ -185,9 +185,7 @@ def test_execute_broadcast_option_long(
 ):
     # Test --broadcast option to display broadcast address
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--broadcast", "192.168.1.100/24"]
-        )
+        result = command.execute(client=client, args=["--broadcast", "192.168.1.100/24"])
 
     # Should behave same as -b option
     if result == 0:
@@ -323,9 +321,7 @@ def test_execute_multiple_options_combination(
 ):
     # Test multiple options together
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-n", "-b", "-m", "192.168.1.100/24"]
-        )
+        result = command.execute(client=client, args=["-n", "-b", "-m", "192.168.1.100/24"])
 
     # Should either succeed showing multiple values or fail gracefully
     if result == 0:

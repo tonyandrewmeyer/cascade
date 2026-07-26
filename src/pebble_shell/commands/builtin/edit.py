@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-import io
+import logging
+import os
 import shutil
 import subprocess
 import tempfile
@@ -14,6 +15,8 @@ from rich.panel import Panel
 from ...utils import resolve_path
 from ...utils.command_helpers import handle_help_flag
 from .._base import Command
+
+logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     import shimmer
@@ -29,9 +32,7 @@ class EditCommand(Command):
     help = "Edit a remote file locally and push changes back. Usage: edit REMOTE_PATH"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the edit command to edit a remote file locally."""
         if handle_help_flag(self, args):
             return 0
@@ -46,17 +47,15 @@ class EditCommand(Command):
             )
             return 1
         remote_path = args[0]
-        remote_path = resolve_path(
-            self.shell.current_directory, remote_path, self.shell.home_dir
-        )
+        remote_path = resolve_path(self.shell.current_directory, remote_path, self.shell.home_dir)
         with tempfile.NamedTemporaryFile(delete=False, mode="wb") as tmp:
             tmp_path = tmp.name
             try:
                 with client.pull(remote_path, encoding=None) as remote_f:
                     shutil.copyfileobj(remote_f, tmp)
             except Exception:
-                # File doesn't exist - that's fine, we'll create it
-                pass
+                # File doesn't exist - that's fine, we'll create it.
+                logger.debug("Could not pull %s; creating a new file", remote_path)
         editor = os.environ.get("EDITOR", "pico")
         before = os.stat(tmp_path).st_mtime
         subprocess.run([editor, tmp_path], check=True)  # noqa: S603

@@ -347,19 +347,14 @@ class PipelineExecutor:
                                 delimiter = cmd.args[delim_idx + 1]
 
                         for line in lines:
-                            if delimiter:
-                                fields = line.split(delimiter)
-                            else:
-                                fields = line.split()
+                            fields = line.split(delimiter) if delimiter else line.split()
 
                             if 0 <= field_num < len(fields):
                                 output.write_stdout(f"{fields[field_num]}\n")
                 except (ValueError, IndexError):
                     output.write_stderr("cut: invalid field specification\n")
             else:
-                output.write_stderr(
-                    "cut: field specification required for piped input\n"
-                )
+                output.write_stderr("cut: field specification required for piped input\n")
 
     def _write_to_file(self, filename: str, content: str, append: bool = False) -> None:
         """Write content to a file using Pebble.
@@ -370,9 +365,7 @@ class PipelineExecutor:
             append: Whether to append to existing file
         """
         try:
-            file_path = resolve_path(
-                self._shell.current_directory, filename, self._shell.home_dir
-            )
+            file_path = resolve_path(self._shell.current_directory, filename, self._shell.home_dir)
 
             if append:
                 try:
@@ -401,9 +394,7 @@ class PipelineExecutor:
             File content as string
         """
         try:
-            file_path = resolve_path(
-                self._shell.current_directory, filename, self._shell.home_dir
-            )
+            file_path = resolve_path(self._shell.current_directory, filename, self._shell.home_dir)
 
             with self.client.pull(file_path) as file:
                 content = file.read()
@@ -431,13 +422,11 @@ class PipelineExecutor:
                 if category not in categories:
                     categories[category] = []
                 categories[category].append((cmd_name, help_text))
-            except NotImplementedError:  # noqa: PERF203
+            except NotImplementedError:
                 category = "Other"
                 if category not in categories:
                     categories[category] = []
-                categories[category].append(
-                    (cmd_name, f"{cmd_name} - (help not available)")
-                )
+                categories[category].append((cmd_name, f"{cmd_name} - (help not available)"))
 
         # Define the order of categories:
         category_order = [
@@ -458,8 +447,7 @@ class PipelineExecutor:
             matched = False
             for category in category_order + list(categories.keys()):
                 if (
-                    category.lower().startswith(group_lower)
-                    or group_lower in category.lower()
+                    category.lower().startswith(group_lower) or group_lower in category.lower()
                 ) and category in categories:
                     table = Table(
                         title=category,
@@ -476,9 +464,7 @@ class PipelineExecutor:
                     matched = True
                     break
             if not matched:
-                output.write_stdout(
-                    f"[red]No command group found matching '{group}'.[/red]\n"
-                )
+                output.write_stdout(f"[red]No command group found matching '{group}'.[/red]\n")
                 return
         else:
             for category in category_order:
@@ -534,14 +520,10 @@ class PipelineExecutor:
 
         if help_tables:
             group_obj = Group(*help_tables)
-            panel = Panel(
-                group_obj, title="[b]Available Commands[/b]", style="bold blue"
-            )
+            panel = Panel(group_obj, title="[b]Available Commands[/b]", style="bold blue")
             self._shell.console.print(panel)
 
-    def _skip_to_next_group(
-        self, commands: list[ParsedCommand], current_index: int
-    ) -> int:
+    def _skip_to_next_group(self, commands: list[ParsedCommand], current_index: int) -> int:
         """Skip to the next command group after && or ||."""
         i = current_index + 1
         while i < len(commands):

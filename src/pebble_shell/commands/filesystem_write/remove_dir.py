@@ -24,21 +24,16 @@ class RemoveDirCommand(Command):
     help = "Remove empty directories"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute rmdir command."""
         if handle_help_flag(self, args):
             self.show_help()
             return 0
-        if not validate_min_args(
-            self.shell, args, 1, "rmdir <directory1> [directory2...]"
-        ):
+        if not validate_min_args(self.shell, args, 1, "rmdir <directory1> [directory2...]"):
             return 1
 
         directories = [
-            resolve_path(self.shell.current_directory, d, self.shell.home_dir)
-            for d in args
+            resolve_path(self.shell.current_directory, d, self.shell.home_dir) for d in args
         ]
 
         exit_code = 0

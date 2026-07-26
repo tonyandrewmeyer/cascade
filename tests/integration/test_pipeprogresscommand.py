@@ -47,9 +47,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["pipe", "progress", "monitor", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["pipe", "progress", "monitor", "usage"])
 
 
 def test_execute_simple_pipe_monitor(
@@ -331,9 +329,7 @@ def test_execute_conflicting_options(
         # Should fail with option conflict
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["conflict", "option", "error", "quiet", "verbose"]
-        )
+        assert any(msg in output for msg in ["conflict", "option", "error", "quiet", "verbose"])
 
 
 def test_execute_invalid_option(

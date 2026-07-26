@@ -3,6 +3,7 @@
 from unittest.mock import Mock, patch
 
 import ops
+
 from src.pebble_shell.utils.file_ops import (
     copy_directory_recursive,
     copy_file_with_progress,
@@ -55,22 +56,16 @@ class TestBasicFileOperations:
         result = safe_push_file(mock_client, "/test/file.txt", "content")
 
         assert result is True
-        mock_client.push.assert_called_once_with(
-            "/test/file.txt", "content", make_dirs=True
-        )
+        mock_client.push.assert_called_once_with("/test/file.txt", "content", make_dirs=True)
 
     def test_safe_push_file_no_make_dirs(self):
         """Test file push without making directories."""
         mock_client = Mock()
 
-        result = safe_push_file(
-            mock_client, "/test/file.txt", "content", make_dirs=False
-        )
+        result = safe_push_file(mock_client, "/test/file.txt", "content", make_dirs=False)
 
         assert result is True
-        mock_client.push.assert_called_once_with(
-            "/test/file.txt", "content", make_dirs=False
-        )
+        mock_client.push.assert_called_once_with("/test/file.txt", "content", make_dirs=False)
 
     def test_safe_push_file_error(self):
         """Test file push with error."""
@@ -265,9 +260,7 @@ class TestCopyOperations:
             )
 
         assert result is False
-        mock_console.print.assert_called_with(
-            "cannot write destination file: /dst/file.txt"
-        )
+        mock_console.print.assert_called_with("cannot write destination file: /dst/file.txt")
 
     def test_copy_directory_recursive_success(self):
         """Test successful recursive directory copy."""
@@ -285,20 +278,14 @@ class TestCopyOperations:
 
         with (
             patch("src.pebble_shell.utils.file_ops.list_directory_safe") as mock_list,
-            patch(
-                "src.pebble_shell.utils.file_ops.copy_file_with_progress"
-            ) as mock_copy_file,
-            patch(
-                "src.pebble_shell.utils.file_ops.copy_directory_recursive"
-            ) as mock_copy_dir,
+            patch("src.pebble_shell.utils.file_ops.copy_file_with_progress") as mock_copy_file,
+            patch("src.pebble_shell.utils.file_ops.copy_directory_recursive") as mock_copy_dir,
         ):
             mock_list.return_value = [mock_file, mock_subdir]
             mock_copy_file.return_value = True
             mock_copy_dir.return_value = True
 
-            result = copy_directory_recursive(
-                mock_client, mock_console, "/src/dir", "/dst/dir"
-            )
+            result = copy_directory_recursive(mock_client, mock_console, "/src/dir", "/dst/dir")
 
         assert result is True
         mock_client.make_dir.assert_called_once_with("/dst/dir", make_parents=True)
@@ -314,9 +301,7 @@ class TestCopyOperations:
         with patch("src.pebble_shell.utils.file_ops.list_directory_safe") as mock_list:
             mock_list.return_value = None
 
-            result = copy_directory_recursive(
-                mock_client, mock_console, "/src/dir", "/dst/dir"
-            )
+            result = copy_directory_recursive(mock_client, mock_console, "/src/dir", "/dst/dir")
 
         assert result is False
         mock_console.print.assert_any_call("cannot list directory: /src/dir")
@@ -358,9 +343,7 @@ class TestRemoveOperations:
         with patch("src.pebble_shell.utils.file_ops.get_file_info") as mock_get_info:
             mock_get_info.return_value = None
 
-            result = remove_file_recursive(
-                mock_client, mock_console, "/test/file.txt", force=True
-            )
+            result = remove_file_recursive(mock_client, mock_console, "/test/file.txt", force=True)
 
         assert result is True
 
@@ -377,9 +360,7 @@ class TestRemoveOperations:
             )
 
         assert result is False
-        mock_console.print.assert_called_with(
-            "cannot remove '/test/file.txt': file not found"
-        )
+        mock_console.print.assert_called_with("cannot remove '/test/file.txt': file not found")
 
     def test_remove_file_recursive_directory(self):
         """Test recursive directory removal."""
@@ -395,9 +376,7 @@ class TestRemoveOperations:
         with (
             patch("src.pebble_shell.utils.file_ops.get_file_info") as mock_get_info,
             patch("src.pebble_shell.utils.file_ops.list_directory_safe") as mock_list,
-            patch(
-                "src.pebble_shell.utils.file_ops.remove_file_recursive"
-            ) as mock_remove,
+            patch("src.pebble_shell.utils.file_ops.remove_file_recursive") as mock_remove,
         ):
             mock_get_info.return_value = mock_dir_info
             mock_list.return_value = [mock_sub_file]
@@ -422,12 +401,8 @@ class TestMoveOperations:
 
         with (
             patch("src.pebble_shell.utils.file_ops.get_file_info") as mock_get_info,
-            patch(
-                "src.pebble_shell.utils.file_ops.copy_file_with_progress"
-            ) as mock_copy,
-            patch(
-                "src.pebble_shell.utils.file_ops.remove_file_recursive"
-            ) as mock_remove,
+            patch("src.pebble_shell.utils.file_ops.copy_file_with_progress") as mock_copy,
+            patch("src.pebble_shell.utils.file_ops.remove_file_recursive") as mock_remove,
         ):
             mock_get_info.return_value = mock_file_info
             mock_copy.return_value = True
@@ -451,20 +426,14 @@ class TestMoveOperations:
 
         with (
             patch("src.pebble_shell.utils.file_ops.get_file_info") as mock_get_info,
-            patch(
-                "src.pebble_shell.utils.file_ops.copy_directory_recursive"
-            ) as mock_copy,
-            patch(
-                "src.pebble_shell.utils.file_ops.remove_file_recursive"
-            ) as mock_remove,
+            patch("src.pebble_shell.utils.file_ops.copy_directory_recursive") as mock_copy,
+            patch("src.pebble_shell.utils.file_ops.remove_file_recursive") as mock_remove,
         ):
             mock_get_info.return_value = mock_dir_info
             mock_copy.return_value = True
             mock_remove.return_value = True
 
-            result = move_file_with_progress(
-                mock_client, mock_console, "/src/dir", "/dst/dir"
-            )
+            result = move_file_with_progress(mock_client, mock_console, "/src/dir", "/dst/dir")
 
         assert result is True
 
@@ -481,9 +450,7 @@ class TestMoveOperations:
             )
 
         assert result is False
-        mock_console.print.assert_called_with(
-            "cannot stat '/src/file.txt': file not found"
-        )
+        mock_console.print.assert_called_with("cannot stat '/src/file.txt': file not found")
 
 
 class TestUtilityFunctions:
@@ -510,9 +477,7 @@ class TestUtilityFunctions:
     def test_ensure_parent_directory_error(self):
         """Test ensuring parent directory with error."""
         mock_client = Mock()
-        mock_client.make_dir.side_effect = ops.pebble.PathError(
-            "dir", "permission denied"
-        )
+        mock_client.make_dir.side_effect = ops.pebble.PathError("dir", "permission denied")
 
         result = ensure_parent_directory(mock_client, "/path/to/file.txt")
 
@@ -703,9 +668,7 @@ class TestAdditionalCoverage:
             result = remove_file_recursive(mock_client, mock_console, "/test")
 
             assert result is False
-            mock_console.print.assert_called_with(
-                "cannot remove '/test': Generic error"
-            )
+            mock_console.print.assert_called_with("cannot remove '/test': Generic error")
 
     def test_remove_file_recursive_force_mode(self):
         """Test remove file with force mode ignoring errors."""
@@ -715,9 +678,7 @@ class TestAdditionalCoverage:
         with patch("src.pebble_shell.utils.file_ops.get_file_info") as mock_get_info:
             mock_get_info.side_effect = Exception("Generic error")
 
-            result = remove_file_recursive(
-                mock_client, mock_console, "/test", force=True
-            )
+            result = remove_file_recursive(mock_client, mock_console, "/test", force=True)
 
             assert result is True
 

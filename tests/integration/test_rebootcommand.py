@@ -62,16 +62,13 @@ def test_execute_no_args_immediate_reboot(
         output = capture.get()
         # Should show reboot initiation message
         assert any(
-            msg in output
-            for msg in ["Reboot initiated", "System will reboot", "Reboot scheduled"]
+            msg in output for msg in ["Reboot initiated", "System will reboot", "Reboot scheduled"]
         )
     else:
         # Should fail if Pebble API unavailable or permission denied
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Reboot operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Reboot operation failed", "error", "failed"])
 
 
 def test_execute_immediate_reboot_confirmation(
@@ -86,8 +83,7 @@ def test_execute_immediate_reboot_confirmation(
     if result == 0:
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["Reboot initiated", "System will reboot", "Reboot scheduled"]
+            msg in output for msg in ["Reboot initiated", "System will reboot", "Reboot scheduled"]
         )
 
 
@@ -102,9 +98,7 @@ def test_execute_api_error_handling(
     # Should handle API errors gracefully
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Reboot operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Reboot operation failed", "error", "failed"])
     else:
         # Should succeed if Pebble API is available
         assert result == 0
@@ -418,10 +412,7 @@ def test_execute_reboot_confirmation_message(
         output = capture.get()
         # Should have informative confirmation message
         assert len(output.strip()) > 0
-        assert any(
-            msg in output
-            for msg in ["Reboot initiated", "System will reboot", "reboot"]
-        )
+        assert any(msg in output for msg in ["Reboot initiated", "System will reboot", "reboot"])
 
 
 def test_execute_pebble_integration_validation(

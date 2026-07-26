@@ -68,9 +68,7 @@ class TarCommand(Command):
         # Validate arguments
         mode_count = sum([create, extract, list_contents])
         if mode_count != 1:
-            self.console.print(
-                "[red]tar: must specify exactly one of -c, -x, or -t[/red]"
-            )
+            self.console.print("[red]tar: must specify exactly one of -c, -x, or -t[/red]")
             return 1
 
         if not archive_filename:
@@ -91,9 +89,7 @@ class TarCommand(Command):
         try:
             if create:
                 if not positional_args:
-                    self.console.print(
-                        "[red]tar: no files specified for archive creation[/red]"
-                    )
+                    self.console.print("[red]tar: no files specified for archive creation[/red]")
                     return 1
 
                 compression_type = None
@@ -109,9 +105,7 @@ class TarCommand(Command):
                 )
 
             elif extract:
-                return self._extract_tar(
-                    client, archive_filename, positional_args, verbose
-                )
+                return self._extract_tar(client, archive_filename, positional_args, verbose)
 
             elif list_contents:
                 return self._list_tar(client, archive_filename, verbose)
@@ -241,15 +235,11 @@ EXAMPLES:
                         file_content = tar.extractfile(member)
                         if file_content:
                             content = file_content.read()
-                            client.push(
-                                member.name, io.BytesIO(content), make_dirs=True
-                            )
+                            client.push(member.name, io.BytesIO(content), make_dirs=True)
                             extracted_count += 1
 
                             if verbose:
-                                self.console.print(
-                                    f"[green]Extracted: {member.name}[/green]"
-                                )
+                                self.console.print(f"[green]Extracted: {member.name}[/green]")
 
                 self.console.print(
                     f"[green]Successfully extracted {extracted_count} files[/green]"

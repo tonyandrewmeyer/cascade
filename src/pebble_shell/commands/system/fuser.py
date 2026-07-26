@@ -20,9 +20,7 @@ class FuserCommand(Command):
     help = "Show processes using files or sockets"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ) -> int:
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]) -> int:
         """Execute the fuser command."""
         if handle_help_flag(self, args):
             return 0
@@ -72,9 +70,7 @@ class FuserCommand(Command):
 
                         # Try to read file descriptors
                         try:
-                            with client.pull(
-                                f"/proc/{pid}/cmdline", encoding="utf-8"
-                            ) as f:
+                            with client.pull(f"/proc/{pid}/cmdline", encoding="utf-8") as f:
                                 cmdline = f.read().strip()
                                 if not cmdline:
                                     continue
@@ -129,9 +125,7 @@ class FuserCommand(Command):
                     for proc in processes:
                         pid = proc["pid"]
                         if interactive:
-                            response = input(
-                                f"Kill process {pid} ({proc['cmdline']})? (y/N): "
-                            )
+                            response = input(f"Kill process {pid} ({proc['cmdline']})? (y/N): ")
                             if response.lower() != "y":
                                 continue
 

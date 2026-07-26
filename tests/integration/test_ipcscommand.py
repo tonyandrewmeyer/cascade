@@ -87,8 +87,7 @@ def test_execute_show_all_facilities(
     # Should show all IPC types
     if len(output.strip()) > 0:
         assert any(
-            section in output.lower()
-            for section in ["shared memory", "semaphore", "message"]
+            section in output.lower() for section in ["shared memory", "semaphore", "message"]
         )
 
 
@@ -198,8 +197,7 @@ def test_execute_summary_information(
     # May contain usage statistics
     if len(output.strip()) > 0:
         assert any(
-            keyword in output.lower()
-            for keyword in ["used", "allocated", "total", "summary"]
+            keyword in output.lower() for keyword in ["used", "allocated", "total", "summary"]
         )
 
 
@@ -239,10 +237,7 @@ def test_execute_process_information(
     assert len(output.strip()) >= 0
     # May contain process IDs
     if len(output.strip()) > 0:
-        assert any(
-            keyword in output.lower()
-            for keyword in ["pid", "process", "creator", "last"]
-        )
+        assert any(keyword in output.lower() for keyword in ["pid", "process", "creator", "last"])
 
 
 def test_execute_creator_information(
@@ -260,10 +255,7 @@ def test_execute_creator_information(
     assert len(output.strip()) >= 0
     # May contain creator details
     if len(output.strip()) > 0:
-        assert any(
-            keyword in output.lower()
-            for keyword in ["creator", "owner", "cuid", "cgid"]
-        )
+        assert any(keyword in output.lower() for keyword in ["creator", "owner", "cuid", "cgid"])
 
 
 def test_execute_numeric_output(
@@ -300,9 +292,7 @@ def test_execute_combined_options(
     assert len(output.strip()) >= 0
     # Should show shared memory with process and time info
     if len(output.strip()) > 0:
-        assert any(
-            keyword in output.lower() for keyword in ["shared memory", "pid", "time"]
-        )
+        assert any(keyword in output.lower() for keyword in ["shared memory", "pid", "time"])
 
 
 def test_execute_specific_facility_id(
@@ -322,9 +312,7 @@ def test_execute_specific_facility_id(
         # Should fail if facility doesn't exist
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["invalid", "not found", "no such", "error"]
-        )
+        assert any(msg in output for msg in ["invalid", "not found", "no such", "error"])
 
 
 def test_execute_human_readable_format(
@@ -405,9 +393,7 @@ def test_execute_output_format_validation(
         # Should have structured output format
         _ = output.strip().split("\n")
         # Should contain limit information
-        assert any(
-            keyword in output.lower() for keyword in ["limit", "max", "resource"]
-        )
+        assert any(keyword in output.lower() for keyword in ["limit", "max", "resource"])
 
 
 def test_execute_memory_efficiency(

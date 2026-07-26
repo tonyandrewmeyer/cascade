@@ -29,9 +29,7 @@ class PgrepCommand(Command):
     help = "Find processes by name or command line pattern. Use -f for full command matching, -u for user filtering"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute pgrep command."""
         if handle_help_flag(self, args):
             return 0
@@ -137,11 +135,7 @@ class PgrepCommand(Command):
             # Get user info
             try:
                 uid = read_proc_status_field(client, pid, "Uid")
-                username = (
-                    get_user_name_for_uid(client, uid) or f"uid{uid}"
-                    if uid
-                    else "unknown"
-                )
+                username = get_user_name_for_uid(client, uid) or f"uid{uid}" if uid else "unknown"
             except ProcReadError:
                 username = "unknown"
 

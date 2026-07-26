@@ -172,9 +172,7 @@ def test_execute_prefix_directory_nonexistent(
     # Should fail if prefix directory doesn't exist
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "not found", "directory", "error"]
-    )
+    assert any(msg in output for msg in ["No such file", "not found", "directory", "error"])
 
 
 def test_execute_template_relative_to_temp_dir(
@@ -220,9 +218,7 @@ def test_execute_directory_with_prefix_and_template(
     # Test creating directory with prefix and template
     temp_dir = tempfile.mkdtemp()
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-d", "-p", temp_dir, "testXXXXXX"]
-        )
+        result = command.execute(client=client, args=["-d", "-p", temp_dir, "testXXXXXX"])
 
     # Should either succeed with all options or fail gracefully
     if result == 0:

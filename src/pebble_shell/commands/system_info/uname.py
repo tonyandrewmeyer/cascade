@@ -68,7 +68,7 @@ Options:
         )
         if parse_result is None:
             return 1
-        flags, positional_args = parse_result
+        flags, _positional_args = parse_result
 
         all_info = flags.get("a", False)
         kernel_name = flags.get("s", False)

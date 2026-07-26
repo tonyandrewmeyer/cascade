@@ -262,9 +262,7 @@ VmRSS:	    4932 kB
             # Generate varied IP addresses and states
             local_ip = f"{(i % 256):02X}{((i // 256) % 256):02X}{((i // 65536) % 256):02X}{((i // 16777216) % 256):02X}"
             port = f"{(8000 + i % 1000):04X}"
-            state = (
-                "01" if i % 2 == 0 else "0A"
-            )  # Alternate between ESTABLISHED and LISTEN
+            state = "01" if i % 2 == 0 else "0A"  # Alternate between ESTABLISHED and LISTEN
             line = f"   {i}: {local_ip}:{port} 00000000:0000 {state} 00000000:00000000 00:00000000 00000000  1000        0 {16000 + i} 1 0000000000000000 20 4 27 10 -1"
             connections.append(line)
 
@@ -282,9 +280,7 @@ VmRSS:	    4932 kB
     def test_unicode_handling_in_proc_files(self):
         """Test handling of unicode characters in proc files."""
         # Environment with unicode values
-        unicode_content = (
-            "USER=测试用户\x00PATH=/usr/bin\x00DISPLAY=:0.0\x00LANG=zh_CN.UTF-8\x00"
-        )
+        unicode_content = "USER=测试用户\x00PATH=/usr/bin\x00DISPLAY=:0.0\x00LANG=zh_CN.UTF-8\x00"
         mock_client = self.create_mock_client(unicode_content)
 
         result = read_proc_environ(mock_client, "1234")

@@ -24,9 +24,7 @@ class IostatCommand(Command):
     help = "Display I/O statistics. Optional: interval (seconds) and count (number of reports)"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute iostat command."""
         if handle_help_flag(self, args):
             return 0
@@ -160,9 +158,7 @@ class IostatCommand(Command):
 
         # Also show traditional iostat format
         self.console.print("\nTraditional iostat format:")
-        self.console.print(
-            "Device            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn"
-        )
+        self.console.print("Device            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn")
         for disk in disks:
             device = disk["device"]
             reads = disk["reads"]

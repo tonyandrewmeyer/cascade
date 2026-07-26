@@ -55,9 +55,7 @@ Examples:
             try:
                 net_dev = read_proc_file(client, "/proc/net/dev")
             except ProcReadError:
-                self.console.print(
-                    "[red]ipaddr: cannot read network interface information[/red]"
-                )
+                self.console.print("[red]ipaddr: cannot read network interface information[/red]")
                 return 1
 
             interfaces = []
@@ -68,9 +66,7 @@ Examples:
                         interfaces.append(iface_name)
 
             if interface and interface not in interfaces:
-                self.console.print(
-                    f"[red]ipaddr: interface '{interface}' not found[/red]"
-                )
+                self.console.print(f"[red]ipaddr: interface '{interface}' not found[/red]")
                 return 1
 
             # Display interface addresses
@@ -85,9 +81,7 @@ Examples:
             self.console.print(f"[red]ipaddr: {e}[/red]")
             return 1
 
-    def _display_interface_addresses(
-        self, client: ClientType, index: int, iface_name: str
-    ):
+    def _display_interface_addresses(self, client: ClientType, index: int, iface_name: str):
         """Display addresses for a single interface."""
         try:
             # Get interface state

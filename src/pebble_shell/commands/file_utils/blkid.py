@@ -135,13 +135,11 @@ Examples:
                     # Try to read various attributes
                     for attr in ["uuid", "label", "type"]:
                         try:
-                            content = safe_read_file(
-                                client, f"{sys_path}/{attr}", self.shell
-                            )
+                            content = safe_read_file(client, f"{sys_path}/{attr}", self.shell)
                             value = content.decode("utf-8").strip() if content else None
                             if value:
                                 info[attr.upper()] = value
-                        except ops.pebble.PathError:  # noqa: PERF203  # needed for device attribute probing
+                        except ops.pebble.PathError:  # needed for device attribute probing
                             continue
                     break
                 except ops.pebble.PathError:

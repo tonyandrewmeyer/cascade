@@ -88,9 +88,7 @@ def test_execute_single_file(
         # Should fail if file not accessible
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["No such file", "permission denied", "error"]
-        )
+        assert any(msg in output for msg in ["No such file", "permission denied", "error"])
 
 
 def test_execute_nonexistent_file(
@@ -315,9 +313,7 @@ def test_execute_permission_denied_file(
     # Should fail with permission error
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission denied", "cannot open", "error"]
-        )
+        assert any(msg in output for msg in ["permission denied", "cannot open", "error"])
     else:
         # May succeed if file is readable
         assert result == 0

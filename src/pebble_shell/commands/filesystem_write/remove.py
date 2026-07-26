@@ -29,16 +29,12 @@ class RemoveCommand(Command):
     help = "Remove files and directories"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute rm command."""
         if handle_help_flag(self, args):
             return 0
 
-        if not validate_min_args(
-            self.shell, args, 1, "rm [-r] [-f] <file1> [file2...]"
-        ):
+        if not validate_min_args(self.shell, args, 1, "rm [-r] [-f] <file1> [file2...]"):
             return 1
 
         flags_result = parse_flags(args, {"r": bool, "f": bool}, self.shell)
@@ -55,9 +51,7 @@ class RemoveCommand(Command):
         # Expand globs in file arguments
         expanded_files: list[str] = []
         for file_pattern in remaining_args:
-            expanded = expand_globs_in_tokens(
-                client, [file_pattern], self.shell.current_directory
-            )
+            expanded = expand_globs_in_tokens(client, [file_pattern], self.shell.current_directory)
             if expanded:
                 expanded_files.extend(expanded)
             elif not force:

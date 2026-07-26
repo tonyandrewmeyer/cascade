@@ -83,7 +83,7 @@ class TestExecCommand:
         command.execute(mock_client, ["-w", "/var", "pwd"])
 
         mock_client.exec.assert_called_once()
-        args, kwargs = mock_client.exec.call_args
+        args, _kwargs = mock_client.exec.call_args
         assert args[0] == ["pwd"]
         # working_dir is parsed but not passed to exec since it's not supported
 
@@ -272,9 +272,7 @@ class TestWhichCommand:
         """Test when command is not found."""
 
         client = Mock()
-        client.exec.side_effect = ExecError(
-            ["which", "nonexistent"], 1, "", "not found"
-        )
+        client.exec.side_effect = ExecError(["which", "nonexistent"], 1, "", "not found")
 
         result = command.execute(client, ["nonexistent"])
 

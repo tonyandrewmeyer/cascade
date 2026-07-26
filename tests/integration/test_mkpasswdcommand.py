@@ -151,9 +151,7 @@ def test_execute_method_des(
         # Should fail if DES not supported
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["unsupported", "not available", "DES", "error"]
-        )
+        assert any(msg in output for msg in ["unsupported", "not available", "DES", "error"])
 
 
 def test_execute_method_md5(
@@ -231,8 +229,7 @@ def test_execute_invalid_method(
     assert result == 1
     output = capture.get()
     assert any(
-        msg in output
-        for msg in ["invalid method", "unknown method", "unsupported", "error"]
+        msg in output for msg in ["invalid method", "unknown method", "unsupported", "error"]
     )
 
 
@@ -366,9 +363,7 @@ def test_execute_very_long_password(
         # Should fail if password too long
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["too long", "password length", "limit", "error"]
-        )
+        assert any(msg in output for msg in ["too long", "password length", "limit", "error"])
 
 
 def test_execute_deterministic_output(
@@ -494,9 +489,7 @@ def test_execute_hash_validation(
         # Should have reasonable hash length
         assert 8 <= len(hash_output) <= 200
         # Should contain valid hash characters
-        valid_chars = set(
-            "$./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-        )
+        valid_chars = set("$./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
         assert all(c in valid_chars for c in hash_output)
 
 

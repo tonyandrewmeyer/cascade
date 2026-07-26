@@ -24,9 +24,7 @@ class NoticeCommand(Command):
     help = "Get details of a specific notice"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the notice command."""
         if handle_help_flag(self, args):
             return 0
@@ -53,17 +51,11 @@ class NoticeCommand(Command):
         table.add_row("Key", str(notice.key) if notice.key else "")
 
         if notice.first_occurred:
-            table.add_row(
-                "First Occurred", notice.first_occurred.strftime("%Y-%m-%d %H:%M:%S")
-            )
+            table.add_row("First Occurred", notice.first_occurred.strftime("%Y-%m-%d %H:%M:%S"))
         if notice.last_occurred:
-            table.add_row(
-                "Last Occurred", notice.last_occurred.strftime("%Y-%m-%d %H:%M:%S")
-            )
+            table.add_row("Last Occurred", notice.last_occurred.strftime("%Y-%m-%d %H:%M:%S"))
         if notice.last_repeated:
-            table.add_row(
-                "Last Repeated", notice.last_repeated.strftime("%Y-%m-%d %H:%M:%S")
-            )
+            table.add_row("Last Repeated", notice.last_repeated.strftime("%Y-%m-%d %H:%M:%S"))
 
         if notice.occurrences:
             table.add_row("Occurrences", str(notice.occurrences))

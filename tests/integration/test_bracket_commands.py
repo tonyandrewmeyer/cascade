@@ -22,9 +22,7 @@ class TestBracketCommandsIntegration:
     def test_bracket_command_basic_functionality(self):
         """Test basic functionality of [ command."""
         # String comparison
-        result = self.bracket_command.execute(
-            self.mock_client, ["hello", "=", "hello", "]"]
-        )
+        result = self.bracket_command.execute(self.mock_client, ["hello", "=", "hello", "]"])
         assert result == 0
 
         # Numeric comparison
@@ -65,32 +63,24 @@ class TestBracketCommandsIntegration:
         ]
 
         for bracket_args, double_bracket_args in test_cases:
-            bracket_result = self.bracket_command.execute(
-                self.mock_client, bracket_args
-            )
+            bracket_result = self.bracket_command.execute(self.mock_client, bracket_args)
             double_bracket_result = self.double_bracket_command.execute(
                 self.mock_client, double_bracket_args
             )
-            assert bracket_result == double_bracket_result, (
-                f"Results differ for {bracket_args}"
-            )
+            assert bracket_result == double_bracket_result, f"Results differ for {bracket_args}"
 
     def test_error_handling_consistency(self):
         """Test that both commands handle errors consistently."""
         # Missing closing bracket
         bracket_result = self.bracket_command.execute(self.mock_client, ["hello"])
-        double_bracket_result = self.double_bracket_command.execute(
-            self.mock_client, ["hello"]
-        )
+        double_bracket_result = self.double_bracket_command.execute(self.mock_client, ["hello"])
         assert bracket_result == 2
         assert double_bracket_result == 2
 
     def test_help_functionality(self):
         """Test help functionality for both commands."""
         bracket_result = self.bracket_command.execute(self.mock_client, ["--help"])
-        double_bracket_result = self.double_bracket_command.execute(
-            self.mock_client, ["--help"]
-        )
+        double_bracket_result = self.double_bracket_command.execute(self.mock_client, ["--help"])
         assert bracket_result == 0
         assert double_bracket_result == 0
 
@@ -129,9 +119,7 @@ class TestBracketCommandsIntegration:
         assert double_bracket_result == 0
 
         # Test OR operation
-        bracket_result = self.bracket_command.execute(
-            self.mock_client, ["", "-o", "world", "]"]
-        )
+        bracket_result = self.bracket_command.execute(self.mock_client, ["", "-o", "world", "]"])
         double_bracket_result = self.double_bracket_command.execute(
             self.mock_client, ["", "-o", "world", "]]"]
         )
@@ -160,9 +148,7 @@ class TestBracketCommandsIntegration:
         assert double_bracket_result == 0
 
         # Negative numbers
-        bracket_result = self.bracket_command.execute(
-            self.mock_client, ["-5", "-lt", "0", "]"]
-        )
+        bracket_result = self.bracket_command.execute(self.mock_client, ["-5", "-lt", "0", "]"])
         double_bracket_result = self.double_bracket_command.execute(
             self.mock_client, ["-5", "-lt", "0", "]]"]
         )
@@ -172,9 +158,7 @@ class TestBracketCommandsIntegration:
     def test_string_comparison_edge_cases(self):
         """Test string comparison edge cases."""
         # Empty strings
-        bracket_result = self.bracket_command.execute(
-            self.mock_client, ["", "=", "", "]"]
-        )
+        bracket_result = self.bracket_command.execute(self.mock_client, ["", "=", "", "]"])
         double_bracket_result = self.double_bracket_command.execute(
             self.mock_client, ["", "=", "", "]]"]
         )

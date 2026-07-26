@@ -61,9 +61,7 @@ def test_execute_no_args(
     # Should either show help or fail with usage message
     if result == 0:
         output = capture.get()
-        assert any(
-            keyword in output for keyword in ["Usage:", "ip", "addr", "route", "link"]
-        )
+        assert any(keyword in output for keyword in ["Usage:", "ip", "addr", "route", "link"])
     else:
         assert result == 1
         output = capture.get()
@@ -85,10 +83,7 @@ def test_execute_addr_show(
     assert len(output.strip()) > 0
     # Should contain typical address output
     assert (
-        any(
-            keyword in output.lower()
-            for keyword in ["inet", "link", "scope", "lo", "eth", "mtu"]
-        )
+        any(keyword in output.lower() for keyword in ["inet", "link", "scope", "lo", "eth", "mtu"])
         or len(output.strip()) >= 0
     )
 
@@ -108,10 +103,7 @@ def test_execute_addr_show_specific_interface(
     assert len(output.strip()) > 0
     # Should contain loopback-specific information
     assert (
-        any(
-            indicator in output.lower()
-            for indicator in ["127.0.0.1", "loopback", "lo:", "inet"]
-        )
+        any(indicator in output.lower() for indicator in ["127.0.0.1", "loopback", "lo:", "inet"])
         or len(output.strip()) >= 0
     )
 
@@ -155,8 +147,7 @@ def test_execute_route_show(
     # May contain routing information
     if len(output.strip()) > 0:
         assert any(
-            keyword in output.lower()
-            for keyword in ["default", "via", "dev", "src", "scope"]
+            keyword in output.lower() for keyword in ["default", "via", "dev", "src", "scope"]
         )
 
 
@@ -243,9 +234,7 @@ def test_execute_link_set_up(
         # Should fail if no permission
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission", "denied", "not permitted", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "not permitted", "error"])
 
 
 def test_execute_link_set_down(
@@ -336,8 +325,7 @@ def test_execute_rule_show(
     assert len(output.strip()) >= 0
     if len(output.strip()) > 0:
         assert any(
-            keyword in output.lower()
-            for keyword in ["from", "lookup", "priority", "table"]
+            keyword in output.lower() for keyword in ["from", "lookup", "priority", "table"]
         )
 
 
@@ -380,9 +368,7 @@ def test_execute_route_flush(
 ):
     # Test flushing routes (requires privileges)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["route", "flush", "table", "main"]
-        )
+        result = command.execute(client=client, args=["route", "flush", "table", "main"])
 
     # Should either succeed or fail with permission error
     if result == 0:
@@ -463,9 +449,7 @@ def test_execute_nonexistent_interface(
     # Should either fail or show no output
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Cannot find device", "does not exist", "error"]
-        )
+        assert any(msg in output for msg in ["Cannot find device", "does not exist", "error"])
     else:
         # May succeed with empty output
         assert result == 0
@@ -487,8 +471,7 @@ def test_execute_statistics_display(
     if len(output.strip()) > 0:
         assert (
             any(
-                keyword in output.lower()
-                for keyword in ["rx", "tx", "bytes", "packets", "errors"]
+                keyword in output.lower() for keyword in ["rx", "tx", "bytes", "packets", "errors"]
             )
             or len(output.strip()) >= 0
         )
@@ -614,9 +597,7 @@ def test_execute_netlink_protocol(
 ):
     # Test netlink protocol operations
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["addr", "show", "to", "127.0.0.0/8"]
-        )
+        result = command.execute(client=client, args=["addr", "show", "to", "127.0.0.0/8"])
 
     # Should succeed filtering addresses
     assert result == 0
@@ -653,9 +634,7 @@ def test_execute_link_type_filtering(
 ):
     # Test link type filtering
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["link", "show", "type", "loopback"]
-        )
+        result = command.execute(client=client, args=["link", "show", "type", "loopback"])
 
     # Should succeed filtering by link type
     assert result == 0
@@ -670,9 +649,7 @@ def test_execute_mtu_configuration(
 ):
     # Test MTU configuration
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["link", "set", "lo", "mtu", "1500"]
-        )
+        result = command.execute(client=client, args=["link", "set", "lo", "mtu", "1500"])
 
     # Should either succeed or fail with permission error
     if result == 0:
@@ -772,9 +749,7 @@ def test_execute_permission_handling(
     if result == 1:
         output = capture.get()
         # Should show permission-related error
-        assert any(
-            msg in output for msg in ["permission", "denied", "not permitted", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "not permitted", "error"])
     else:
         # May succeed if running with appropriate privileges
         assert result == 0
@@ -810,8 +785,7 @@ def test_execute_ipv6_address_handling(
     if "inet6" in output.lower():
         # Should display IPv6 addresses properly
         assert any(
-            ipv6_indicator in output.lower()
-            for ipv6_indicator in ["::1", "inet6", "scope"]
+            ipv6_indicator in output.lower() for ipv6_indicator in ["::1", "inet6", "scope"]
         )
 
 

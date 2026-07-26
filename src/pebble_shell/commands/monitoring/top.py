@@ -210,7 +210,7 @@ class ProcReader:
                     # Test if PID exists by trying to read stat file
                     read_proc_file(self._client, f"/proc/{pid}/stat")
                     current_pids.add(pid)
-                except Exception:  # noqa: PERF203, S112
+                except Exception:  # noqa: S112
                     continue
 
         # Clean up old CPU stats for processes that no longer exist
@@ -234,9 +234,7 @@ class TopCommand(Command):
     help = "Display system processes in a top-like interface"
     category = "System Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the top command."""
         if handle_help_flag(self, args):
             self.show_help()
@@ -407,7 +405,7 @@ class PebbleTopViewer:
         stdscr.getch()
 
     def run(self, stdscr: curses.window):
-        """Main application loop with color setup."""
+        """Return main application loop with color setup."""
         # Configure curses:
         curses.curs_set(0)  # Hide cursor
         stdscr.nodelay(True)  # Non-blocking input
@@ -439,9 +437,7 @@ class PebbleTopViewer:
                     stdscr.addstr(height - 1, 0, status[: width - 1], curses.A_REVERSE)
                 except curses.error:
                     # Terminal might be too small or other display issue
-                    logging.debug(
-                        "Failed to display status line due to terminal constraints"
-                    )
+                    logging.debug("Failed to display status line due to terminal constraints")
                 stdscr.attroff(curses.color_pair(2))
                 stdscr.refresh()
                 key = stdscr.getch()

@@ -23,9 +23,7 @@ class Md5sumCommand(_HashCommand):
     name = "md5sum"
     help = "Compute MD5 hash of a file or stdin"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the md5sum command."""
         if handle_help_flag(self, args):
             return 0

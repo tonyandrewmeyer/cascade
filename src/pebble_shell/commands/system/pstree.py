@@ -24,9 +24,7 @@ class PstreeCommand(Command):
     help = "Show process tree"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute pstree command."""
         if handle_help_flag(self, args):
             return 0
@@ -61,9 +59,7 @@ class PstreeCommand(Command):
             try:
                 # Use proc_reader utilities for process information
                 try:
-                    status_fields = read_proc_status_fields(
-                        client, pid, ["PPid", "Name"]
-                    )
+                    status_fields = read_proc_status_fields(client, pid, ["PPid", "Name"])
                     ppid = status_fields.get("PPid")
                     name = status_fields.get("Name")
                 except ProcReadError:
@@ -76,7 +72,7 @@ class PstreeCommand(Command):
                 if name and ppid:
                     process_info[pid] = {"name": name, "ppid": ppid, "cmdline": cmdline}
 
-            except Exception:  # noqa: PERF203, S112
+            except Exception:  # noqa: S112
                 continue
 
         return process_info

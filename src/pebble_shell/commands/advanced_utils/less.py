@@ -100,15 +100,11 @@ Examples:
             lines = content.splitlines()
 
             # Simple pagination implementation
-            self._paginate_content(
-                lines, no_line_numbers, no_wrap, ignore_case, no_clear
-            )
+            self._paginate_content(lines, no_line_numbers, no_wrap, ignore_case, no_clear)
             return 0
 
         except ops.pebble.PathError:
-            self.console.print(
-                f"[red]less: cannot open '{file_path}': No such file[/red]"
-            )
+            self.console.print(f"[red]less: cannot open '{file_path}': No such file[/red]")
             return 1
         except Exception as e:
             self.console.print(f"[red]less: {e}[/red]")
@@ -122,7 +118,7 @@ Examples:
         ignore_case: bool,
         no_clear: bool,
     ):
-        """Simple pagination of content."""
+        """Return simple pagination of content."""
         # This is a simplified implementation - real less is much more complex
         page_size = 20  # Number of lines per page
         current_line = 0
@@ -173,9 +169,7 @@ Examples:
                             found = True
                             break
                     if not found:
-                        self.console.print(
-                            f"[yellow]Pattern not found: {search_pattern}[/yellow]"
-                        )
+                        self.console.print(f"[yellow]Pattern not found: {search_pattern}[/yellow]")
                 else:
                     current_line = end_line
             except (EOFError, KeyboardInterrupt):

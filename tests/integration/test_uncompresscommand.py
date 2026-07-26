@@ -64,8 +64,7 @@ def test_execute_no_args(
     assert result == 1
     output = capture.get()
     assert any(
-        msg in output
-        for msg in ["usage", "filename required", "no files specified", "uncompress"]
+        msg in output for msg in ["usage", "filename required", "no files specified", "uncompress"]
     )
 
 
@@ -94,10 +93,7 @@ def test_execute_regular_file_without_extension(
     # Should either fail with extension error or attempt decompression
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["not compressed", "wrong extension", ".Z", "error"]
-        )
+        assert any(msg in output for msg in ["not compressed", "wrong extension", ".Z", "error"])
     else:
         # May attempt to decompress anyway
         assert result == 0
@@ -120,9 +116,7 @@ def test_execute_empty_file(
         # Should fail if empty file not valid compressed format
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not compressed", "invalid format", "error"]
-        )
+        assert any(msg in output for msg in ["not compressed", "invalid format", "error"])
 
 
 def test_execute_compressed_file_z_extension(
@@ -145,8 +139,7 @@ def test_execute_compressed_file_z_extension(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["No such file", "not found", "not compressed", "error"]
+            msg in output for msg in ["No such file", "not found", "not compressed", "error"]
         )
 
 
@@ -167,9 +160,7 @@ def test_execute_force_option(
         # Should fail if forced decompression not possible
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not compressed", "invalid format", "error"]
-        )
+        assert any(msg in output for msg in ["not compressed", "invalid format", "error"])
 
 
 def test_execute_verbose_option(
@@ -187,10 +178,7 @@ def test_execute_verbose_option(
         output = capture.get()
         # Should show verbose decompression information
         assert (
-            any(
-                info in output
-                for info in ["decompressing", "extracting", "uncompress", "done"]
-            )
+            any(info in output for info in ["decompressing", "extracting", "uncompress", "done"])
             or len(output.strip()) >= 0
         )
     else:
@@ -242,9 +230,7 @@ def test_execute_test_option(
         # Should fail if file doesn't exist or test fails
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "corrupt", "invalid", "error"]
-        )
+        assert any(msg in output for msg in ["not found", "corrupt", "invalid", "error"])
 
 
 def test_execute_multiple_files(
@@ -305,8 +291,7 @@ def test_execute_permission_denied_file(
     if result == 1:
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["permission denied", "cannot open", "access denied", "error"]
+            msg in output for msg in ["permission denied", "cannot open", "access denied", "error"]
         )
     else:
         # May succeed if file is readable
@@ -383,8 +368,7 @@ def test_execute_invalid_compressed_format(
     if result == 1:
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["not compressed", "invalid format", "wrong format", "error"]
+            msg in output for msg in ["not compressed", "invalid format", "wrong format", "error"]
         )
     else:
         # May attempt to process anyway
@@ -471,9 +455,7 @@ def test_execute_overwrite_protection(
         # Should fail if file doesn't exist or overwrite conflict
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["exists", "overwrite", "not found", "error"]
-        )
+        assert any(msg in output for msg in ["exists", "overwrite", "not found", "error"])
 
 
 def test_execute_symlink_handling(
@@ -502,9 +484,7 @@ def test_execute_filename_preservation(
 ):
     # Test filename preservation during decompression
     with command.shell.console.capture() as capture:
-        with tempfile.NamedTemporaryFile(
-            suffix="_document.txt.Z", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(suffix="_document.txt.Z", delete=False) as tmp_file:
             tmp_name = tmp_file.name
         result = command.execute(client=client, args=[tmp_name])
 
@@ -605,10 +585,7 @@ def test_execute_progress_indication(
         output = capture.get()
         # Should show progress information
         assert (
-            any(
-                progress in output
-                for progress in ["progress", "%", "decompressing", "done"]
-            )
+            any(progress in output for progress in ["progress", "%", "decompressing", "done"])
             or len(output.strip()) >= 0
         )
     else:
@@ -635,9 +612,7 @@ def test_execute_format_detection(
         # Should fail if format not detected or file doesn't exist
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["format", "not found", "not compressed", "error"]
-        )
+        assert any(msg in output for msg in ["format", "not found", "not compressed", "error"])
 
 
 def test_execute_invalid_option_handling(

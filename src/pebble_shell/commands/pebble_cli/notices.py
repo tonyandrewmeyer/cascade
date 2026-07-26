@@ -23,9 +23,7 @@ class NoticesCommand(Command):
     help = "List notices"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the notices command."""
         if handle_help_flag(self, args):
             return 0
@@ -61,9 +59,7 @@ class NoticesCommand(Command):
             repeat_after = str(notice.repeat_after) if notice.repeat_after else ""
             occurrences = str(notice.occurrences) if notice.occurrences else ""
 
-            table.add_row(
-                notice_id, notice_type, key, first_occurred, repeat_after, occurrences
-            )
+            table.add_row(notice_id, notice_type, key, first_occurred, repeat_after, occurrences)
 
         self.console.print(
             Panel(

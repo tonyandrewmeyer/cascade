@@ -147,17 +147,17 @@ Examples:
             idx = args.index("-a")
             left_expr = args[:idx]
             right_expr = args[idx + 1 :]
-            return self._evaluate_expression(
-                client, left_expr
-            ) and self._evaluate_expression(client, right_expr)
+            return self._evaluate_expression(client, left_expr) and self._evaluate_expression(
+                client, right_expr
+            )
 
         if "-o" in args:
             idx = args.index("-o")
             left_expr = args[:idx]
             right_expr = args[idx + 1 :]
-            return self._evaluate_expression(
-                client, left_expr
-            ) or self._evaluate_expression(client, right_expr)
+            return self._evaluate_expression(client, left_expr) or self._evaluate_expression(
+                client, right_expr
+            )
 
         # Default: treat as string test
         return bool(" ".join(args))

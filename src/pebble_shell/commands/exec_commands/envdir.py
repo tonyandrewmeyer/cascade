@@ -64,9 +64,7 @@ Examples:
             try:
                 files = client.list_files(env_dir)
             except Exception as e:
-                self.console.print(
-                    f"[red]envdir: cannot read directory '{env_dir}': {e}[/red]"
-                )
+                self.console.print(f"[red]envdir: cannot read directory '{env_dir}': {e}[/red]")
                 return 1
 
             # Read environment variables from files
@@ -103,9 +101,7 @@ Examples:
                 return process.exit_code or 0
 
             except Exception as e:
-                self.console.print(
-                    f"[red]envdir: failed to execute '{program}': {e}[/red]"
-                )
+                self.console.print(f"[red]envdir: failed to execute '{program}': {e}[/red]")
                 return 127
 
         except Exception as e:

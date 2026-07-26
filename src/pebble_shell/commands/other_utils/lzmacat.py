@@ -41,7 +41,7 @@ class LzmacatCommand(Command):
                 if compressed_content is not None:
                     content = lzma.decompress(compressed_content.encode())
                     self.console.print(content.decode(), end="")
-            except Exception as e:  # noqa: PERF203  # needed for robust file processing
+            except Exception as e:  # needed for robust file processing
                 self.console.print(f"lzmacat: {file_path}: {e}")
                 return 1
 

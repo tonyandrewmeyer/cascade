@@ -87,8 +87,7 @@ def test_execute_compress_file(
         # Should show compression information
         if len(output.strip()) > 0:
             assert any(
-                keyword in output.lower()
-                for keyword in ["compressed", "saved", "ratio", "%"]
+                keyword in output.lower() for keyword in ["compressed", "saved", "ratio", "%"]
             )
     else:
         # Should fail if file doesn't exist or access denied
@@ -108,9 +107,7 @@ def test_execute_decompress_file(
     # Should fail gracefully for nonexistent compressed file
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_list_contents(
@@ -160,8 +157,7 @@ def test_execute_verbose_mode(
         assert len(output.strip()) > 0
         # Should contain detailed information
         assert any(
-            keyword in output.lower()
-            for keyword in ["compressed", "ratio", "saved", "bytes"]
+            keyword in output.lower() for keyword in ["compressed", "ratio", "saved", "bytes"]
         )
     else:
         assert result == 1
@@ -403,9 +399,7 @@ def test_execute_nonexistent_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_permission_denied_file(
@@ -559,8 +553,7 @@ def test_execute_output_format_validation(
         if len(output.strip()) > 0:
             # Should contain compression information
             assert any(
-                keyword in output.lower()
-                for keyword in ["compressed", "ratio", "saved", "%"]
+                keyword in output.lower() for keyword in ["compressed", "ratio", "saved", "%"]
             )
     else:
         assert result == 1
@@ -680,8 +673,7 @@ def test_execute_compression_ratio_calculation(
         if len(output.strip()) > 0:
             # Should contain ratio information
             assert any(
-                keyword in output.lower()
-                for keyword in ["ratio", "saved", "%", "compressed"]
+                keyword in output.lower() for keyword in ["ratio", "saved", "%", "compressed"]
             )
     else:
         assert result == 1

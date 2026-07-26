@@ -321,16 +321,12 @@ Cached:          1000000 kB
 
         # Should have the most recent values
         assert dashboard.cpu_history[-1] == 24.0
-        assert (
-            abs(dashboard.load_history[-1] - 2.4) < 0.0001
-        )  # Handle floating point precision
+        assert abs(dashboard.load_history[-1] - 2.4) < 0.0001  # Handle floating point precision
 
     def test_update_stats_with_exception(self, dashboard):
         """Test _update_stats with exception handling."""
         with (
-            mock.patch.object(
-                dashboard, "_update_cpu_stats", side_effect=Exception("CPU error")
-            ),
+            mock.patch.object(dashboard, "_update_cpu_stats", side_effect=Exception("CPU error")),
             mock.patch("pebble_shell.utils.dashboard.logging") as mock_logging,
         ):
             dashboard._update_stats()
@@ -351,9 +347,7 @@ Cached:          1000000 kB
 
         mock_entries = [mock_entry1, mock_entry2, mock_entry3]
 
-        with mock.patch.object(
-            dashboard.shell.client, "list_files", return_value=mock_entries
-        ):
+        with mock.patch.object(dashboard.shell.client, "list_files", return_value=mock_entries):
             dashboard._update_process_stats()
 
             assert dashboard.stats.process_count == 2  # Only numeric entries
@@ -649,9 +643,7 @@ model name	: Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz
             dashboard._update_loop()
 
             # Should log the exception but continue running
-            mock_logging.warning.assert_called_with(
-                "Dashboard update failed: %s", mock.ANY
-            )
+            mock_logging.warning.assert_called_with("Dashboard update failed: %s", mock.ANY)
 
     def test_update_cpu_stats_edge_cases(self, dashboard):
         """Test CPU stats with edge cases."""

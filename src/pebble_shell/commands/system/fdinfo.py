@@ -22,9 +22,7 @@ class FdinfoCommand(Command):
     help = "Show file descriptor information. Use -a for all processes, -t for specific types (file, socket, pipe)"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute fdinfo command."""
         if handle_help_flag(self, args):
             return 0
@@ -36,11 +34,7 @@ class FdinfoCommand(Command):
             if arg == "-a":
                 all_processes = True
             elif arg == "-t":
-                fd_type = (
-                    args[args.index(arg) + 1]
-                    if args.index(arg) + 1 < len(args)
-                    else None
-                )
+                fd_type = args[args.index(arg) + 1] if args.index(arg) + 1 < len(args) else None
             elif not arg.startswith("-") and not target_pid:
                 target_pid = arg
 
@@ -53,9 +47,7 @@ class FdinfoCommand(Command):
 
         return 0
 
-    def _display_all_processes_fdinfo(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient
-    ):
+    def _display_all_processes_fdinfo(self, client: ops.pebble.Client | shimmer.PebbleCliClient):
         """Display file descriptor information for all processes."""
         table = create_enhanced_table()
         table.add_column("PID", style="cyan", no_wrap=True)

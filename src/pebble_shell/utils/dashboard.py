@@ -54,9 +54,7 @@ class SystemStats:
     disk_write_kb: int = 0
 
     # Network stats (basic)
-    network_interfaces: dict[str, dict[str, int]] = dataclasses.field(
-        default_factory=dict
-    )
+    network_interfaces: dict[str, dict[str, int]] = dataclasses.field(default_factory=dict)
 
     # System info
     uptime_seconds: int = 0
@@ -94,9 +92,7 @@ class SystemDashboard:
         self.update_thread.start()
 
         try:
-            with Live(
-                self._create_dashboard(), refresh_per_second=2, screen=True
-            ) as live:
+            with Live(self._create_dashboard(), refresh_per_second=2, screen=True) as live:
                 while self.running:
                     live.update(self._create_dashboard())
                     time.sleep(0.5)
@@ -115,7 +111,7 @@ class SystemDashboard:
             try:
                 self._update_stats()
                 time.sleep(self.update_interval)
-            except Exception as e:  # noqa: PERF203
+            except Exception as e:
                 # Log errors but keep dashboard running
                 logging.warning("Dashboard update failed: %s", e)
 
@@ -192,9 +188,7 @@ class SystemDashboard:
         self.stats.mem_buffers = mem_stats.get("Buffers", 0)
         self.stats.mem_cached = mem_stats.get("Cached", 0)
         self.stats.mem_used = (
-            self.stats.mem_total - self.stats.mem_available
-            if self.stats.mem_total > 0
-            else 0
+            self.stats.mem_total - self.stats.mem_available if self.stats.mem_total > 0 else 0
         )
 
     def _update_load_stats(self):
@@ -219,9 +213,7 @@ class SystemDashboard:
     def _update_process_stats(self):
         """Update process statistics."""
         proc_entries = self.shell.client.list_files("/proc")
-        self.stats.process_count = sum(
-            1 for entry in proc_entries if entry.name.isdigit()
-        )
+        self.stats.process_count = sum(1 for entry in proc_entries if entry.name.isdigit())
 
     def _update_disk_stats(self):
         """Update disk I/O statistics."""
@@ -294,9 +286,7 @@ class SystemDashboard:
         """Update historical data for trends."""
         cpu_usage = self.stats.cpu_user + self.stats.cpu_system
         memory_usage = (
-            (self.stats.mem_used / self.stats.mem_total * 100)
-            if self.stats.mem_total > 0
-            else 0
+            (self.stats.mem_used / self.stats.mem_total * 100) if self.stats.mem_total > 0 else 0
         )
 
         self.cpu_history.append(cpu_usage)
@@ -319,9 +309,7 @@ class SystemDashboard:
             Layout(name="footer", size=3),
         )
 
-        layout["main"].split_row(
-            Layout(name="left", ratio=1), Layout(name="right", ratio=1)
-        )
+        layout["main"].split_row(Layout(name="left", ratio=1), Layout(name="right", ratio=1))
 
         layout["left"].split_column(Layout(name="cpu_memory"), Layout(name="processes"))
 
@@ -351,9 +339,7 @@ class SystemDashboard:
             f"Last Update: {datetime.datetime.now().strftime('%H:%M:%S')}", style="dim"
         )
 
-        return Panel(
-            Align.center(header_text), style="bold blue", border_style="bright_blue"
-        )
+        return Panel(Align.center(header_text), style="bold blue", border_style="bright_blue")
 
     def _create_cpu_memory_panel(self) -> Panel:
         """Create CPU and Memory panel."""
@@ -365,20 +351,14 @@ class SystemDashboard:
         cpu_total = self.stats.cpu_user + self.stats.cpu_system
         cpu_bar = self._create_progress_bar(cpu_total, 100, 20)
         cpu_style = "red" if cpu_total > self.alerts["cpu_high"] else "green"
-        table.add_row(
-            "CPU Usage", f"{cpu_total:.1f}%", f"[{cpu_style}]{cpu_bar}[/{cpu_style}]"
-        )
+        table.add_row("CPU Usage", f"{cpu_total:.1f}%", f"[{cpu_style}]{cpu_bar}[/{cpu_style}]")
 
         mem_usage = (
-            (self.stats.mem_used / self.stats.mem_total * 100)
-            if self.stats.mem_total > 0
-            else 0
+            (self.stats.mem_used / self.stats.mem_total * 100) if self.stats.mem_total > 0 else 0
         )
         mem_bar = self._create_progress_bar(mem_usage, 100, 20)
         mem_style = "red" if mem_usage > self.alerts["memory_high"] else "green"
-        table.add_row(
-            "Memory", f"{mem_usage:.1f}%", f"[{mem_style}]{mem_bar}[/{mem_style}]"
-        )
+        table.add_row("Memory", f"{mem_usage:.1f}%", f"[{mem_style}]{mem_bar}[/{mem_style}]")
 
         mem_total_mb = self.stats.mem_total // 1024
         mem_used_mb = self.stats.mem_used // 1024
@@ -398,9 +378,7 @@ class SystemDashboard:
         if self.stats.cpu_cores > 0:
             load_per_core = self.stats.load_1min / self.stats.cpu_cores
             load_style = "red" if load_per_core > self.alerts["load_high"] else "green"
-            table.add_row(
-                "Load per Core", f"[{load_style}]{load_per_core:.2f}[/{load_style}]"
-            )
+            table.add_row("Load per Core", f"[{load_style}]{load_per_core:.2f}[/{load_style}]")
         else:
             table.add_row("Load per Core", "N/A")
 
@@ -429,9 +407,7 @@ class SystemDashboard:
         table.add_column("Interface", style="cyan", no_wrap=True)
         table.add_column("RX/TX", style="yellow", no_wrap=True)
 
-        for interface, stats in list(self.stats.network_interfaces.items())[
-            :5
-        ]:  # Show top 5
+        for interface, stats in list(self.stats.network_interfaces.items())[:5]:  # Show top 5
             rx_mb = stats["rx_bytes"] // (1024 * 1024)
             tx_mb = stats["tx_bytes"] // (1024 * 1024)
             table.add_row(interface, f"{rx_mb}M / {tx_mb}M")
@@ -454,8 +430,7 @@ class SystemDashboard:
             alerts.append("High CPU")
         if (
             self.stats.mem_total > 0
-            and (self.stats.mem_used / self.stats.mem_total * 100)
-            > self.alerts["memory_high"]
+            and (self.stats.mem_used / self.stats.mem_total * 100) > self.alerts["memory_high"]
         ):
             alerts.append("High Memory")
         if self.stats.load_1min > self.alerts["load_high"]:

@@ -123,9 +123,7 @@ def expand_remote_globs_recursive(
                     # Continue searching recursively for nested directories:
                     search_recursive(current_path, remaining_pattern)
             # It's a file, check if it matches the remaining pattern:
-            elif not remaining_pattern or fnmatch.fnmatch(
-                file_info.name, remaining_pattern
-            ):
+            elif not remaining_pattern or fnmatch.fnmatch(file_info.name, remaining_pattern):
                 matches.append(current_path)
 
     # Start recursive search:

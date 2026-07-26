@@ -27,9 +27,7 @@ class TableBuilder:
         **kwargs: Any,
     ) -> TableBuilder:
         """Add a column to the table with specified styling."""
-        self._table.add_column(
-            name, style=style, justify=justify, no_wrap=no_wrap, **kwargs
-        )
+        self._table.add_column(name, style=style, justify=justify, no_wrap=no_wrap, **kwargs)
         return self
 
     def primary_id_column(self, name: str) -> TableBuilder:

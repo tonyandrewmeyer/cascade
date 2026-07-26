@@ -19,9 +19,7 @@ class ReplanCommand(Command):
     help = "Replan services based on current configuration"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the replan command."""
         if handle_help_flag(self, args):
             return 0

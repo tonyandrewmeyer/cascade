@@ -90,9 +90,7 @@ def test_execute_multiple_service_names(
 ):
     # Test restarting multiple services
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["service1", "service2", "service3"]
-        )
+        result = command.execute(client=client, args=["service1", "service2", "service3"])
 
     # Should either succeed or fail gracefully
     if result == 0:
@@ -205,9 +203,7 @@ def test_execute_mixed_valid_invalid_services(
 ):
     # Test with mix of valid and invalid service names
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["valid-service", "invalid-service"]
-        )
+        result = command.execute(client=client, args=["valid-service", "invalid-service"])
 
     # Should fail if any service is invalid (atomic operation)
     if result == 1:
@@ -327,9 +323,7 @@ def test_execute_special_characters_in_service_name(
 ):
     # Test service names with special characters
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["service-with-dashes_and_underscores"]
-        )
+        result = command.execute(client=client, args=["service-with-dashes_and_underscores"])
 
     # Should either handle special characters or fail appropriately
     assert result in [0, 1]
@@ -512,9 +506,7 @@ def test_execute_restart_ordering_dependencies(
 ):
     # Test restart ordering based on dependencies
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["dependency-service", "main-service"]
-        )
+        result = command.execute(client=client, args=["dependency-service", "main-service"])
 
     # Should handle dependency ordering during restart
     if result == 0:

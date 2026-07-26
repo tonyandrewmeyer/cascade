@@ -22,9 +22,7 @@ class AddCommand(Command):
     help = "Add a layer to the plan. Usage: add <layer-name> [options]"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the add command."""
         if handle_help_flag(self, args):
             return 0
@@ -68,9 +66,7 @@ class AddCommand(Command):
                 while j < len(args) and args[j].startswith("--"):
                     if args[j] == "--startup":
                         if j + 1 >= len(args):
-                            self.console.print(
-                                "Error: --startup requires enabled|disabled"
-                            )
+                            self.console.print("Error: --startup requires enabled|disabled")
                             return 1
                         service_config["startup"] = args[j + 1]
                         j += 2
@@ -133,9 +129,7 @@ class AddCommand(Command):
 
             elif arg == "--log-target":
                 if i + 3 >= len(args):
-                    self.console.print(
-                        "Error: --log-target requires name, type, and location"
-                    )
+                    self.console.print("Error: --log-target requires name, type, and location")
                     return 1
                 target_name = args[i + 1]
                 target_type = args[i + 2]
@@ -151,9 +145,7 @@ class AddCommand(Command):
                 while j < len(args) and args[j].startswith("--"):
                     if args[j] == "--services":
                         if j + 1 >= len(args):
-                            self.console.print(
-                                "Error: --services requires service list"
-                            )
+                            self.console.print("Error: --services requires service list")
                             return 1
                         services = args[j + 1].split(",")
                         target_config["services"] = services
@@ -181,9 +173,7 @@ class AddCommand(Command):
                 return 1
 
         # Remove empty sections:
-        clean_layer_config: ops.pebble.LayerDict = {
-            k: v for k, v in layer_config.items() if v
-        }  # type: ignore
+        clean_layer_config: ops.pebble.LayerDict = {k: v for k, v in layer_config.items() if v}  # type: ignore
 
         if not clean_layer_config:
             self.console.print("Error: No layer components specified")

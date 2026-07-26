@@ -127,9 +127,7 @@ class ShellCompleter:
     def _complete_command(self, text: str) -> list[str]:
         """Complete command names."""
         matches = [cmd for cmd in self.command_names if cmd.startswith(text)]
-        matches.extend(
-            alias for alias in self.alias_command.aliases if alias.startswith(text)
-        )
+        matches.extend(alias for alias in self.alias_command.aliases if alias.startswith(text))
 
         return sorted(matches)
 
@@ -182,8 +180,6 @@ def setup_readline_support(
         wrapper.set_completer(completer.complete)
         print("Enhanced readline support enabled (use tab for smart completion)")
     else:
-        print(
-            "Readline not available (install 'readline' package for an enhanced experience)"
-        )
+        print("Readline not available (install 'readline' package for an enhanced experience)")
 
     return wrapper

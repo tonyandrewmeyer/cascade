@@ -48,10 +48,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower()
-        for phrase in ["env", "environment", "directory", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["env", "environment", "directory", "usage"])
 
 
 def test_execute_no_args_specified(
@@ -65,9 +62,7 @@ def test_execute_no_args_specified(
     # Should fail with missing arguments error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["directory", "command", "required", "usage", "error"]
-    )
+    assert any(msg in output for msg in ["directory", "command", "required", "usage", "error"])
 
 
 def test_execute_only_directory_specified(
@@ -81,9 +76,7 @@ def test_execute_only_directory_specified(
     # Should fail with missing command error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["command", "required", "missing", "usage", "error"]
-    )
+    assert any(msg in output for msg in ["command", "required", "missing", "usage", "error"])
 
 
 def test_execute_nonexistent_directory(
@@ -92,16 +85,12 @@ def test_execute_nonexistent_directory(
 ):
     # Test with non-existent directory
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/nonexistent/directory", "echo", "test"]
-        )
+        result = command.execute(client=client, args=["/nonexistent/directory", "echo", "test"])
 
     # Should fail with directory not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not found", "no such file", "directory", "error"]
-    )
+    assert any(msg in output for msg in ["not found", "no such file", "directory", "error"])
 
 
 def test_execute_file_instead_of_directory(
@@ -115,9 +104,7 @@ def test_execute_file_instead_of_directory(
     # Should fail with not a directory error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not a directory", "directory", "error", "invalid"]
-    )
+    assert any(msg in output for msg in ["not a directory", "directory", "error", "invalid"])
 
 
 def test_execute_permission_denied_directory(
@@ -148,9 +135,7 @@ def test_execute_simple_command_with_empty_directory(
 ):
     # Test with empty directory and simple command
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=[tempfile.mkdtemp(), "echo", "hello"]
-        )
+        result = command.execute(client=client, args=[tempfile.mkdtemp(), "echo", "hello"])
 
     # Should either succeed running command or fail with directory/command error
     if result == 0:
@@ -161,9 +146,7 @@ def test_execute_simple_command_with_empty_directory(
         # Should fail with directory or command error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "error", "directory", "command"]
-        )
+        assert any(msg in output for msg in ["not found", "error", "directory", "command"])
 
 
 def test_execute_command_with_system_directory(
@@ -197,9 +180,7 @@ def test_execute_nonexistent_command(
     # Should fail with command not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not found", "command", "error", "no such file"]
-    )
+    assert any(msg in output for msg in ["not found", "command", "error", "no such file"])
 
 
 def test_execute_command_with_arguments(
@@ -257,9 +238,7 @@ def test_execute_environment_variable_inheritance(
         assert len(output) >= 0
         if len(output) > 0:
             # Should contain environment variables
-            has_env = any(
-                var in output.upper() for var in ["PATH", "HOME", "USER", "PWD"]
-            )
+            has_env = any(var in output.upper() for var in ["PATH", "HOME", "USER", "PWD"])
             if has_env:
                 assert has_env
     else:
@@ -273,9 +252,7 @@ def test_execute_complex_command_line(
 ):
     # Test with complex command line including pipes or redirects
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=[tempfile.mkdtemp(), "sh", "-c", "echo test"]
-        )
+        result = command.execute(client=client, args=[tempfile.mkdtemp(), "sh", "-c", "echo test"])
 
     # Should either succeed with shell command or fail with error
     if result == 0:
@@ -306,9 +283,7 @@ def test_execute_directory_with_special_characters(
         # Should fail with directory not found or path error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "directory", "error", "invalid"]
-        )
+        assert any(msg in output for msg in ["not found", "directory", "error", "invalid"])
 
 
 def test_execute_relative_directory_path(
@@ -367,9 +342,7 @@ def test_execute_invalid_option(
 ):
     # Test invalid option to envdir itself
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-z", tempfile.mkdtemp(), "echo", "test"]
-        )
+        result = command.execute(client=client, args=["-z", tempfile.mkdtemp(), "echo", "test"])
 
     # Should fail with invalid option error
     assert result == 1
@@ -439,9 +412,7 @@ def test_execute_memory_efficiency(
 ):
     # Test memory efficiency
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=[tempfile.mkdtemp(), "echo", "memory_test"]
-        )
+        result = command.execute(client=client, args=[tempfile.mkdtemp(), "echo", "memory_test"])
 
     # Should be memory efficient
     if result == 0:
@@ -473,9 +444,7 @@ def test_execute_signal_handling(
 ):
     # Test signal handling during command execution
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=[tempfile.mkdtemp(), "echo", "signal_test"]
-        )
+        result = command.execute(client=client, args=[tempfile.mkdtemp(), "echo", "signal_test"])
 
     # Should handle signals appropriately
     if result == 0:
@@ -492,9 +461,7 @@ def test_execute_environment_override_behavior(
 ):
     # Test environment variable override behavior
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=[tempfile.mkdtemp(), "printenv", "PATH"]
-        )
+        result = command.execute(client=client, args=[tempfile.mkdtemp(), "printenv", "PATH"])
 
     # Should either succeed showing PATH or fail with error
     if result == 0:
@@ -530,9 +497,7 @@ def test_execute_exit_code_propagation(
 ):
     # Test exit code propagation from executed command
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=[tempfile.mkdtemp(), "sh", "-c", "exit 42"]
-        )
+        result = command.execute(client=client, args=[tempfile.mkdtemp(), "sh", "-c", "exit 42"])
 
     # Should either propagate exit code or fail with error
     if result == 42:

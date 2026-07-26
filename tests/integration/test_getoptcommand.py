@@ -32,8 +32,7 @@ def test_help(command: pebble_shell.commands.GetoptCommand):
         command.show_help()
     output = capture.get()
     assert any(
-        phrase in output.lower()
-        for phrase in ["getopt", "option", "parse", "command", "argument"]
+        phrase in output.lower() for phrase in ["getopt", "option", "parse", "command", "argument"]
     )
 
 
@@ -47,9 +46,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["getopt", "option", "parse", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["getopt", "option", "parse", "usage"])
 
 
 def test_execute_no_args_specified(
@@ -63,9 +60,7 @@ def test_execute_no_args_specified(
     # Should fail with missing arguments error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["option", "required", "missing", "usage", "error"]
-    )
+    assert any(msg in output for msg in ["option", "required", "missing", "usage", "error"])
 
 
 def test_execute_simple_short_options(
@@ -187,16 +182,12 @@ def test_execute_invalid_short_option(
 ):
     # Test with invalid short option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["ab", "-c"]
-        )  # -c not in option string
+        result = command.execute(client=client, args=["ab", "-c"])  # -c not in option string
 
     # Should fail with invalid option error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["invalid", "unknown", "option", "error", "illegal"]
-    )
+    assert any(msg in output for msg in ["invalid", "unknown", "option", "error", "illegal"])
 
 
 def test_execute_invalid_long_option(
@@ -205,17 +196,12 @@ def test_execute_invalid_long_option(
 ):
     # Test with invalid long option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-l", "verbose,help", "ab", "--invalid"]
-        )
+        result = command.execute(client=client, args=["-l", "verbose,help", "ab", "--invalid"])
 
     # Should fail with invalid long option error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["invalid", "unknown", "option", "error", "unrecognized"]
-    )
+    assert any(msg in output for msg in ["invalid", "unknown", "option", "error", "unrecognized"])
 
 
 def test_execute_missing_required_argument(
@@ -224,16 +210,12 @@ def test_execute_missing_required_argument(
 ):
     # Test missing required argument for option
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["a:", "-a"]
-        )  # -a requires argument
+        result = command.execute(client=client, args=["a:", "-a"])  # -a requires argument
 
     # Should fail with missing argument error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["argument", "required", "missing", "error", "option"]
-    )
+    assert any(msg in output for msg in ["argument", "required", "missing", "error", "option"])
 
 
 def test_execute_quiet_mode(
@@ -293,8 +275,7 @@ def test_execute_version_information(
         if len(output) > 0:
             # Should contain version information
             assert any(
-                info in output.lower()
-                for info in ["version", "getopt", "util-linux", "build"]
+                info in output.lower() for info in ["version", "getopt", "util-linux", "build"]
             )
     else:
         # Should fail with version error
@@ -367,9 +348,7 @@ def test_execute_complex_option_string(
 ):
     # Test complex option string with multiple argument types
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["a:b::c", "-a", "arg1", "-b", "arg2", "-c"]
-        )
+        result = command.execute(client=client, args=["a:b::c", "-a", "arg1", "-b", "arg2", "-c"])
 
     # Should either succeed parsing complex options or fail
     if result == 0:
@@ -512,9 +491,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["invalid", "unknown", "option", "error", "illegal"]
-    )
+    assert any(msg in output for msg in ["invalid", "unknown", "option", "error", "illegal"])
 
 
 def test_execute_signal_handling(
@@ -540,9 +517,7 @@ def test_execute_output_formatting(
 ):
     # Test output formatting for different shell types
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["-s", "sh", "ab", "-a", "-b", "file"]
-        )
+        result = command.execute(client=client, args=["-s", "sh", "ab", "-a", "-b", "file"])
 
     # Should either succeed with proper formatting or fail
     if result == 0:

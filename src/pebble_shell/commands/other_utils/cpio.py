@@ -51,7 +51,7 @@ class CpioCommand(Command):
         )
         if result is None:
             return 1
-        flags, positional_args = result
+        flags, _positional_args = result
 
         extract = flags.get("i", False) or flags.get("extract", False)
         create = flags.get("o", False) or flags.get("create", False)
@@ -64,9 +64,7 @@ class CpioCommand(Command):
         # Exactly one mode must be specified
         mode_count = sum([extract, create, list_contents])
         if mode_count != 1:
-            self.console.print(
-                "[red]cpio: must specify exactly one of -i, -o, or -t[/red]"
-            )
+            self.console.print("[red]cpio: must specify exactly one of -i, -o, or -t[/red]")
             return 1
 
         try:
@@ -83,9 +81,7 @@ class CpioCommand(Command):
             self.console.print(f"[red]cpio: {e}[/red]")
             return 1
 
-    def _list_archive(
-        self, client: ClientType, archive_file: str, verbose: bool
-    ) -> int:
+    def _list_archive(self, client: ClientType, archive_file: str, verbose: bool) -> int:
         """List contents of an archive."""
         if not archive_file:
             self.console.print("[red]cpio: archive file required for listing[/red]")
@@ -95,16 +91,12 @@ class CpioCommand(Command):
             # Read archive file
             archive_content = safe_read_file(client, archive_file, self.shell)
             if archive_content is None:
-                self.console.print(
-                    f"[red]cpio: cannot read archive '{archive_file}'[/red]"
-                )
+                self.console.print(f"[red]cpio: cannot read archive '{archive_file}'[/red]")
                 return 1
 
             # Try to read as tar format (most common)
             try:
-                with tarfile.open(
-                    fileobj=io.BytesIO(archive_content.encode()), mode="r"
-                ) as tar:
+                with tarfile.open(fileobj=io.BytesIO(archive_content.encode()), mode="r") as tar:
                     for member in tar.getmembers():
                         if verbose:
                             self.console.print(
@@ -135,16 +127,12 @@ class CpioCommand(Command):
             # Read archive file
             archive_content = safe_read_file(client, archive_file, self.shell)
             if archive_content is None:
-                self.console.print(
-                    f"[red]cpio: cannot read archive '{archive_file}'[/red]"
-                )
+                self.console.print(f"[red]cpio: cannot read archive '{archive_file}'[/red]")
                 return 1
 
             # Try to extract as tar format
             try:
-                with tarfile.open(
-                    fileobj=io.BytesIO(archive_content.encode()), mode="r"
-                ) as tar:
+                with tarfile.open(fileobj=io.BytesIO(archive_content.encode()), mode="r") as tar:
                     extracted_count = 0
                     for member in tar.getmembers():
                         if member.isfile():
@@ -168,9 +156,7 @@ class CpioCommand(Command):
                                 # For this demo, we'll just count the files
                                 extracted_count += 1
 
-                    self.console.print(
-                        f"[green]Extracted {extracted_count} files[/green]"
-                    )
+                    self.console.print(f"[green]Extracted {extracted_count} files[/green]")
                     return 0
             except tarfile.TarError:
                 self.console.print(
@@ -189,7 +175,5 @@ class CpioCommand(Command):
         self.console.print(
             "[yellow]cpio: creating archives not implemented in read-only mode[/yellow]"
         )
-        self.console.print(
-            "[dim]Would read file list from stdin and create archive[/dim]"
-        )
+        self.console.print("[dim]Would read file list from stdin and create archive[/dim]")
         return 0

@@ -85,9 +85,7 @@ def test_execute_with_arguments(
         # Should fail if arguments not accepted
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["too many arguments", "usage", "hostid", "error"]
-        )
+        assert any(msg in output for msg in ["too many arguments", "usage", "hostid", "error"])
 
 
 def test_execute_hostid_format_validation(

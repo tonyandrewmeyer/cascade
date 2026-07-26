@@ -29,9 +29,7 @@ class WcCommand(Command):
     help = "Count lines, words, and characters in files"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the wc command to count text statistics in files."""
         if handle_help_flag(self, args):
             return 0
@@ -55,9 +53,7 @@ class WcCommand(Command):
             show_chars = True
 
         # Validate file arguments
-        if not validate_min_args(
-            self.shell, file_args, 1, "wc [-l|-w|-c] <file> [file2...]"
-        ):
+        if not validate_min_args(self.shell, file_args, 1, "wc [-l|-w|-c] <file> [file2...]"):
             return 1
 
         # Process file arguments

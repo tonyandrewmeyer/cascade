@@ -29,9 +29,7 @@ class SyslogCommand(Command):
     help = "Show syslog information. Use -n NUM for last NUM lines, -f to follow, and an optional pattern to filter."
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute syslog command."""
         if handle_help_flag(self, args):
             return 0
@@ -137,5 +135,5 @@ class SyslogCommand(Command):
                             live.console.print(Text(line, style=style))
                         pos = len(lines)
                     time.sleep(1)
-                except KeyboardInterrupt:  # noqa: PERF203
+                except KeyboardInterrupt:
                     break

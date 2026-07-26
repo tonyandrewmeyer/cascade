@@ -20,9 +20,7 @@ class DashboardCommand(Command):
     help = "Launch real-time system monitoring dashboard with live statistics"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute dashboard command."""
         if handle_help_flag(self, args):
             return 0

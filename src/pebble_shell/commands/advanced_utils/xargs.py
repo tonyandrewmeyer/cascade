@@ -94,7 +94,7 @@ Examples:
                     try:
                         line = input()
                         input_text += line + "\n"
-                    except EOFError:  # noqa: PERF203  # needed for input handling
+                    except EOFError:  # needed for input handling
                         break
             except KeyboardInterrupt:
                 self.console.print("\n[yellow]xargs: interrupted[/yellow]")
@@ -122,9 +122,7 @@ Examples:
             if replace_str:
                 # Replace mode - one command per argument
                 for arg in input_args:
-                    command = [
-                        part.replace(replace_str, arg) for part in command_template
-                    ]
+                    command = [part.replace(replace_str, arg) for part in command_template]
 
                     if trace:
                         self.console.print(f"+ {' '.join(command)}")

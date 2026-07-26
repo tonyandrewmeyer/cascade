@@ -80,18 +80,10 @@ Examples:
         flags, positional_args = parse_result
 
         canonicalize = flags.get("f", False) or flags.get("canonicalize", False)
-        canon_existing = flags.get("e", False) or flags.get(
-            "canonicalize-existing", False
-        )
-        canon_missing = flags.get("m", False) or flags.get(
-            "canonicalize-missing", False
-        )
+        canon_existing = flags.get("e", False) or flags.get("canonicalize-existing", False)
+        canon_missing = flags.get("m", False) or flags.get("canonicalize-missing", False)
         no_newline = flags.get("n", False) or flags.get("no-newline", False)
-        quiet = (
-            flags.get("q", False)
-            or flags.get("quiet", False)
-            or flags.get("silent", False)
-        )
+        quiet = flags.get("q", False) or flags.get("quiet", False) or flags.get("silent", False)
         _verbose = flags.get("v", False) or flags.get("verbose", False)
         zero_terminate = flags.get("z", False) or flags.get("zero", False)
 
@@ -107,9 +99,7 @@ Examples:
                 try:
                     if canonicalize or canon_existing or canon_missing:
                         # For canonicalisation, we need to resolve the full path
-                        result = self._canonicalise_path(
-                            client, file_path, canon_existing
-                        )
+                        result = self._canonicalise_path(client, file_path, canon_existing)
                     else:
                         # Just read the symlink
                         result = self._read_symlink(client, file_path)
@@ -130,11 +120,9 @@ Examples:
                             )
                         exit_code = 1
 
-                except Exception as e:  # noqa: PERF203  # needed for robust file processing
+                except Exception as e:  # needed for robust file processing
                     if not quiet:
-                        self.console.print(
-                            get_theme().error_text(f"readlink: {file_path}: {e}")
-                        )
+                        self.console.print(get_theme().error_text(f"readlink: {file_path}: {e}"))
                     exit_code = 1
 
             return exit_code

@@ -90,8 +90,7 @@ def test_execute_format_table_option(
         output = capture.get()
         # Should show table format
         assert any(
-            msg in output
-            for msg in ["No plans found", "Plan", "Override", "Layer", "Summary"]
+            msg in output for msg in ["No plans found", "Plan", "Override", "Layer", "Summary"]
         )
     else:
         assert result == 1
@@ -112,8 +111,7 @@ def test_execute_format_yaml_option(
         if "No plans found" not in output:
             # Should contain YAML structure
             assert any(
-                yaml_indicator in output
-                for yaml_indicator in ["---", "services:", "layers:"]
+                yaml_indicator in output for yaml_indicator in ["---", "services:", "layers:"]
             )
         else:
             assert "No plans found" in output
@@ -136,8 +134,7 @@ def test_execute_format_json_option(
         if "No plans found" not in output:
             # Should contain JSON structure
             assert any(
-                json_indicator in output
-                for json_indicator in ["{", "}", "services", "layers"]
+                json_indicator in output for json_indicator in ["{", "}", "services", "layers"]
             )
         else:
             assert "No plans found" in output

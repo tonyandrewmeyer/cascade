@@ -200,9 +200,7 @@ def test_execute_multiple_args_extra_ignored(
 ):
     # Test with more than 2 arguments (extras should be ignored)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/etc/passwd", ".foo", "extra", "args"]
-        )
+        result = command.execute(client=client, args=["/etc/passwd", ".foo", "extra", "args"])
 
     # Should use first file and first keypath, ignore extras
     if result == 1:

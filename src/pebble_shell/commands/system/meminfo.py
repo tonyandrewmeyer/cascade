@@ -23,9 +23,7 @@ class MeminfoCommand(Command):
     help = "Show memory information. Use -d for detailed breakdown, -s for summary"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute meminfo command."""
         if handle_help_flag(self, args):
             return 0

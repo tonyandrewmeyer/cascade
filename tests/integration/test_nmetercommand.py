@@ -61,9 +61,7 @@ def test_execute_no_args(
     # Should fail with usage message
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["usage", "Usage", "nmeter", "format", "string"]
-    )
+    assert any(msg in output for msg in ["usage", "Usage", "nmeter", "format", "string"])
 
 
 def test_execute_default_format(
@@ -278,9 +276,7 @@ def test_execute_spacing_and_formatting(
 ):
     # Test spacing and formatting options
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["Load: %l | CPU: %c | Memory: %m"]
-        )
+        result = command.execute(client=client, args=["Load: %l | CPU: %c | Memory: %m"])
 
     # Should succeed with formatted spacing
     assert result == 0

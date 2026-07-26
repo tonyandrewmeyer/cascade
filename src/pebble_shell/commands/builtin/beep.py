@@ -23,9 +23,7 @@ class BeepCommand(Command):
     help = "Play a beep sound"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the beep command."""
         # Handle help flag
         if handle_help_flag(self, args):

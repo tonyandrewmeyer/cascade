@@ -61,8 +61,7 @@ class WatchCommand(Command):
 
                 # Show header
                 self.console.print(
-                    f"Every {interval}s: {' '.join(command_args)}    "
-                    f"Iteration: {iteration}"
+                    f"Every {interval}s: {' '.join(command_args)}    Iteration: {iteration}"
                 )
                 self.console.print()
 

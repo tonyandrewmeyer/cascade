@@ -33,8 +33,7 @@ def test_help(command: pebble_shell.commands.LzopcatCommand):
         command.show_help()
     output = capture.get()
     assert any(
-        phrase in output.lower()
-        for phrase in ["lzo", "decompress", "cat", "display", "file"]
+        phrase in output.lower() for phrase in ["lzo", "decompress", "cat", "display", "file"]
     )
 
 
@@ -48,9 +47,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["lzo", "decompress", "cat", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["lzo", "decompress", "cat", "usage"])
 
 
 def test_execute_no_file_specified(
@@ -64,9 +61,7 @@ def test_execute_no_file_specified(
     # Should fail with missing file error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["file", "required", "missing", "usage", "error"]
-    )
+    assert any(msg in output for msg in ["file", "required", "missing", "usage", "error"])
 
 
 def test_execute_nonexistent_file(
@@ -80,9 +75,7 @@ def test_execute_nonexistent_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not found", "no such file", "error", "cannot open"]
-    )
+    assert any(msg in output for msg in ["not found", "no such file", "error", "cannot open"])
 
 
 def test_execute_invalid_lzo_file(
@@ -96,9 +89,7 @@ def test_execute_invalid_lzo_file(
     # Should fail with format error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["invalid", "format", "not lzo", "error", "compressed"]
-    )
+    assert any(msg in output for msg in ["invalid", "format", "not lzo", "error", "compressed"])
 
 
 def test_execute_directory_instead_of_file(
@@ -122,9 +113,7 @@ def test_execute_permission_denied(
 ):
     # Test with permission denied file (if exists)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/root/.ssh/id_rsa"]
-        )  # Typically restricted
+        result = command.execute(client=client, args=["/root/.ssh/id_rsa"])  # Typically restricted
 
     # Should either succeed or fail with permission error
     if result == 0:
@@ -136,8 +125,7 @@ def test_execute_permission_denied(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["permission", "denied", "access", "error", "not found"]
+            msg in output for msg in ["permission", "denied", "access", "error", "not found"]
         )
 
 
@@ -210,9 +198,7 @@ def test_execute_corrupted_lzo_file(
     # Should fail with corruption/format error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["invalid", "format", "corrupted", "error", "not lzo"]
-    )
+    assert any(msg in output for msg in ["invalid", "format", "corrupted", "error", "not lzo"])
 
 
 def test_execute_large_file_handling(
@@ -246,9 +232,7 @@ def test_execute_binary_data_handling(
     # Should fail with format error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["invalid", "format", "not lzo", "error", "binary"]
-    )
+    assert any(msg in output for msg in ["invalid", "format", "not lzo", "error", "binary"])
 
 
 def test_execute_lzo_specific_options(
@@ -365,9 +349,7 @@ def test_execute_symlink_handling(
 ):
     # Test symbolic link handling
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/dev/stdout"]
-        )  # Symlink to stdout
+        result = command.execute(client=client, args=["/dev/stdout"])  # Symlink to stdout
 
     # Should either handle symlinks or fail appropriately
     if result == 0:
@@ -426,9 +408,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["not found", "error", "invalid", "cannot open"]
-    )
+    assert any(msg in output for msg in ["not found", "error", "invalid", "cannot open"])
 
 
 def test_execute_signal_handling(
@@ -454,9 +434,7 @@ def test_execute_output_formatting(
 ):
     # Test output formatting and encoding
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/etc/hostname"]
-        )  # Text file (not LZO)
+        result = command.execute(client=client, args=["/etc/hostname"])  # Text file (not LZO)
 
     # Should either output correctly or fail with format error
     if result == 0:
@@ -476,16 +454,12 @@ def test_execute_lzo_header_validation(
 ):
     # Test LZO header validation
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/bin/sh"]
-        )  # Binary with wrong header
+        result = command.execute(client=client, args=["/bin/sh"])  # Binary with wrong header
 
     # Should fail with header validation error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["invalid", "header", "format", "not lzo", "error"]
-    )
+    assert any(msg in output for msg in ["invalid", "header", "format", "not lzo", "error"])
 
 
 def test_execute_cross_platform_compatibility(

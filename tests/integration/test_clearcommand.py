@@ -65,9 +65,7 @@ def test_execute_no_args_clear_screen(
     assert len(output) >= 0
     # May contain ANSI escape sequences for clearing
     if len(output) > 0:
-        assert any(
-            sequence in output for sequence in ["\033[", "\x1b[", "\033c", "\014", "\f"]
-        )
+        assert any(sequence in output for sequence in ["\033[", "\x1b[", "\033c", "\014", "\f"])
 
 
 def test_execute_basic_clear_functionality(

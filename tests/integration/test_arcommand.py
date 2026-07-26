@@ -62,9 +62,7 @@ def test_execute_no_args(
     # Should fail with usage message
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["usage", "Usage", "ar", "operation", "archive"]
-    )
+    assert any(msg in output for msg in ["usage", "Usage", "ar", "operation", "archive"])
 
 
 def test_execute_list_archive_contents(
@@ -73,9 +71,7 @@ def test_execute_list_archive_contents(
 ):
     # Test listing archive contents
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should either succeed listing contents or fail gracefully
     if result == 0:
@@ -99,9 +95,7 @@ def test_execute_verbose_list(
 ):
     # Test verbose listing
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["tv", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["tv", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should either succeed with verbose listing or fail gracefully
     if result == 0:
@@ -127,9 +121,7 @@ def test_execute_create_archive(
     with tempfile.NamedTemporaryFile(suffix=".a", delete=False) as archive_file:
         archive_path = archive_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["r", archive_path, "/nonexistent.o"]
-        )
+        result = command.execute(client=client, args=["r", archive_path, "/nonexistent.o"])
 
     # Should fail gracefully for nonexistent files
     assert result == 1
@@ -143,9 +135,7 @@ def test_execute_extract_archive(
 ):
     # Test extracting from archive
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["x", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["x", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should either succeed extracting or fail gracefully
     if result == 0:
@@ -163,9 +153,7 @@ def test_execute_print_archive_members(
 ):
     # Test printing archive member contents
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["p", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["p", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should either succeed printing or fail gracefully
     if result == 0:
@@ -187,9 +175,7 @@ def test_execute_delete_from_archive(
     with tempfile.NamedTemporaryFile(suffix=".a", delete=False) as archive_file:
         nonexistent_archive = archive_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["d", nonexistent_archive, "member.o"]
-        )
+        result = command.execute(client=client, args=["d", nonexistent_archive, "member.o"])
 
     # Should fail gracefully for nonexistent archive
     assert result == 1
@@ -205,9 +191,7 @@ def test_execute_quick_append(
     with tempfile.NamedTemporaryFile(suffix=".a", delete=False) as archive_file:
         test_archive = archive_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["q", test_archive, "/nonexistent.o"]
-        )
+        result = command.execute(client=client, args=["q", test_archive, "/nonexistent.o"])
 
     # Should fail gracefully for nonexistent files
     assert result == 1
@@ -223,9 +207,7 @@ def test_execute_move_members(
     with tempfile.NamedTemporaryFile(suffix=".a", delete=False) as archive_file:
         nonexistent_archive = archive_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["m", nonexistent_archive, "member.o"]
-        )
+        result = command.execute(client=client, args=["m", nonexistent_archive, "member.o"])
 
     # Should fail gracefully for nonexistent archive
     assert result == 1
@@ -239,9 +221,7 @@ def test_execute_symbol_table_operations(
 ):
     # Test symbol table operations
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["s", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["s", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should either succeed with symbol table or fail gracefully
     if result == 0:
@@ -293,9 +273,7 @@ def test_execute_insert_before_member(
     with tempfile.NamedTemporaryFile(suffix=".a", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["bi", "target.o", tmp_name, "new.o"]
-        )
+        result = command.execute(client=client, args=["bi", "target.o", tmp_name, "new.o"])
 
     # Should fail gracefully for nonexistent files
     assert result == 1
@@ -311,9 +289,7 @@ def test_execute_insert_after_member(
     with tempfile.NamedTemporaryFile(suffix=".a", delete=False) as tmp_file:
         tmp_name = tmp_file.name
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["ai", "target.o", tmp_name, "new.o"]
-        )
+        result = command.execute(client=client, args=["ai", "target.o", tmp_name, "new.o"])
 
     # Should fail gracefully for nonexistent files
     assert result == 1
@@ -346,9 +322,7 @@ def test_execute_invalid_archive_format(
     # Should fail with invalid format error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not an archive", "invalid", "error", "format"]
-    )
+    assert any(msg in output for msg in ["not an archive", "invalid", "error", "format"])
 
 
 def test_execute_permission_denied_archive(
@@ -379,10 +353,7 @@ def test_execute_directory_as_archive(
     # Should fail with directory error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["directory", "Is a directory", "error", "not an archive"]
-    )
+    assert any(msg in output for msg in ["directory", "Is a directory", "error", "not an archive"])
 
 
 def test_execute_empty_archive(
@@ -446,9 +417,7 @@ def test_execute_conflicting_operations(
     # Should either handle multiple operations or fail appropriately
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["conflicting", "multiple", "error", "usage"]
-        )
+        assert any(msg in output for msg in ["conflicting", "multiple", "error", "usage"])
     else:
         # May accept multiple operation flags
         assert result == 0
@@ -479,9 +448,7 @@ def test_execute_archive_modification_time(
 ):
     # Test preserving modification times
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["to", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["to", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should either succeed with time preservation or fail gracefully
     if result == 0:
@@ -514,9 +481,7 @@ def test_execute_output_format_validation(
 ):
     # Test output format validation
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should produce properly formatted output
     if result == 0:
@@ -537,9 +502,7 @@ def test_execute_memory_efficiency(
 ):
     # Test memory efficiency
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should be memory efficient
     if result == 0:
@@ -556,9 +519,7 @@ def test_execute_concurrent_execution(
 ):
     # Test concurrent execution safety
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should handle concurrent execution safely
     if result == 0:
@@ -591,9 +552,7 @@ def test_execute_signal_handling(
 ):
     # Test signal handling during processing
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should handle signals appropriately
     if result == 0:
@@ -609,9 +568,7 @@ def test_execute_locale_independence(
 ):
     # Test locale independence
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should work regardless of locale settings
     if result == 0:
@@ -633,9 +590,7 @@ def test_execute_file_format_detection(
     # Should detect invalid archive format
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not an archive", "invalid", "error", "format"]
-    )
+    assert any(msg in output for msg in ["not an archive", "invalid", "error", "format"])
 
 
 def test_execute_cross_platform_compatibility(
@@ -644,9 +599,7 @@ def test_execute_cross_platform_compatibility(
 ):
     # Test cross-platform compatibility
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should work across different platforms
     if result == 0:
@@ -663,9 +616,7 @@ def test_execute_archive_integrity_check(
 ):
     # Test archive integrity checking
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should check archive integrity
     if result == 0:
@@ -683,9 +634,7 @@ def test_execute_performance_optimization(
 ):
     # Test performance optimization
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should complete efficiently
     if result == 0:
@@ -702,14 +651,10 @@ def test_execute_data_consistency(
 ):
     # Test data consistency
     with command.shell.console.capture() as _:
-        result1 = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result1 = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     with command.shell.console.capture() as _:
-        result2 = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result2 = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should produce consistent results
     if result1 == 0 and result2 == 0:
@@ -726,9 +671,7 @@ def test_execute_robust_operation(
 ):
     # Test robust operation under stress
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"]
-        )
+        result = command.execute(client=client, args=["t", "/usr/lib/x86_64-linux-gnu/libc.a"])
 
     # Should operate robustly
     if result == 0:

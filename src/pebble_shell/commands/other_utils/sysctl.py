@@ -125,14 +125,10 @@ class SysctlCommand(Command):
                         else:
                             self.console.print(f"{param} = {value}")
                     else:
-                        self.console.print(
-                            f"[red]sysctl: cannot read parameter '{param}'[/red]"
-                        )
+                        self.console.print(f"[red]sysctl: cannot read parameter '{param}'[/red]")
                         exit_code = 1
                 except Exception:
-                    self.console.print(
-                        f"[red]sysctl: cannot read parameter '{param}'[/red]"
-                    )
+                    self.console.print(f"[red]sysctl: cannot read parameter '{param}'[/red]")
                     exit_code = 1
             else:
                 # Try to convert parameter name to proc path
@@ -146,14 +142,10 @@ class SysctlCommand(Command):
                         else:
                             self.console.print(f"{param} = {value}")
                     else:
-                        self.console.print(
-                            f"[red]sysctl: cannot read parameter '{param}'[/red]"
-                        )
+                        self.console.print(f"[red]sysctl: cannot read parameter '{param}'[/red]")
                         exit_code = 1
                 except Exception:
-                    self.console.print(
-                        f"[red]sysctl: unknown parameter '{param}'[/red]"
-                    )
+                    self.console.print(f"[red]sysctl: unknown parameter '{param}'[/red]")
                     exit_code = 1
 
         return exit_code

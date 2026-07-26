@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Union
 
-from ...utils.command_helpers import parse_flags
 from ...utils.proc_reader import ProcReadError, read_proc_file
 from .._base import Command
 
@@ -105,9 +104,7 @@ Examples:
                 self.console.print(
                     f"{i}: {iface}: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP"
                 )
-                self.console.print(
-                    "    link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff"
-                )
+                self.console.print("    link/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff")
                 if iface == "lo":
                     self.console.print("    inet 127.0.0.1/8 scope host lo")
                 else:
@@ -180,9 +177,7 @@ Examples:
             return 0
 
         except ProcReadError:
-            self.console.print(
-                "[red]ip: cannot read network interface information[/red]"
-            )
+            self.console.print("[red]ip: cannot read network interface information[/red]")
             return 1
 
     def _show_rules(self, client: ClientType) -> int:

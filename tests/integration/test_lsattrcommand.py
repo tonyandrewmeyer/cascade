@@ -139,10 +139,7 @@ def test_execute_nonexistent_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["No such file", "not found", "does not exist", "error"]
-    )
+    assert any(msg in output for msg in ["No such file", "not found", "does not exist", "error"])
 
 
 def test_execute_directory(
@@ -260,10 +257,7 @@ def test_execute_version_option(
         output = capture.get()
         # Should show version information
         assert (
-            any(
-                indicator in output.lower()
-                for indicator in ["version", "lsattr", "e2fsprogs"]
-            )
+            any(indicator in output.lower() for indicator in ["version", "lsattr", "e2fsprogs"])
             or len(output.strip()) > 0
         )
     else:
@@ -759,9 +753,7 @@ def test_execute_invalid_option_handling(
 ):
     # Test handling of invalid options
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--invalid-option", tempfile.mkdtemp()]
-        )
+        result = command.execute(client=client, args=["--invalid-option", tempfile.mkdtemp()])
 
     # Should handle invalid options appropriately
     if result == 1:

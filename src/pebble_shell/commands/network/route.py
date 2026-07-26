@@ -59,30 +59,28 @@ Modifiers for add/del:
     reject              Install blocking route
     mss M               Set MSS (bytes)
     window W            Set TCP window size
-    
+
 Note: Route modification commands are not supported in container environment.
       Use 'ip route' commands on the host system instead.
         """
         self.shell.console.print(help_text)
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute route command."""
         # Parse arguments using common parsing code
         parse_result = parse_flags(
             args,
             {
-                "A": str,              # address family
-                "F": bool,             # FIB
-                "C": bool,             # cache
-                "v": bool,             # verbose
+                "A": str,  # address family
+                "F": bool,  # FIB
+                "C": bool,  # cache
+                "v": bool,  # verbose
                 "verbose": bool,
-                "n": bool,             # numeric
-                "e": bool,             # netstat format
-                "4": bool,             # IPv4
-                "6": bool,             # IPv6
-                "h": bool,             # help
+                "n": bool,  # numeric
+                "e": bool,  # netstat format
+                "4": bool,  # IPv4
+                "6": bool,  # IPv6
+                "h": bool,  # help
                 "help": bool,
             },
             self.shell,
@@ -90,27 +88,35 @@ Note: Route modification commands are not supported in container environment.
         if parse_result is None:
             return 1
         flags, positional_args = parse_result
-            
+
         if flags["h"] or flags["help"]:
             self.show_help()
             return 0
-            
+
         # Handle IPv6 mode
         if flags["6"]:
-            self.shell.console.print("[yellow]route: IPv6 routing table display not yet implemented.[/yellow]")
+            self.shell.console.print(
+                "[yellow]route: IPv6 routing table display not yet implemented.[/yellow]"
+            )
             return 0
-            
+
         # Handle cache mode
         if flags["C"]:
-            self.shell.console.print("[yellow]route: Routing cache display not supported in container environment.[/yellow]")
+            self.shell.console.print(
+                "[yellow]route: Routing cache display not supported in container environment.[/yellow]"
+            )
             return 0
-            
+
         # Check for route modification commands
         if positional_args and positional_args[0] in ["add", "del", "delete"]:
-            self.shell.console.print("[red]route: Route modification not supported in container environment.[/red]")
-            self.shell.console.print("[yellow]Use 'ip route' commands on the host system instead.[/yellow]")
+            self.shell.console.print(
+                "[red]route: Route modification not supported in container environment.[/red]"
+            )
+            self.shell.console.print(
+                "[yellow]Use 'ip route' commands on the host system instead.[/yellow]"
+            )
             return 1
-            
+
         # Display routing table
         try:
             routes = parse_proc_route(client)
@@ -121,9 +127,9 @@ Note: Route modification commands are not supported in container environment.
             else:
                 self.shell.console.print("[red]route: error reading routing table[/red]")
             return 1
-            
+
         return 0
-        
+
     def _display_routes(self, routes: list[dict], flags: dict):
         """Display routing table in specified format."""
         if flags["e"]:
@@ -132,7 +138,7 @@ Note: Route modification commands are not supported in container environment.
         else:
             # Standard route format
             self._display_standard_format(routes, flags)
-            
+
     def _display_standard_format(self, routes: list[dict], flags: dict):
         """Display routing table in standard route format."""
         table = create_standard_table()
@@ -160,7 +166,7 @@ Note: Route modification commands are not supported in container environment.
         title = "Kernel IP routing table"
         if flags["v"] or flags["verbose"]:
             title += " (verbose)"
-            
+
         self.shell.console.print(
             Panel(
                 table.build(),
@@ -168,12 +174,14 @@ Note: Route modification commands are not supported in container environment.
                 style=get_theme().info,
             )
         )
-        
+
     def _display_netstat_format(self, routes: list[dict], flags: dict):
         """Display routing table in netstat format."""
         self.shell.console.print("\n[bold]Kernel IP routing table[/bold]")
-        self.shell.console.print("Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface")
-        
+        self.shell.console.print(
+            "Destination     Gateway         Genmask         Flags   MSS Window  irtt Iface"
+        )
+
         for route in routes:
             dest = route["destination"].ljust(15)
             gw = route["gateway"].ljust(15)
@@ -183,6 +191,6 @@ Note: Route modification commands are not supported in container environment.
             window = "0".rjust(6)
             irtt = "0".rjust(5)
             iface = route["interface"]
-            
+
             line = f"{dest} {gw} {mask} {flags_str} {mss} {window} {irtt} {iface}"
             self.shell.console.print(line)

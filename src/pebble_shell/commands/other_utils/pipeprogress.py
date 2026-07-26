@@ -41,7 +41,7 @@ class PipeProgressCommand(Command):
         )
         if result is None:
             return 1
-        flags, positional_args = result
+        flags, _positional_args = result
 
         expected_size = flags.get("s")
         title = flags.get("t") or "Progress"

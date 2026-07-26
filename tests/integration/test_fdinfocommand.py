@@ -76,10 +76,7 @@ def test_execute_missing_fd_arg(
     # Should fail with missing FD error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["missing file descriptor", "fdinfo <PID> <FD>", "usage"]
-    )
+    assert any(msg in output for msg in ["missing file descriptor", "fdinfo <PID> <FD>", "usage"])
 
 
 def test_execute_valid_pid_fd_combination(
@@ -125,9 +122,7 @@ def test_execute_current_process_stdin(
 ):
     # Test with current process stdin (FD 0)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["$$", "0"]
-        )  # Current process, stdin
+        result = command.execute(client=client, args=["$$", "0"])  # Current process, stdin
 
     # Should either succeed or fail gracefully
     if result == 0:
@@ -144,9 +139,7 @@ def test_execute_current_process_stdout(
 ):
     # Test with current process stdout (FD 1)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["$$", "1"]
-        )  # Current process, stdout
+        result = command.execute(client=client, args=["$$", "1"])  # Current process, stdout
 
     # Should either succeed or fail gracefully
     if result == 0:
@@ -163,9 +156,7 @@ def test_execute_current_process_stderr(
 ):
     # Test with current process stderr (FD 2)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["$$", "2"]
-        )  # Current process, stderr
+        result = command.execute(client=client, args=["$$", "2"])  # Current process, stderr
 
     # Should either succeed or fail gracefully
     if result == 0:
@@ -232,9 +223,7 @@ def test_execute_nonexistent_fd(
 ):
     # Test with nonexistent file descriptor
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["1", "999"]
-        )  # init process, high FD
+        result = command.execute(client=client, args=["1", "999"])  # init process, high FD
 
     # Should fail with FD not found error
     if result == 1:

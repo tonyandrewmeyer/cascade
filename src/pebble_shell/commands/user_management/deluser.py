@@ -145,9 +145,7 @@ Examples:
                     self.console.print(
                         f"[green]Removing user '{username}' from /etc/passwd[/green]"
                     )
-                self.console.print(
-                    f"[yellow]deluser: would remove passwd entry: {line}[/yellow]"
-                )
+                self.console.print(f"[yellow]deluser: would remove passwd entry: {line}[/yellow]")
             else:
                 new_passwd_lines.append(line)
 
@@ -182,9 +180,7 @@ Examples:
         if remove_home and user_info:
             home_dir = user_info["home"]
             if not quiet:
-                self.console.print(
-                    f"[green]Removing home directory: {home_dir}[/green]"
-                )
+                self.console.print(f"[green]Removing home directory: {home_dir}[/green]")
 
             if backup:
                 backup_name = f"{home_dir}.backup.{int(time.time())}"
@@ -192,17 +188,13 @@ Examples:
                     f"[yellow]deluser: would backup {home_dir} to {backup_name}[/yellow]"
                 )
 
-            self.console.print(
-                f"[yellow]deluser: would remove directory: {home_dir}[/yellow]"
-            )
+            self.console.print(f"[yellow]deluser: would remove directory: {home_dir}[/yellow]")
 
         # Handle all user files
         if remove_all_files and user_info:
             uid = user_info["uid"]
             if not quiet:
-                self.console.print(
-                    f"[green]Removing all files owned by UID {uid}[/green]"
-                )
+                self.console.print(f"[green]Removing all files owned by UID {uid}[/green]")
             self.console.print(
                 f"[yellow]deluser: would find and remove all files owned by UID {uid}[/yellow]"
             )
@@ -246,9 +238,7 @@ Examples:
                             f"[green]Removing user '{username}' from group '{group_name}'[/green]"
                         )
 
-                    self.console.print(
-                        "[yellow]deluser: would update /etc/group line:[/yellow]"
-                    )
+                    self.console.print("[yellow]deluser: would update /etc/group line:[/yellow]")
                     self.console.print(f"[dim]{new_line}[/dim]")
                 else:
                     new_lines.append(line)
@@ -267,9 +257,7 @@ Examples:
                 if line
             )
             if not group_exists:
-                self.console.print(
-                    f"[red]deluser: group '{group_name}' does not exist[/red]"
-                )
+                self.console.print(f"[red]deluser: group '{group_name}' does not exist[/red]")
                 return 1
 
         if user_removed and not quiet:
@@ -279,9 +267,7 @@ Examples:
 
         return 0
 
-    def _remove_user_from_all_groups(
-        self, client: ClientType, username: str, quiet: bool
-    ) -> None:
+    def _remove_user_from_all_groups(self, client: ClientType, username: str, quiet: bool) -> None:
         """Remove user from all groups they belong to."""
         group_content = safe_read_file(client, "/etc/group")
         if group_content is None:

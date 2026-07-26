@@ -92,8 +92,7 @@ def test_execute_single_service_logs(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["Logs operation failed", "service not found", "error"]
+            msg in output for msg in ["Logs operation failed", "service not found", "error"]
         )
 
 
@@ -108,9 +107,7 @@ def test_execute_nonexistent_service(
     # Should fail with service not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["Logs operation failed", "service not found", "error"]
-    )
+    assert any(msg in output for msg in ["Logs operation failed", "service not found", "error"])
 
 
 def test_execute_empty_service_name(
@@ -137,9 +134,7 @@ def test_execute_follow_option_short(
     if result == 0:
         output = capture.get()
         # Should start following logs
-        assert any(
-            msg in output for msg in ["Following logs", "test-service", "No logs found"]
-        )
+        assert any(msg in output for msg in ["Following logs", "test-service", "No logs found"])
     else:
         assert result == 1
 
@@ -156,9 +151,7 @@ def test_execute_follow_option_long(
     if result == 0:
         output = capture.get()
         # Should start following logs
-        assert any(
-            msg in output for msg in ["Following logs", "test-service", "No logs found"]
-        )
+        assert any(msg in output for msg in ["Following logs", "test-service", "No logs found"])
     else:
         assert result == 1
 
@@ -208,9 +201,7 @@ def test_execute_invalid_lines_count(
 ):
     # Test with invalid lines count
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--lines", "invalid", "test-service"]
-        )
+        result = command.execute(client=client, args=["--lines", "invalid", "test-service"])
 
     # Should fail with invalid lines count error
     assert result == 1
@@ -255,9 +246,7 @@ def test_execute_large_lines_count(
 ):
     # Test with very large lines count
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--lines", "10000", "test-service"]
-        )
+        result = command.execute(client=client, args=["--lines", "10000", "test-service"])
 
     # Should either succeed with all available logs or fail gracefully
     if result == 0:
@@ -390,10 +379,7 @@ def test_execute_real_time_log_following(
     if result == 0:
         output = capture.get()
         # Should start following logs in real-time
-        assert any(
-            msg in output
-            for msg in ["Following logs", "active-service", "No logs found"]
-        )
+        assert any(msg in output for msg in ["Following logs", "active-service", "No logs found"])
     else:
         assert result == 1
 
@@ -404,9 +390,7 @@ def test_execute_log_buffer_handling(
 ):
     # Test log buffer handling for large outputs
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--lines", "1000", "verbose-service"]
-        )
+        result = command.execute(client=client, args=["--lines", "1000", "verbose-service"])
 
     # Should handle large log buffers appropriately
     if result == 0:
@@ -491,9 +475,7 @@ def test_execute_log_streaming_performance(
 ):
     # Test log streaming performance
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--lines", "100", "performance-service"]
-        )
+        result = command.execute(client=client, args=["--lines", "100", "performance-service"])
 
     # Should stream logs efficiently
     if result == 0:
@@ -515,9 +497,7 @@ def test_execute_api_error_handling(
     # Should handle API errors gracefully
     if result == 1:
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Logs operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Logs operation failed", "error", "failed"])
     else:
         # Should succeed if Pebble API is available
         assert result == 0
@@ -535,8 +515,7 @@ def test_execute_permission_handling(
     if result == 1:
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["permission denied", "Logs operation failed", "error"]
+            msg in output for msg in ["permission denied", "Logs operation failed", "error"]
         )
     else:
         assert result == 0

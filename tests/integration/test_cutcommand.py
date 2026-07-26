@@ -20,10 +20,7 @@ def command(shell: pebble_shell.shell.PebbleShell):
 
 
 def test_name(command: pebble_shell.commands.CutCommand):
-    assert (
-        command.name
-        == "cut [-f fields] [-d delimiter] [-c characters] <file> [file2...]"
-    )
+    assert command.name == "cut [-f fields] [-d delimiter] [-c characters] <file> [file2...]"
 
 
 def test_category(command: pebble_shell.commands.CutCommand):

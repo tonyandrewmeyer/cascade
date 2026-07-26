@@ -62,10 +62,7 @@ def test_execute_no_args(
     if result == 0:
         output = capture.get()
         # Should show usage information or version
-        assert any(
-            msg in output
-            for msg in ["pebble", "version", "usage", "Available commands"]
-        )
+        assert any(msg in output for msg in ["pebble", "version", "usage", "Available commands"])
     else:
         assert result == 1
         output = capture.get()
@@ -150,9 +147,7 @@ def test_execute_add_subcommand(
 ):
     # Test pebble add subcommand (add layer)
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["add", "test-layer", "/path/to/layer.yaml"]
-        )
+        result = command.execute(client=client, args=["add", "test-layer", "/path/to/layer.yaml"])
 
     # Should either succeed adding layer or fail gracefully
     if result == 0:
@@ -181,9 +176,7 @@ def test_execute_start_subcommand(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Start operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Start operation failed", "error", "failed"])
 
 
 def test_execute_stop_subcommand(
@@ -202,9 +195,7 @@ def test_execute_stop_subcommand(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Stop operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Stop operation failed", "error", "failed"])
 
 
 def test_execute_services_subcommand(
@@ -219,10 +210,7 @@ def test_execute_services_subcommand(
     if result == 0:
         output = capture.get()
         # Should show services list or no services message
-        assert any(
-            msg in output
-            for msg in ["Service", "Startup", "Current", "No services found"]
-        )
+        assert any(msg in output for msg in ["Service", "Startup", "Current", "No services found"])
     else:
         assert result == 1
 
@@ -267,9 +255,7 @@ def test_execute_exec_subcommand(
 ):
     # Test pebble exec subcommand
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["exec", "test-service", "echo", "hello"]
-        )
+        result = command.execute(client=client, args=["exec", "test-service", "echo", "hello"])
 
     # Should either succeed executing command or fail gracefully
     if result == 0:
@@ -279,9 +265,7 @@ def test_execute_exec_subcommand(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Exec operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Exec operation failed", "error", "failed"])
 
 
 def test_execute_pull_subcommand(
@@ -290,9 +274,7 @@ def test_execute_pull_subcommand(
 ):
     # Test pebble pull subcommand
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["pull", "/container/file", "/local/file"]
-        )
+        result = command.execute(client=client, args=["pull", "/container/file", "/local/file"])
 
     # Should either succeed pulling file or fail gracefully
     if result == 0:
@@ -302,9 +284,7 @@ def test_execute_pull_subcommand(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Pull operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Pull operation failed", "error", "failed"])
 
 
 def test_execute_push_subcommand(
@@ -313,9 +293,7 @@ def test_execute_push_subcommand(
 ):
     # Test pebble push subcommand
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["push", "/local/file", "/container/file"]
-        )
+        result = command.execute(client=client, args=["push", "/local/file", "/container/file"])
 
     # Should either succeed pushing file or fail gracefully
     if result == 0:
@@ -325,9 +303,7 @@ def test_execute_push_subcommand(
     else:
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["Push operation failed", "error", "failed"]
-        )
+        assert any(msg in output for msg in ["Push operation failed", "error", "failed"])
 
 
 def test_execute_changes_subcommand(
@@ -342,9 +318,7 @@ def test_execute_changes_subcommand(
     if result == 0:
         output = capture.get()
         # Should show changes list or no changes message
-        assert any(
-            msg in output for msg in ["ID", "Status", "Spawn", "No changes found"]
-        )
+        assert any(msg in output for msg in ["ID", "Status", "Spawn", "No changes found"])
     else:
         assert result == 1
 
@@ -361,9 +335,7 @@ def test_execute_tasks_subcommand(
     if result == 0:
         output = capture.get()
         # Should show tasks for change or no tasks message
-        assert any(
-            msg in output for msg in ["Kind", "Status", "Summary", "No tasks found"]
-        )
+        assert any(msg in output for msg in ["Kind", "Status", "Summary", "No tasks found"])
     else:
         assert result == 1
 
@@ -415,9 +387,7 @@ def test_execute_subcommand_with_options(
         output = capture.get()
         # Should show JSON formatted output
         if output.strip() and "No services found" not in output:
-            assert any(
-                json_indicator in output for json_indicator in ["{", "}", "[", "]"]
-            )
+            assert any(json_indicator in output for json_indicator in ["{", "}", "[", "]"])
     else:
         assert result == 1
 
@@ -491,9 +461,7 @@ def test_execute_socket_path_handling(
 ):
     # Test socket path handling
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--socket=/custom/socket", "version"]
-        )
+        result = command.execute(client=client, args=["--socket=/custom/socket", "version"])
 
     # Should handle custom socket path
     if result == 0:

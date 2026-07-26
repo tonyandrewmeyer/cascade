@@ -23,9 +23,7 @@ class TasksCommand(Command):
     help = "List tasks for a specific change"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the tasks command."""
         if handle_help_flag(self, args):
             return 0
@@ -57,11 +55,7 @@ class TasksCommand(Command):
             kind = str(task.kind) if task.kind else "unknown"
             status = str(task.status) if task.status else "unknown"
             summary = str(task.summary) if task.summary else ""
-            progress = (
-                str(task.progress)
-                if hasattr(task, "progress") and task.progress
-                else ""
-            )
+            progress = str(task.progress) if hasattr(task, "progress") and task.progress else ""
             log = str(task.log) if hasattr(task, "log") and task.log else ""
 
             table.add_row(kind, status, summary, progress, log)

@@ -47,9 +47,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["read", "profile", "kernel", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["read", "profile", "kernel", "usage"])
 
 
 def test_execute_read_kernel_profile(
@@ -91,8 +89,7 @@ def test_execute_read_kernel_profile(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["permission", "denied", "profile", "error", "not found"]
+            msg in output for msg in ["permission", "denied", "profile", "error", "not found"]
         )
 
 
@@ -162,9 +159,7 @@ def test_execute_reset_profile_counters(
         # Should fail with permission or profile error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission", "denied", "reset", "error", "root"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "reset", "error", "root"])
 
 
 def test_execute_verbose_mode(
@@ -297,9 +292,7 @@ def test_execute_nonexistent_profile_file(
     # Should fail with profile file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not found", "no such file", "profile", "error"]
-    )
+    assert any(msg in output for msg in ["not found", "no such file", "profile", "error"])
 
 
 def test_execute_invalid_multiplier(
@@ -381,9 +374,7 @@ def test_execute_permission_denied_proc(
         # Should fail with permission error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission", "denied", "access", "error", "root"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "access", "error", "root"])
 
 
 def test_execute_profiling_disabled(
@@ -403,9 +394,7 @@ def test_execute_profiling_disabled(
         # Should fail with profiling disabled error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["disabled", "profiling", "not enabled", "error"]
-        )
+        assert any(msg in output for msg in ["disabled", "profiling", "not enabled", "error"])
 
 
 def test_execute_invalid_option(
@@ -596,6 +585,4 @@ def test_execute_cross_platform_compatibility(
         # Should fail consistently across platforms
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["permission", "profile", "not found", "error"]
-        )
+        assert any(msg in output for msg in ["permission", "profile", "not found", "error"])

@@ -86,7 +86,7 @@ class ThemeConfigManager:
                 saved_theme = self.load_theme(theme_file.stem)
                 if self._themes_equal(current_theme, saved_theme):
                     return theme_file.stem
-            except ThemeConfigError:  # noqa: PERF203
+            except ThemeConfigError:
                 continue
 
         return "custom"

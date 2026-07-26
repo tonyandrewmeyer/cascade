@@ -24,9 +24,7 @@ class CpuinfoCommand(Command):
     help = "Show CPU information. Use -c for compact format, -t for topology, -a for all CPUs"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute cpuinfo command."""
         if handle_help_flag(self, args):
             return 0
@@ -57,9 +55,7 @@ class CpuinfoCommand(Command):
 
         return 0
 
-    def _display_compact_cpuinfo(
-        self, cpuinfo_data: dict[str, int | list[dict[str, str]]]
-    ):
+    def _display_compact_cpuinfo(self, cpuinfo_data: dict[str, int | list[dict[str, str]]]):
         """Display compact CPU information."""
         table = create_enhanced_table()
         table.add_column("CPU", style="cyan", no_wrap=True)
@@ -82,9 +78,7 @@ class CpuinfoCommand(Command):
 
         table.add_row(f"CPU {cpu_num}", model, cores, cache)
 
-    def _display_topology_cpuinfo(
-        self, cpuinfo_data: dict[str, int | list[dict[str, str]]]
-    ):
+    def _display_topology_cpuinfo(self, cpuinfo_data: dict[str, int | list[dict[str, str]]]):
         """Display CPU topology information."""
         table = create_enhanced_table()
         table.add_column("CPU", style="cyan", no_wrap=True)
@@ -125,9 +119,7 @@ class CpuinfoCommand(Command):
                 content_lines.append("")  # Empty line between CPUs
 
             content = "\n".join(content_lines)
-            self.console.print(
-                Panel(content, title="CPU Information", border_style="bright_blue")
-            )
+            self.console.print(Panel(content, title="CPU Information", border_style="bright_blue"))
             return
 
         # Show just the first CPU

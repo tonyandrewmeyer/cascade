@@ -129,16 +129,12 @@ Examples:
                     self.console.print(
                         f"[green]Removing group '{group_name}' from /etc/group[/green]"
                     )
-                self.console.print(
-                    f"[yellow]delgroup: would remove group entry: {line}[/yellow]"
-                )
+                self.console.print(f"[yellow]delgroup: would remove group entry: {line}[/yellow]")
             else:
                 new_group_lines.append(line)
 
         if not group_found:
-            self.console.print(
-                f"[red]delgroup: group '{group_name}' does not exist[/red]"
-            )
+            self.console.print(f"[red]delgroup: group '{group_name}' does not exist[/red]")
             return 1
 
         # Check if group is primary group for any user
@@ -183,8 +179,6 @@ Examples:
                     new_gshadow_lines.append(line)
 
         if not quiet:
-            self.console.print(
-                f"[green]Group '{group_name}' deleted successfully[/green]"
-            )
+            self.console.print(f"[green]Group '{group_name}' deleted successfully[/green]")
 
         return 0

@@ -29,9 +29,7 @@ def demo_for_loops():
     print()
 
     print("2. For loop with quoted string:")
-    command = (
-        'for service in "web" "api" "db"; do echo "Starting service: $service"; done'
-    )
+    command = 'for service in "web" "api" "db"; do echo "Starting service: $service"; done'
     print(f"Command: {command}")
     shell.run_command(command)
     print()
@@ -49,9 +47,7 @@ def demo_for_loops():
     print()
 
     print("5. For loop with multiple commands:")
-    command = (
-        'for file in file1 file2 file3; do echo "Processing $file"; ls -la $file; done'
-    )
+    command = 'for file in file1 file2 file3; do echo "Processing $file"; ls -la $file; done'
     print(f"Command: {command}")
     shell.run_command(command)
     print()

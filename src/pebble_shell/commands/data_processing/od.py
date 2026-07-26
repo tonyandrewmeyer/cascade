@@ -105,9 +105,7 @@ Examples:
                 data = safe_read_file(client, file_path, self.shell)
                 if data is None:
                     self.console.print(
-                        get_theme().error_text(
-                            f"od: {file_path}: No such file or directory"
-                        )
+                        get_theme().error_text(f"od: {file_path}: No such file or directory")
                     )
                     continue
 
@@ -120,15 +118,11 @@ Examples:
                     data = data[:limit_bytes]
 
                 # Generate output
-                self._dump_data(
-                    data, address_radix, format_type, width, verbose, skip_bytes
-                )
+                self._dump_data(data, address_radix, format_type, width, verbose, skip_bytes)
 
             except ops.pebble.PathError:
                 self.console.print(
-                    get_theme().error_text(
-                        f"od: {file_path}: No such file or directory"
-                    )
+                    get_theme().error_text(f"od: {file_path}: No such file or directory")
                 )
                 exit_code = 1
             except Exception as e:

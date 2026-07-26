@@ -39,9 +39,7 @@ class AliasCommand(Command):
             "?": "help",
         }
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute alias command."""
         if handle_help_flag(self, args):
             return 0
@@ -52,15 +50,11 @@ class AliasCommand(Command):
                 self.console.print(Panel("No aliases defined", style="bold yellow"))
                 return 0
 
-            table = Table(
-                show_header=True, header_style="bold magenta", box=None, expand=False
-            )
+            table = Table(show_header=True, header_style="bold magenta", box=None, expand=False)
             table.add_column("Alias", style="bold cyan", no_wrap=True)
             table.add_column("Command", style="green")
             for alias, command in sorted(self.aliases.items()):
-                table.add_row(
-                    f"[bold cyan]{alias}[/bold cyan]", f"[green]{command}[/green]"
-                )
+                table.add_row(f"[bold cyan]{alias}[/bold cyan]", f"[green]{command}[/green]")
             self.console.print(table)
             return 0
 

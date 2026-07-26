@@ -28,9 +28,7 @@ class JqCommand(Command):
     help = "Pretty-print JSON files with optional jq-like keypath filtering. Usage: jq <file> [.foo.bar]"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the jq command to format and filter JSON files."""
         if handle_help_flag(self, args):
             return 0

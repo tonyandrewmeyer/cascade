@@ -14,7 +14,7 @@ from ...utils import (
     format_relative_time,
     resolve_path,
 )
-from ...utils.command_helpers import handle_help_flag, parse_flags
+from ...utils.command_helpers import parse_flags
 from ...utils.table_builder import add_file_columns, create_standard_table
 from .._base import Command
 
@@ -26,9 +26,7 @@ class ListCommand(Command):
     help = "List directory contents"
     category = "Filesystem Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute ls command with rich table output, relative times, icons/emojis, -h for human sizes, -a for dot files, and -l for long listing."""
         # We can't support -h for --help, because -h is for human-readable sizes.
         if "--help" in args:
@@ -83,9 +81,7 @@ class ListCommand(Command):
         else:
             if human_readable:
                 table = (
-                    table_builder.numeric_column("Size")
-                    .data_column("Name", no_wrap=False)
-                    .build()
+                    table_builder.numeric_column("Size").data_column("Name", no_wrap=False).build()
                 )
             else:
                 table = table_builder.data_column("Name", no_wrap=False).build()
@@ -96,11 +92,7 @@ class ListCommand(Command):
             group = str(file_info.group_id) if file_info.group_id is not None else "0"
 
             if file_info.size is not None:
-                size_str = (
-                    format_bytes(file_info.size)
-                    if human_readable
-                    else str(file_info.size)
-                )
+                size_str = format_bytes(file_info.size) if human_readable else str(file_info.size)
             else:
                 size_str = "0"
 

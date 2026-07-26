@@ -32,8 +32,7 @@ def test_help(command: pebble_shell.commands.IprouteCommand):
         command.show_help()
     output = capture.get()
     assert any(
-        phrase in output.lower()
-        for phrase in ["ip", "route", "routing", "gateway", "network"]
+        phrase in output.lower() for phrase in ["ip", "route", "routing", "gateway", "network"]
     )
 
 
@@ -47,9 +46,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["ip", "route", "routing", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["ip", "route", "routing", "usage"])
 
 
 def test_execute_show_all_routes(
@@ -71,10 +68,7 @@ def test_execute_show_all_routes(
             assert len(lines) >= 1
             # Should contain routing indicators
             route_found = any(
-                any(
-                    indicator in line
-                    for indicator in ["via", "dev", "src", "scope", "proto"]
-                )
+                any(indicator in line for indicator in ["via", "dev", "src", "scope", "proto"])
                 for line in lines
                 if line.strip()
             )
@@ -209,10 +203,7 @@ def test_execute_add_route(
         # Should fail if not root
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["permission", "denied", "root", "error", "not found"]
-        )
+        assert any(msg in output for msg in ["permission", "denied", "root", "error", "not found"])
 
 
 def test_execute_delete_route(
@@ -352,9 +343,7 @@ def test_execute_invalid_gateway(
 ):
     # Test with invalid gateway
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["add", "192.168.1.0/24", "via", "invalid"]
-        )
+        result = command.execute(client=client, args=["add", "192.168.1.0/24", "via", "invalid"])
 
     # Should fail with invalid gateway error
     assert result == 1
@@ -368,9 +357,7 @@ def test_execute_invalid_network(
 ):
     # Test with invalid network specification
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["add", "192.168.1.0/99", "via", "127.0.0.1"]
-        )
+        result = command.execute(client=client, args=["add", "192.168.1.0/99", "via", "127.0.0.1"])
 
     # Should fail with invalid network error
     assert result == 1
@@ -408,8 +395,7 @@ def test_execute_route_metrics_display(
         if len(output) > 0:
             # Should contain metric information
             has_metrics = any(
-                metric in output.lower()
-                for metric in ["metric", "mtu", "proto", "scope"]
+                metric in output.lower() for metric in ["metric", "mtu", "proto", "scope"]
             )
             if has_metrics:
                 assert has_metrics
@@ -433,8 +419,7 @@ def test_execute_route_protocols(
         if len(output) > 0:
             # Should contain protocol information
             has_proto = any(
-                proto in output.lower()
-                for proto in ["proto", "kernel", "static", "dhcp"]
+                proto in output.lower() for proto in ["proto", "kernel", "static", "dhcp"]
             )
             if has_proto:
                 assert has_proto
@@ -472,9 +457,7 @@ def test_execute_permission_handling(
 ):
     # Test permission handling for modifications
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["add", "10.0.0.0/8", "via", "127.0.0.1"]
-        )
+        result = command.execute(client=client, args=["add", "10.0.0.0/8", "via", "127.0.0.1"])
 
     # Should either succeed or fail with permission error
     if result == 0:
@@ -553,9 +536,7 @@ def test_execute_error_recovery(
     assert result == 1
     output = capture.get()
     # Should provide meaningful error message
-    assert any(
-        msg in output for msg in ["invalid", "unknown", "error", "usage", "command"]
-    )
+    assert any(msg in output for msg in ["invalid", "unknown", "error", "usage", "command"])
 
 
 def test_execute_signal_handling(

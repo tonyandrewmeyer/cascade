@@ -310,9 +310,7 @@ class TestHistoryExpansion:
         """Test quick substitution when text not found in last command."""
         from pebble_shell.utils.history import HistoryExpansionError
 
-        with pytest.raises(
-            HistoryExpansionError, match="'notfound' not found in last command"
-        ):
+        with pytest.raises(HistoryExpansionError, match="'notfound' not found in last command"):
             history_with_commands.expand_history("^notfound^replacement")
 
     def test_bang_expansion_last_command(self, history_with_commands):
@@ -348,14 +346,10 @@ class TestHistoryExpansion:
         """Test !n expansion with invalid number."""
         from pebble_shell.utils.history import HistoryExpansionError
 
-        with pytest.raises(
-            HistoryExpansionError, match="Command number 10 out of range"
-        ):
+        with pytest.raises(HistoryExpansionError, match="Command number 10 out of range"):
             history_with_commands.expand_history("!10")
 
-        with pytest.raises(
-            HistoryExpansionError, match="Command number 0 out of range"
-        ):
+        with pytest.raises(HistoryExpansionError, match="Command number 0 out of range"):
             history_with_commands.expand_history("!0")
 
     def test_bang_expansion_by_prefix(self, history_with_commands):
@@ -370,9 +364,7 @@ class TestHistoryExpansion:
         """Test !prefix expansion when prefix not found."""
         from pebble_shell.utils.history import HistoryExpansionError
 
-        with pytest.raises(
-            HistoryExpansionError, match="No command found starting with 'xyz'"
-        ):
+        with pytest.raises(HistoryExpansionError, match="No command found starting with 'xyz'"):
             history_with_commands.expand_history("!xyz")
 
     def test_bang_expansion_non_bang_command(self, history_with_commands):

@@ -90,9 +90,7 @@ Examples:
         # Determine files from arguments and flags
         if positional_args:
             timing_file = positional_args[0]
-            typescript_file = (
-                positional_args[1] if len(positional_args) > 1 else "typescript"
-            )
+            typescript_file = positional_args[1] if len(positional_args) > 1 else "typescript"
             divisor = float(positional_args[2]) if len(positional_args) > 2 else 1.0
         else:
             timing_file = flags.get("t") or flags.get("timing", "timing")
@@ -128,9 +126,7 @@ Examples:
         # Read timing file
         timing_content = safe_read_file(client, timing_file)
         if timing_content is None:
-            self.console.print(
-                f"[red]scriptreplay: cannot read timing file '{timing_file}'[/red]"
-            )
+            self.console.print(f"[red]scriptreplay: cannot read timing file '{timing_file}'[/red]")
             return 1
 
         # Read typescript file
@@ -145,20 +141,14 @@ Examples:
         try:
             timing_events = self._parse_timing_data(timing_content, timing_format)
         except Exception as e:
-            self.console.print(
-                f"[red]scriptreplay: error parsing timing file: {e}[/red]"
-            )
+            self.console.print(f"[red]scriptreplay: error parsing timing file: {e}[/red]")
             return 1
 
         # Parse typescript content
         try:
-            session_chunks = self._parse_typescript_data(
-                typescript_content, timing_events
-            )
+            session_chunks = self._parse_typescript_data(typescript_content, timing_events)
         except Exception as e:
-            self.console.print(
-                f"[red]scriptreplay: error parsing typescript file: {e}[/red]"
-            )
+            self.console.print(f"[red]scriptreplay: error parsing typescript file: {e}[/red]")
             return 1
 
         # Start replay
@@ -205,9 +195,7 @@ Examples:
                     # Fall back to treating as list
                     return data if isinstance(data, list) else []
             except json.JSONDecodeError as err:
-                raise ScriptError(
-                    "Invalid JSON format in advanced timing file"
-                ) from err
+                raise ScriptError("Invalid JSON format in advanced timing file") from err
         else:
             # Classic format: timestamp size per line
             events = []
@@ -231,9 +219,7 @@ Examples:
                         }
                     )
                 except ValueError as err:
-                    raise ScriptError(
-                        f"Invalid timing values at line {line_num}"
-                    ) from err
+                    raise ScriptError(f"Invalid timing values at line {line_num}") from err
 
             return events
 

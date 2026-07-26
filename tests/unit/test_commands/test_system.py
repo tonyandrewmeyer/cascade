@@ -293,7 +293,9 @@ class TestProcessCommand:
             mock_file = Mock()
             if path == "/proc/999/cmdline":
                 # Very long command line
-                long_cmd = "very_long_command_name_that_exceeds_fifty_characters_and_should_be_truncated"
+                long_cmd = (
+                    "very_long_command_name_that_exceeds_fifty_characters_and_should_be_truncated"
+                )
                 mock_file.read.return_value = long_cmd
             else:
                 mock_file.read.return_value = ""
@@ -396,9 +398,7 @@ class TestDuCommand:
         def mock_list_files(path):
             if path == "/test":  # Parent directory of current directory
                 return [mock_current_dir_info]
-            if (
-                path == "/test/."
-            ):  # The current directory itself (when calculating size)
+            if path == "/test/.":  # The current directory itself (when calculating size)
                 return []  # Empty directory for simplicity
             return []
 
@@ -556,11 +556,11 @@ class TestWhoCommand:
             elif path == "/proc/1234/cmdline":
                 mock_file.read.return_value = "bash"
             elif path == "/proc/1234/status":
-                mock_file.read.return_value = (
-                    "Name:\tbash\nUid:\t1000\t1000\t1000\t1000\n"
-                )
+                mock_file.read.return_value = "Name:\tbash\nUid:\t1000\t1000\t1000\t1000\n"
             elif path == "/etc/passwd":
-                mock_file.read.return_value = "root:x:0:0:root:/root:/bin/bash\nuser:x:1000:1000:User:/home/user:/bin/bash\n"
+                mock_file.read.return_value = (
+                    "root:x:0:0:root:/root:/bin/bash\nuser:x:1000:1000:User:/home/user:/bin/bash\n"
+                )
             else:
                 mock_file.read.return_value = ""
 
@@ -676,9 +676,7 @@ class TestLoadavgCommand:
                 mock_file.read.return_value = mock_bytes
             elif path == "/proc/cpuinfo":
                 # Mock cpuinfo content
-                cpuinfo_content = (
-                    "processor\t: 0\nprocessor\t: 1\nprocessor\t: 2\nprocessor\t: 3"
-                )
+                cpuinfo_content = "processor\t: 0\nprocessor\t: 1\nprocessor\t: 2\nprocessor\t: 3"
                 mock_file.read.return_value = cpuinfo_content
             else:
                 mock_file.read.return_value = ""
@@ -710,9 +708,7 @@ class TestLoadavgCommand:
         """Test handling file not found error."""
         from pebble_shell.utils.proc_reader import ProcReadError
 
-        mock_parse_loadavg.side_effect = ProcReadError(
-            "/proc/loadavg", "File not found"
-        )
+        mock_parse_loadavg.side_effect = ProcReadError("/proc/loadavg", "File not found")
 
         result = command.execute(mock_client, [])
 
@@ -725,9 +721,7 @@ class TestLoadavgCommand:
         """Test handling invalid file format."""
         from pebble_shell.utils.proc_reader import ProcReadError
 
-        mock_parse_loadavg.side_effect = ProcReadError(
-            "/proc/loadavg", "Invalid loadavg format"
-        )
+        mock_parse_loadavg.side_effect = ProcReadError("/proc/loadavg", "Invalid loadavg format")
 
         result = command.execute(mock_client, [])
 
@@ -1074,9 +1068,7 @@ class TestPstreeCommand:
             result = command.execute(mock_client, [])
 
             assert result == 1
-            mock_print.assert_called_with(
-                "Error building process tree: Cannot access /proc"
-            )
+            mock_print.assert_called_with("Error building process tree: Cannot access /proc")
 
     def test_pstree_success_basic(self, command, mock_client):
         """Test basic pstree functionality."""
@@ -1178,9 +1170,7 @@ Jan 15 12:15:33 hostname sshd[9012]: Accepted publickey for user2 from 10.0.0.5 
             mock_context = MagicMock()
             mock_file = Mock()
             if path == "/var/log/auth.log":
-                mock_file.read.return_value = (
-                    "Some other entries\nWithout matching keywords"
-                )
+                mock_file.read.return_value = "Some other entries\nWithout matching keywords"
             else:
                 raise ops.pebble.PathError("path", "not found")
             mock_context.__enter__.return_value = mock_file
@@ -1386,17 +1376,15 @@ class TestPgrepCommand:
             elif path.endswith("/5678/comm"):
                 mock_file.read.return_value = "python\n"
             elif path.endswith("/1234/status"):
-                mock_file.read.return_value = (
-                    "Name:\tbash\nUid:\t1000\t1000\t1000\t1000\n"
-                )
+                mock_file.read.return_value = "Name:\tbash\nUid:\t1000\t1000\t1000\t1000\n"
             elif path.endswith("/5678/status"):
-                mock_file.read.return_value = (
-                    "Name:\tpython\nUid:\t1000\t1000\t1000\t1000\n"
-                )
+                mock_file.read.return_value = "Name:\tpython\nUid:\t1000\t1000\t1000\t1000\n"
             elif path.endswith("/cmdline"):
                 mock_file.read.return_value = "/bin/bash"
             elif path == "/etc/passwd":
-                mock_file.read.return_value = "root:x:0:0::/root:/bin/bash\ntestuser:x:1000:1000::/home/testuser:/bin/bash\n"
+                mock_file.read.return_value = (
+                    "root:x:0:0::/root:/bin/bash\ntestuser:x:1000:1000::/home/testuser:/bin/bash\n"
+                )
             else:
                 raise ops.pebble.PathError("path", "not found")
 
@@ -1436,13 +1424,9 @@ class TestPgrepCommand:
             elif path.endswith("/cmdline"):
                 mock_file.read.return_value = "python3\x00-m\x00pytest\x00"
             elif path.endswith("/status"):
-                mock_file.read.return_value = (
-                    "Name:\tpython3\nUid:\t1000\t1000\t1000\t1000\n"
-                )
+                mock_file.read.return_value = "Name:\tpython3\nUid:\t1000\t1000\t1000\t1000\n"
             elif path == "/etc/passwd":
-                mock_file.read.return_value = (
-                    "testuser:x:1000:1000::/home/testuser:/bin/bash\n"
-                )
+                mock_file.read.return_value = "testuser:x:1000:1000::/home/testuser:/bin/bash\n"
             else:
                 raise ops.pebble.PathError("path", "not found")
 
@@ -1476,15 +1460,11 @@ class TestPgrepCommand:
             if path.endswith("/comm"):
                 mock_file.read.return_value = "bash\n"
             elif path.endswith("/status"):
-                mock_file.read.return_value = (
-                    "Name:\tbash\nUid:\t1000\t1000\t1000\t1000\n"
-                )
+                mock_file.read.return_value = "Name:\tbash\nUid:\t1000\t1000\t1000\t1000\n"
             elif path.endswith("/cmdline"):
                 mock_file.read.return_value = "/bin/bash"
             elif path == "/etc/passwd":
-                mock_file.read.return_value = (
-                    "testuser:x:1000:1000::/home/testuser:/bin/bash\n"
-                )
+                mock_file.read.return_value = "testuser:x:1000:1000::/home/testuser:/bin/bash\n"
             else:
                 raise ops.pebble.PathError("path", "not found")
 
@@ -1529,9 +1509,7 @@ class TestPgrepCommand:
         result = command.execute(mock_client, ["nonexistent"])
 
         assert result == 1
-        command.console.print.assert_called_with(
-            "No processes found matching 'nonexistent'"
-        )
+        command.console.print.assert_called_with("No processes found matching 'nonexistent'")
 
     def test_execute_no_args(self):
         """Test execution with no arguments."""
@@ -1672,9 +1650,7 @@ pswpout 50"""
 
         # Mock basic stats
         stat_content = "cpu  100000 1000 50000 800000 2000 0 1000"
-        meminfo_content = (
-            "MemTotal: 8192000 kB\nMemFree: 2048000 kB\nMemAvailable: 4096000 kB"
-        )
+        meminfo_content = "MemTotal: 8192000 kB\nMemFree: 2048000 kB\nMemAvailable: 4096000 kB"
 
         def mock_pull_side_effect(path: str):
             mock_context = MagicMock()
@@ -1723,9 +1699,7 @@ pswpout 50"""
         result = command.execute(mock_client, ["0.05"])
 
         assert result == 1
-        command.console.print.assert_called_with(
-            "Error: interval must be at least 0.1 seconds"
-        )
+        command.console.print.assert_called_with("Error: interval must be at least 0.1 seconds")
 
     def test_execute_invalid_count(self):
         """Test execution with invalid count."""
@@ -1929,9 +1903,7 @@ cpu1 287215 515 264169 9632008 11828 0 9816 0 0 0"""
         result = command.execute(mock_client, ["0.05"])
 
         assert result == 1
-        command.console.print.assert_called_with(
-            "Error: interval must be at least 0.1 seconds"
-        )
+        command.console.print.assert_called_with("Error: interval must be at least 0.1 seconds")
 
     def test_execute_invalid_count(self):
         """Test execution with invalid count."""
@@ -2072,9 +2044,7 @@ class TestDashboardCommand:
         mock_client = Mock()
 
         # Mock SystemDashboard to avoid actual dashboard launch
-        with patch(
-            "pebble_shell.commands.system.SystemDashboard"
-        ) as mock_dashboard_class:
+        with patch("pebble_shell.commands.system.SystemDashboard") as mock_dashboard_class:
             mock_dashboard = Mock()
             mock_dashboard_class.return_value = mock_dashboard
 
@@ -2097,9 +2067,7 @@ class TestDashboardCommand:
         mock_client = Mock()
 
         # Mock SystemDashboard to raise KeyboardInterrupt
-        with patch(
-            "pebble_shell.commands.system.SystemDashboard"
-        ) as mock_dashboard_class:
+        with patch("pebble_shell.commands.system.SystemDashboard") as mock_dashboard_class:
             mock_dashboard = Mock()
             mock_dashboard.start.side_effect = KeyboardInterrupt()
             mock_dashboard_class.return_value = mock_dashboard
@@ -2120,9 +2088,7 @@ class TestDashboardCommand:
         mock_client = Mock()
 
         # Mock SystemDashboard to raise Exception
-        with patch(
-            "pebble_shell.commands.system.SystemDashboard"
-        ) as mock_dashboard_class:
+        with patch("pebble_shell.commands.system.SystemDashboard") as mock_dashboard_class:
             mock_dashboard_class.side_effect = Exception("Dashboard error")
 
             result = command.execute(mock_client, [])
@@ -2130,9 +2096,7 @@ class TestDashboardCommand:
         # Should return error code
         assert result == 1
         # Should print error message
-        command.console.print.assert_any_call(
-            "Error starting dashboard: Dashboard error"
-        )
+        command.console.print.assert_any_call("Error starting dashboard: Dashboard error")
 
     def test_execute_help(self):
         """Test help display."""
@@ -2566,8 +2530,7 @@ Jan 15 10:30:19 hostname cron[890]: (CRON) INFO (pidfile fd = 3)"""
 
         # Mock syslog with many lines
         syslog_lines = [
-            f"Jan 15 10:30:{i:02d} hostname test[123]: Log entry {i}"
-            for i in range(100)
+            f"Jan 15 10:30:{i:02d} hostname test[123]: Log entry {i}" for i in range(100)
         ]
         syslog_content = "\n".join(syslog_lines)
 

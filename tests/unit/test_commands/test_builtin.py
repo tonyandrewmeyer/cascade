@@ -664,13 +664,9 @@ line 4: goodbye world
         def mock_pull(path):
             mock_file = MagicMock()
             if "file1" in path:
-                mock_file.read.return_value = (
-                    "hello world\nfoo bar\n"  # Return string, not bytes
-                )
+                mock_file.read.return_value = "hello world\nfoo bar\n"  # Return string, not bytes
             else:
-                mock_file.read.return_value = (
-                    "hello again\ngoodbye\n"  # Return string, not bytes
-                )
+                mock_file.read.return_value = "hello again\ngoodbye\n"  # Return string, not bytes
             return mock_file
 
         client.pull.side_effect = lambda path: MagicMock(

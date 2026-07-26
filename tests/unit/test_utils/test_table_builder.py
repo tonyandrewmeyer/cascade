@@ -2,6 +2,7 @@
 
 from rich import box
 from rich.table import Table
+
 from src.pebble_shell.utils.table_builder import (
     TableBuilder,
     add_file_columns,

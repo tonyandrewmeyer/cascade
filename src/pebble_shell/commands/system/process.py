@@ -33,9 +33,7 @@ class ProcessCommand(Command):
     help = "Show running processes (supports -aux, e, eww for environment)"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute ps command with rich table output."""
         if handle_help_flag(self, args):
             return 0
@@ -90,9 +88,7 @@ class ProcessCommand(Command):
         files = client.list_files("/proc")
         proc_dirs = [file_info.name for file_info in files if file_info.name.isdigit()]
         if not proc_dirs:
-            self.console.print(
-                Panel("No process information found", style="bold yellow")
-            )
+            self.console.print(Panel("No process information found", style="bold yellow"))
             return 1
 
         # Create table based on flags
@@ -202,9 +198,7 @@ class ProcessCommand(Command):
 
         try:
             # Use proc_reader utilities for status fields
-            status_fields = read_proc_status_fields(
-                client, pid, ["Uid", "VmSize", "VmRSS"]
-            )
+            status_fields = read_proc_status_fields(client, pid, ["Uid", "VmSize", "VmRSS"])
             uid = status_fields.get("Uid")
             if uid:
                 status_info["user"] = get_user_name_for_uid(client, uid) or f"uid{uid}"
@@ -275,9 +269,7 @@ class ProcessCommand(Command):
 
         return status_info
 
-    def _get_tty_info(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, pid: str
-    ) -> str:
+    def _get_tty_info(self, client: ops.pebble.Client | shimmer.PebbleCliClient, pid: str) -> str:
         """Get TTY information for a process."""
         try:
             return get_process_tty(client, pid)

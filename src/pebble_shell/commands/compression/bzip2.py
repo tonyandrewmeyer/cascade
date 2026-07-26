@@ -56,9 +56,7 @@ class BzipCommand(Command):
             return 1
         flags, positional_args = parse_result
 
-        if not validate_min_args(
-            self.shell, positional_args, 1, "bzip2: missing file operand"
-        ):
+        if not validate_min_args(self.shell, positional_args, 1, "bzip2: missing file operand"):
             return 1
 
         decompress = flags.get("d", False)
@@ -69,9 +67,7 @@ class BzipCommand(Command):
         # Process each file
         for file_path in positional_args:
             # Convert relative paths to absolute paths
-            file_path = resolve_path(
-                self.shell.current_directory, file_path, self.shell.home_dir
-            )
+            file_path = resolve_path(self.shell.current_directory, file_path, self.shell.home_dir)
 
             try:
                 if decompress:
@@ -85,7 +81,7 @@ class BzipCommand(Command):
 
                 if not success:
                     return 1
-            except CompressionError as e:  # noqa: PERF203
+            except CompressionError as e:
                 self.console.print(f"[red]bzip2: {e}[/red]")
                 return 1
 
@@ -126,8 +122,7 @@ EXAMPLES:
             # Check if the file is already compressed
             if file_path.endswith(".bz2") and not force:
                 self.console.print(
-                    f"[yellow]Skipping {file_path} - already appears to be "
-                    f"compressed[/yellow]"
+                    f"[yellow]Skipping {file_path} - already appears to be compressed[/yellow]"
                 )
                 return True
 
@@ -158,11 +153,7 @@ EXAMPLES:
             if verbose:
                 original_size = len(file_content)
                 compressed_size = len(compressed_content)
-                ratio = (
-                    (1 - compressed_size / original_size) * 100
-                    if original_size > 0
-                    else 0
-                )
+                ratio = (1 - compressed_size / original_size) * 100 if original_size > 0 else 0
                 self.console.print(
                     f"[green]{file_path}: {original_size} -> {compressed_size} bytes ({ratio:.1f}% reduction)[/green]"
                 )
@@ -188,9 +179,7 @@ EXAMPLES:
         try:
             # Check if file has .bz2 extension
             if not file_path.endswith(".bz2"):
-                raise CompressionError(
-                    f"File {file_path} doesn't appear to be a bzip2 file"
-                )
+                raise CompressionError(f"File {file_path} doesn't appear to be a bzip2 file")
 
             output_path = file_path[:-4]  # Remove .bz2 extension
 
@@ -225,9 +214,7 @@ EXAMPLES:
                 compressed_size = len(compressed_content)
                 decompressed_size = len(decompressed_content)
                 ratio = (
-                    (decompressed_size / compressed_size - 1) * 100
-                    if compressed_size > 0
-                    else 0
+                    (decompressed_size / compressed_size - 1) * 100 if compressed_size > 0 else 0
                 )
                 self.console.print(
                     f"[green]{file_path}: {compressed_size} -> {decompressed_size} bytes ({ratio:.1f}% expansion)[/green]"

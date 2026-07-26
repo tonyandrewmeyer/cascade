@@ -146,9 +146,7 @@ Examples:
         # Check if user already exists
         for line in passwd_content.strip().split("\n"):
             if line and line.split(":")[0] == username:
-                self.console.print(
-                    f"[red]adduser: user '{username}' already exists[/red]"
-                )
+                self.console.print(f"[red]adduser: user '{username}' already exists[/red]")
                 return 1
 
         # Determine UID
@@ -176,18 +174,12 @@ Examples:
         if group_content is not None:
             gid_exists = False
             for line in group_content.strip().split("\n"):
-                if (
-                    line
-                    and len(line.split(":")) >= 3
-                    and line.split(":")[2] == str(gid)
-                ):
+                if line and len(line.split(":")) >= 3 and line.split(":")[2] == str(gid):
                     gid_exists = True
                     break
 
             if not gid_exists:
-                self.console.print(
-                    f"[red]adduser: group with GID {gid} does not exist[/red]"
-                )
+                self.console.print(f"[red]adduser: group with GID {gid} does not exist[/red]")
                 return 1
 
         # Create passwd entry
@@ -200,11 +192,9 @@ Examples:
             shadow_content = ""
 
         # Create shadow entry
-        if disabled_password:
-            password_hash = LOCKED_ACCOUNT_HASH
-        else:
-            # Generate a random password hash (user will need to set password)
-            password_hash = LOCKED_ACCOUNT_HASH  # Account locked until password is set
+        # The account is locked either way: explicitly when --disabled-password is
+        # given, and otherwise until the user sets a password for the first time.
+        password_hash = LOCKED_ACCOUNT_HASH
 
         # Get days since epoch for password age
         days_since_epoch = int(time.time() // 86400)
@@ -213,9 +203,7 @@ Examples:
 
         # Show what would be done
         if not quiet:
-            self.console.print(
-                f"[green]Adding user '{username}' (UID {uid}, GID {gid})[/green]"
-            )
+            self.console.print(f"[green]Adding user '{username}' (UID {uid}, GID {gid})[/green]")
 
         self.console.print("[yellow]adduser: would write to /etc/passwd:[/yellow]")
         self.console.print(f"[dim]{passwd_entry}[/dim]")
@@ -228,16 +216,12 @@ Examples:
             self.console.print(
                 f"[yellow]adduser: would create home directory: {home_dir}[/yellow]"
             )
-            self.console.print(
-                f"[yellow]adduser: would set ownership to {uid}:{gid}[/yellow]"
-            )
+            self.console.print(f"[yellow]adduser: would set ownership to {uid}:{gid}[/yellow]")
 
         if not quiet:
             self.console.print(f"[green]User '{username}' created successfully[/green]")
             if disabled_password:
-                self.console.print(
-                    "[yellow]Account created with disabled password[/yellow]"
-                )
+                self.console.print("[yellow]Account created with disabled password[/yellow]")
             else:
                 self.console.print(
                     "[yellow]User account locked - use passwd to set password[/yellow]"

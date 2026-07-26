@@ -150,9 +150,7 @@ def test_execute_nonexistent_command(
     command: pebble_shell.commands.TimeoutCommand,
 ):
     with command.shell.console.capture() as _:
-        result = command.execute(
-            client=client, args=["5", "nonexistent_command", "arg"]
-        )
+        result = command.execute(client=client, args=["5", "nonexistent_command", "arg"])
     # Should fail with exit code 125 (command execution error)
     assert result == 125
 
@@ -220,9 +218,7 @@ def test_execute_preserve_status_note(
     # is checked against args[0] instead of being parsed properly.
     # This test documents the current behavior rather than the intended behavior.
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["--preserve-status", "echo", "hello"]
-        )
+        result = command.execute(client=client, args=["--preserve-status", "echo", "hello"])
     # Should fail because "--preserve-status" can't be converted to float
     assert result == 1
     assert "invalid time interval" in capture.get()

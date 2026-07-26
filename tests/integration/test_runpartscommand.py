@@ -48,9 +48,7 @@ def test_execute_help(
         result = command.execute(client=client, args=args)
     assert result == 0
     output = capture.get()
-    assert any(
-        phrase in output.lower() for phrase in ["run-parts", "run", "script", "usage"]
-    )
+    assert any(phrase in output.lower() for phrase in ["run-parts", "run", "script", "usage"])
 
 
 def test_execute_no_directory_specified(
@@ -64,9 +62,7 @@ def test_execute_no_directory_specified(
     # Should fail with missing directory error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["directory", "required", "missing", "usage", "error"]
-    )
+    assert any(msg in output for msg in ["directory", "required", "missing", "usage", "error"])
 
 
 def test_execute_nonexistent_directory(
@@ -80,9 +76,7 @@ def test_execute_nonexistent_directory(
     # Should fail with directory not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not found", "no such file", "directory", "error"]
-    )
+    assert any(msg in output for msg in ["not found", "no such file", "directory", "error"])
 
 
 def test_execute_file_instead_of_directory(
@@ -96,9 +90,7 @@ def test_execute_file_instead_of_directory(
     # Should fail with not a directory error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["not a directory", "directory", "error", "invalid"]
-    )
+    assert any(msg in output for msg in ["not a directory", "directory", "error", "invalid"])
 
 
 def test_execute_permission_denied_directory(
@@ -159,9 +151,7 @@ def test_execute_system_scripts_directory(
         # Should fail with permission or directory not found
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "permission", "denied", "error"]
-        )
+        assert any(msg in output for msg in ["not found", "permission", "denied", "error"])
 
 
 def test_execute_test_mode(
@@ -460,9 +450,7 @@ def test_execute_directory_with_special_characters(
         # Should fail with directory not found or path error
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not found", "directory", "error", "invalid"]
-        )
+        assert any(msg in output for msg in ["not found", "directory", "error", "invalid"])
 
 
 def test_execute_relative_directory_path(

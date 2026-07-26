@@ -28,9 +28,7 @@ class TacCommand(Command):
     help = "Concatenate and print files in reverse"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the tac command to display files in reverse line order."""
         if handle_help_flag(self, args):
             return 0

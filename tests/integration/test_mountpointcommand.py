@@ -80,8 +80,7 @@ def test_execute_root_mountpoint(
         # Should indicate it's a mount point
         assert (
             any(
-                msg in output
-                for msg in ["is a mountpoint", "is a mount point", "mountpoint", "/"]
+                msg in output for msg in ["is a mountpoint", "is a mount point", "mountpoint", "/"]
             )
             or len(output.strip()) == 0
         )  # May have no output on success
@@ -89,10 +88,7 @@ def test_execute_root_mountpoint(
         # May fail if mountpoint check fails
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output
-            for msg in ["is not a mountpoint", "not a mount point", "error"]
-        )
+        assert any(msg in output for msg in ["is not a mountpoint", "not a mount point", "error"])
 
 
 def test_execute_tmp_directory(
@@ -109,10 +105,7 @@ def test_execute_tmp_directory(
         output = capture.get()
         # Should indicate it's a mount point
         assert (
-            any(
-                msg in output
-                for msg in ["is a mountpoint", "is a mount point", temp_dir]
-            )
+            any(msg in output for msg in ["is a mountpoint", "is a mount point", temp_dir])
             or len(output.strip()) == 0
         )
     else:
@@ -120,10 +113,7 @@ def test_execute_tmp_directory(
         assert result == 1
         output = capture.get()
         assert (
-            any(
-                msg in output
-                for msg in ["is not a mountpoint", "not a mount point", temp_dir]
-            )
+            any(msg in output for msg in ["is not a mountpoint", "not a mount point", temp_dir])
             or len(output.strip()) == 0
         )
 
@@ -141,10 +131,7 @@ def test_execute_proc_mountpoint(
         output = capture.get()
         # Should indicate /proc is a mount point
         assert (
-            any(
-                msg in output
-                for msg in ["is a mountpoint", "is a mount point", "/proc"]
-            )
+            any(msg in output for msg in ["is a mountpoint", "is a mount point", "/proc"])
             or len(output.strip()) == 0
         )
     else:
@@ -165,9 +152,7 @@ def test_execute_sys_mountpoint(
         output = capture.get()
         # Should indicate /sys is a mount point
         assert (
-            any(
-                msg in output for msg in ["is a mountpoint", "is a mount point", "/sys"]
-            )
+            any(msg in output for msg in ["is a mountpoint", "is a mount point", "/sys"])
             or len(output.strip()) == 0
         )
     else:
@@ -188,9 +173,7 @@ def test_execute_dev_mountpoint(
         output = capture.get()
         # Should indicate /dev is a mount point
         assert (
-            any(
-                msg in output for msg in ["is a mountpoint", "is a mount point", "/dev"]
-            )
+            any(msg in output for msg in ["is a mountpoint", "is a mount point", "/dev"])
             or len(output.strip()) == 0
         )
     else:
@@ -209,10 +192,7 @@ def test_execute_nonexistent_directory(
     # Should fail with directory not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["No such file", "not found", "does not exist", "error"]
-    )
+    assert any(msg in output for msg in ["No such file", "not found", "does not exist", "error"])
 
 
 def test_execute_regular_file(
@@ -294,10 +274,7 @@ def test_execute_device_option(
         output = capture.get()
         # Should show device information
         assert (
-            any(
-                indicator in output
-                for indicator in ["/dev/", "device", "major", "minor"]
-            )
+            any(indicator in output for indicator in ["/dev/", "device", "major", "minor"])
             or len(output.strip()) > 0
         )
     else:
@@ -318,10 +295,7 @@ def test_execute_stat_option(
         output = capture.get()
         # Should show filesystem statistics
         assert (
-            any(
-                stat in output
-                for stat in ["filesystem", "blocks", "inodes", "free", "available"]
-            )
+            any(stat in output for stat in ["filesystem", "blocks", "inodes", "free", "available"])
             or len(output.strip()) > 0
         )
     else:
@@ -374,9 +348,7 @@ def test_execute_symlink_to_mountpoint(
 ):
     # Test with symlink to mount point
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/var/run"]
-        )  # Often symlink to /run
+        result = command.execute(client=client, args=["/var/run"])  # Often symlink to /run
 
     # Should either follow symlink and check target or handle appropriately
     if result == 0:
@@ -641,8 +613,7 @@ def test_execute_device_file_handling(
     assert result == 1
     output = capture.get()
     assert any(
-        msg in output
-        for msg in ["not a directory", "is not a mountpoint", "not a mount point"]
+        msg in output for msg in ["not a directory", "is not a mountpoint", "not a mount point"]
     )
 
 

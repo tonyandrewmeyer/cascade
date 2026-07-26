@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import io
+import os
 import zipfile
 from typing import TYPE_CHECKING, Union
 
@@ -67,17 +68,13 @@ class UnzipCommand(Command):
         zip_file_path = resolve_path(
             self.shell.current_directory, zip_file_path, self.shell.home_dir
         )
-        extract_dir = resolve_path(
-            self.shell.current_directory, extract_dir, self.shell.home_dir
-        )
+        extract_dir = resolve_path(self.shell.current_directory, extract_dir, self.shell.home_dir)
 
         try:
             if list_contents:
                 return self._list_zip(client, zip_file_path, verbose)
             else:
-                return self._extract_zip(
-                    client, zip_file_path, extract_dir, force, verbose
-                )
+                return self._extract_zip(client, zip_file_path, extract_dir, force, verbose)
 
         except CompressionError as e:
             self.console.print(f"[red]unzip: {e}[/red]")
@@ -166,9 +163,7 @@ EXAMPLES:
             zip_buffer = io.BytesIO(zip_content)
             with zipfile.ZipFile(zip_buffer, "r") as zip_file:
                 files_to_extract = [
-                    info
-                    for info in zip_file.infolist()
-                    if not info.filename.endswith("/")
+                    info for info in zip_file.infolist() if not info.filename.endswith("/")
                 ]
                 total_files = len(files_to_extract)
                 extracted_count = 0

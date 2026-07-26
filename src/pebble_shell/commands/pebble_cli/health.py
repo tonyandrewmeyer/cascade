@@ -23,9 +23,7 @@ class HealthCommand(Command):
     help = "Show overall health status of all checks"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the health command."""
         if handle_help_flag(self, args):
             return 0
@@ -47,9 +45,7 @@ class HealthCommand(Command):
         checks: dict[str, ops.pebble.Check],
     ):
         """Display health status in a Rich table."""
-        healthy_count = sum(
-            1 for check_info in check_infos if check_info.status == "up"
-        )
+        healthy_count = sum(1 for check_info in check_infos if check_info.status == "up")
         unhealthy_count = len(check_infos) - healthy_count
 
         table = create_standard_table()
@@ -88,9 +84,7 @@ class HealthCommand(Command):
         if unhealthy_count == 0:
             summary_text = get_theme().success_text("✓ All checks are healthy")
         else:
-            summary_text = get_theme().error_text(
-                f"⚠ {unhealthy_count} checks are unhealthy"
-            )
+            summary_text = get_theme().error_text(f"⚠ {unhealthy_count} checks are unhealthy")
 
         summary_panel = Panel(
             f"Health Status: {healthy_count}/{len(checks)} checks healthy\n{summary_text}",

@@ -313,9 +313,7 @@ def test_execute_success_message_format(
     if result == 0:
         output = capture.get()
         assert "Successfully sent SIGHUP to services:" in output
-        assert "service1, service2" in output or (
-            "service1" in output and "service2" in output
-        )
+        assert "service1, service2" in output or ("service1" in output and "service2" in output)
 
 
 def test_execute_signal_delivery_confirmation(

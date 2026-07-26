@@ -106,9 +106,7 @@ EXAMPLES:
                 if uid:
                     # Look up user in /etc/passwd
                     try:
-                        passwd_content = (
-                            safe_read_file(self.client, "/etc/passwd") or ""
-                        )
+                        passwd_content = safe_read_file(self.client, "/etc/passwd") or ""
 
                         for line in passwd_content.splitlines():
                             if line.strip():

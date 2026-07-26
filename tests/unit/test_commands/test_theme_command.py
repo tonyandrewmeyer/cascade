@@ -3,7 +3,6 @@
 from unittest.mock import Mock
 
 import pytest
-
 from pebble_shell.commands.theme_command import ThemeCommand
 
 

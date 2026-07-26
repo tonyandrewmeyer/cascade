@@ -66,9 +66,7 @@ class UnexpandCommand(Command):
 
             if not positional_args:
                 self.console.print(
-                    get_theme().warning_text(
-                        "unexpand: reading from stdin not supported"
-                    )
+                    get_theme().warning_text("unexpand: reading from stdin not supported")
                 )
                 return 1
 
@@ -108,9 +106,7 @@ class UnexpandCommand(Command):
                 if leading_spaces >= tab_size:
                     tabs = leading_spaces // tab_size
                     remaining_spaces = leading_spaces % tab_size
-                    unexpanded_line = (
-                        "\t" * tabs + " " * remaining_spaces + line[leading_spaces:]
-                    )
+                    unexpanded_line = "\t" * tabs + " " * remaining_spaces + line[leading_spaces:]
                 else:
                     unexpanded_line = line
             else:
@@ -142,9 +138,7 @@ class UnexpandCommand(Command):
 
         return "".join(result)
 
-    def _unexpand_with_stops(
-        self, content: str, stops: list[int], first_only: bool
-    ) -> str:
+    def _unexpand_with_stops(self, content: str, stops: list[int], first_only: bool) -> str:
         """Convert spaces to tabs using custom tab stops."""
         # For simplicity, use the first tab stop as the standard interval
         tab_size = stops[0] if stops else 8

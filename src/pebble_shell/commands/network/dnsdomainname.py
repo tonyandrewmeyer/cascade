@@ -77,9 +77,7 @@ Examples:
 
             # Fallback - try /proc/sys/kernel/domainname
             try:
-                domainname = safe_read_file(
-                    client, "/proc/sys/kernel/domainname", self.shell
-                )
+                domainname = safe_read_file(client, "/proc/sys/kernel/domainname", self.shell)
                 if domainname and domainname.strip() != "(none)":
                     self.console.print(domainname.strip())
                     return 0

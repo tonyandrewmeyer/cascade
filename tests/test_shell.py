@@ -170,9 +170,7 @@ class TestPebbleShell:
 
     @patch("builtins.input")
     @patch("pebble_shell.shell.PebbleShell.connect")
-    def test_run_interactive_keyboard_interrupt(
-        self, mock_connect, mock_input, shell, capsys
-    ):
+    def test_run_interactive_keyboard_interrupt(self, mock_connect, mock_input, shell, capsys):
         """Test interactive shell with keyboard interrupt."""
         mock_connect.return_value = True
         mock_input.side_effect = [KeyboardInterrupt(), "exit"]

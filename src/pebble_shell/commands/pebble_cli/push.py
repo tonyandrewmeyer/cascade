@@ -19,16 +19,12 @@ class PushCommand(Command):
     help = "Push files and directories to the remote container. Usage: pebble push <source> <dest>"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ) -> int:
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]) -> int:
         """Execute the push command."""
         if handle_help_flag(self, args):
             return 0
 
-        if not validate_min_args(
-            self.shell, args, 2, "Usage: pebble push <source> <dest>"
-        ):
+        if not validate_min_args(self.shell, args, 2, "Usage: pebble push <source> <dest>"):
             return 1
 
         source = args[0]

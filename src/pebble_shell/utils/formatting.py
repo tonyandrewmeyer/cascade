@@ -42,7 +42,9 @@ def format_file_info(file_info: ops.pebble.FileInfo) -> str:
         mod_time = "unknown"
     owner = str(file_info.user_id) if file_info.user_id is not None else "0"
     group = str(file_info.group_id) if file_info.group_id is not None else "0"
-    return f"{type_char}{permissions} {owner:<8} {group:<8} {size_str:>8} {mod_time} {file_info.name}"
+    return (
+        f"{type_char}{permissions} {owner:<8} {group:<8} {size_str:>8} {mod_time} {file_info.name}"
+    )
 
 
 def format_stat_info(file_info: ops.pebble.FileInfo, path: str) -> str:
@@ -58,9 +60,7 @@ def format_stat_info(file_info: ops.pebble.FileInfo, path: str) -> str:
     lines = [
         f"File: {path}",
         f"Type: {file_info.type}",
-        f"Size: {file_info.size} bytes"
-        if file_info.size is not None
-        else "Size: unknown",
+        f"Size: {file_info.size} bytes" if file_info.size is not None else "Size: unknown",
     ]
     if file_info.user_id is not None:
         lines.append(f"Owner: {file_info.user_id}")

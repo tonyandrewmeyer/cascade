@@ -78,9 +78,7 @@ Examples:
             return 1
         flags, positional_args = parse_result
 
-        flags.get(
-            "p", "user.notice"
-        )  # priority - not implemented in this simple version
+        flags.get("p", "user.notice")  # priority - not implemented in this simple version
         tag = flags.get("t") or "logger"
         include_pid = flags.get("i", False)
         also_stderr = flags.get("s", False)
@@ -95,9 +93,7 @@ Examples:
                 message = " ".join(positional_args)
             else:
                 # Read from stdin (simulated)
-                self.console.print(
-                    "[yellow]logger: enter message (Ctrl+D to end):[/yellow]"
-                )
+                self.console.print("[yellow]logger: enter message (Ctrl+D to end):[/yellow]")
                 try:
                     message = input()
                 except (EOFError, KeyboardInterrupt):
@@ -130,9 +126,7 @@ Examples:
 
                 except Exception:
                     # Fallback: just display the message
-                    self.console.print(
-                        f"[yellow]Would log to syslog: {log_entry}[/yellow]"
-                    )
+                    self.console.print(f"[yellow]Would log to syslog: {log_entry}[/yellow]")
 
                 # Also write to stderr if requested
                 if also_stderr:

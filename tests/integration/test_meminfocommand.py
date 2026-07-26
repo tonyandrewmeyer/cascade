@@ -57,6 +57,5 @@ def test_execute_default(
     assert len(output.strip()) > 0
     # Common memory fields that should be present
     assert any(
-        field in output
-        for field in ["MemTotal", "MemFree", "MemAvailable", "Buffers", "Cached"]
+        field in output for field in ["MemTotal", "MemFree", "MemAvailable", "Buffers", "Cached"]
     )

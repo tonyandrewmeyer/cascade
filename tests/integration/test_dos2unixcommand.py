@@ -34,8 +34,7 @@ def test_help(command: pebble_shell.commands.Dos2unixCommand):
     output = capture.get()
     assert "dos2unix" in output
     assert any(
-        phrase in output.lower()
-        for phrase in ["dos", "unix", "line ending", "convert", "crlf"]
+        phrase in output.lower() for phrase in ["dos", "unix", "line ending", "convert", "crlf"]
     )
 
 
@@ -50,9 +49,7 @@ def test_execute_help(
     assert result == 0
     output = capture.get()
     assert "dos2unix" in output
-    assert any(
-        phrase in output.lower() for phrase in ["dos", "unix", "line ending", "convert"]
-    )
+    assert any(phrase in output.lower() for phrase in ["dos", "unix", "line ending", "convert"])
 
 
 def test_execute_no_args_stdin(
@@ -165,10 +162,7 @@ def test_execute_verbose_mode(
         assert len(output) >= 0
         if len(output) > 0:
             # Should contain status information
-            assert any(
-                word in output.lower()
-                for word in ["convert", "process", "file", "line"]
-            )
+            assert any(word in output.lower() for word in ["convert", "process", "file", "line"])
     else:
         assert result == 1
 
@@ -403,9 +397,7 @@ def test_execute_nonexistent_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot", "error", "not found"])
 
 
 def test_execute_permission_denied_file(

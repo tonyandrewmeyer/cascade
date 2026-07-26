@@ -26,9 +26,7 @@ class HistoryCommand(Command):
     help = "Show command history (supports !!, !n, !string, ^old^new)"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the history command to show or manage command history."""
         history = get_shell_history()
         console = self.console
@@ -96,9 +94,7 @@ class HistoryCommand(Command):
         total_history = get_shell_history().get_history()
         start_num = len(total_history) - len(commands) + 1
 
-        table = Table(
-            show_header=True, header_style="bold magenta", box=None, expand=False
-        )
+        table = Table(show_header=True, header_style="bold magenta", box=None, expand=False)
         table.add_column("#", style="cyan", no_wrap=True)
         table.add_column("Command", style="green")
         for i, command in enumerate(commands, start=start_num):
@@ -113,10 +109,6 @@ class HistoryCommand(Command):
         ]
         if stats["most_used"]:
             cmd, count = stats["most_used"]
-            lines.append(
-                f"[b]Most used command:[/b] [cyan]{cmd}[/cyan] ({count} times)"
-            )
+            lines.append(f"[b]Most used command:[/b] [cyan]{cmd}[/cyan] ({count} times)")
         lines.append(f"[b]History file:[/b] {stats['history_file']}")
-        console.print(
-            Panel("\n".join(lines), title="History Statistics", style="bold blue")
-        )
+        console.print(Panel("\n".join(lines), title="History Statistics", style="bold blue"))

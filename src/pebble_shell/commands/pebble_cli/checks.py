@@ -23,9 +23,7 @@ class ChecksCommand(Command):
     help = "List all health checks and their status"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the checks command."""
         if handle_help_flag(self, args):
             return 0

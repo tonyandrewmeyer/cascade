@@ -127,18 +127,14 @@ class TestParseFlags:
         shell = Mock()
         result = parse_flags(["-f"], {"f": str}, shell)
         assert result is None
-        shell.console.print.assert_called_once_with(
-            "Error: Flag -f requires an argument"
-        )
+        shell.console.print.assert_called_once_with("Error: Flag -f requires an argument")
 
     def test_invalid_int_flag_argument(self):
         """Test handling invalid integer argument."""
         shell = Mock()
         result = parse_flags(["-n", "abc"], {"n": int}, shell)
         assert result is None
-        shell.console.print.assert_called_once_with(
-            "Error: Flag -n requires an integer argument"
-        )
+        shell.console.print.assert_called_once_with("Error: Flag -n requires an integer argument")
 
         def test_mixed_flag_types(self):
             """Test parsing mixed flag types."""
@@ -206,9 +202,7 @@ class TestProcessFileArguments:
         )
 
         assert result is None
-        shell.console.print.assert_called_once_with(
-            "Error: At least 2 file(s) required"
-        )
+        shell.console.print.assert_called_once_with("Error: At least 2 file(s) required")
 
     def test_process_too_many_files(self):
         """Test when too many files provided."""

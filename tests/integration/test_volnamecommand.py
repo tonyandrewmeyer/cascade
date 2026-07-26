@@ -79,10 +79,7 @@ def test_execute_root_filesystem(
         output = capture.get()
         # Should show volume name or indication of no volume name
         assert (
-            any(
-                msg in output
-                for msg in ["Volume name:", "Label:", "No volume name", "Unnamed"]
-            )
+            any(msg in output for msg in ["Volume name:", "Label:", "No volume name", "Unnamed"])
             or len(output.strip()) >= 0
         )
     else:
@@ -90,8 +87,7 @@ def test_execute_root_filesystem(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["No such device", "permission denied", "not found", "error"]
+            msg in output for msg in ["No such device", "permission denied", "not found", "error"]
         )
 
 
@@ -124,8 +120,7 @@ def test_execute_dev_sda1_device(
         assert result == 1
         output = capture.get()
         assert any(
-            msg in output
-            for msg in ["No such device", "not found", "permission denied", "error"]
+            msg in output for msg in ["No such device", "not found", "permission denied", "error"]
         )
 
 
@@ -140,10 +135,7 @@ def test_execute_nonexistent_device(
     # Should fail with device not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output
-        for msg in ["No such device", "not found", "does not exist", "error"]
-    )
+    assert any(msg in output for msg in ["No such device", "not found", "does not exist", "error"])
 
 
 def test_execute_regular_file_as_device(
@@ -160,8 +152,7 @@ def test_execute_regular_file_as_device(
         # Should indicate not a block device
         assert (
             any(
-                msg in output
-                for msg in ["not a block device", "No volume name", "Invalid device"]
+                msg in output for msg in ["not a block device", "No volume name", "Invalid device"]
             )
             or len(output.strip()) >= 0
         )
@@ -169,9 +160,7 @@ def test_execute_regular_file_as_device(
         # Should fail if not a valid device
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not a block device", "invalid device", "error"]
-        )
+        assert any(msg in output for msg in ["not a block device", "invalid device", "error"])
 
 
 def test_execute_directory_as_device(
@@ -192,9 +181,7 @@ def test_execute_directory_as_device(
         # Should fail if directory can't be resolved to device
         assert result == 1
         output = capture.get()
-        assert any(
-            msg in output for msg in ["not a block device", "invalid device", "error"]
-        )
+        assert any(msg in output for msg in ["not a block device", "invalid device", "error"])
 
 
 def test_execute_verbose_option(
@@ -558,9 +545,7 @@ def test_execute_symlink_to_device(
 ):
     # Test with symlink to device
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/dev/disk/by-uuid/existing-uuid"]
-        )
+        result = command.execute(client=client, args=["/dev/disk/by-uuid/existing-uuid"])
 
     # Should follow symlink to actual device
     if result == 0:

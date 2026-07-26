@@ -249,9 +249,7 @@ class TestReadProcEnviron:
         """Test successful environment variable reading."""
         mock_client = MagicMock()
         mock_file = MagicMock()
-        mock_file.read.return_value = (
-            "PATH=/bin:/usr/bin\x00HOME=/home/user\x00USER=testuser\x00"
-        )
+        mock_file.read.return_value = "PATH=/bin:/usr/bin\x00HOME=/home/user\x00USER=testuser\x00"
         mock_client.pull.return_value.__enter__.return_value = mock_file
 
         result = read_proc_environ(mock_client, "1234")
@@ -454,7 +452,7 @@ class TestParseProcNetConnections:
                 "protocol": "UNIX",
                 "type": "STREAM",
                 "state": "CONNECTED",
-                "path": "/tmp/socket",  # noqa: S108
+                "path": "/tmp/socket",
             },
             {
                 "protocol": "UNIX",
@@ -823,9 +821,7 @@ softirq 456789 123 456 789 0 321 654 987 0 147 258
         assert result["cpu"]["softirq"] == 1234
 
         cpus_data = result["cpus"]
-        assert isinstance(cpus_data, dict), (
-            f"cpus should be dict, got {type(cpus_data)}"
-        )
+        assert isinstance(cpus_data, dict), f"cpus should be dict, got {type(cpus_data)}"
         assert "0" in cpus_data
         assert "1" in cpus_data
         assert cpus_data["0"]["user"] == 61728
@@ -924,9 +920,7 @@ empty_value
 
         assert result["nr_free_pages"] == 123456
         assert result["pgpgin"] == 987654
-        assert (
-            "nr_zone_active_anon" not in result
-        )  # Should be skipped due to invalid value
+        assert "nr_zone_active_anon" not in result  # Should be skipped due to invalid value
         assert len([k for k in result if k.startswith("nr_")]) == 1
 
     def test_parse_proc_vmstat_error(self):
@@ -1112,9 +1106,7 @@ power management:
 
         assert result["cpu_count"] == 2
         cpus_data = result["cpus"]
-        assert isinstance(cpus_data, list), (
-            f"cpus should be list, got {type(cpus_data)}"
-        )
+        assert isinstance(cpus_data, list), f"cpus should be list, got {type(cpus_data)}"
         assert len(cpus_data) == 2
 
         # Test first CPU
@@ -1157,9 +1149,7 @@ apicid		: 0
 
         assert result["cpu_count"] == 1
         cpus_data = result["cpus"]
-        assert isinstance(cpus_data, list), (
-            f"cpus should be list, got {type(cpus_data)}"
-        )
+        assert isinstance(cpus_data, list), f"cpus should be list, got {type(cpus_data)}"
         assert len(cpus_data) == 1
         assert cpus_data[0]["model name"] == "AMD EPYC 7302P 16-Core Processor"
         assert cpus_data[0]["cpu cores"] == "16"
@@ -1183,9 +1173,7 @@ model name	: Intel CPU 2
 
         assert result["cpu_count"] == 2
         cpus_data = result["cpus"]
-        assert isinstance(cpus_data, list), (
-            f"cpus should be list, got {type(cpus_data)}"
-        )
+        assert isinstance(cpus_data, list), f"cpus should be list, got {type(cpus_data)}"
         assert len(cpus_data) == 2
         assert cpus_data[0]["model name"] == "Intel CPU"
         assert cpus_data[1]["model name"] == "Intel CPU 2"
@@ -1417,9 +1405,7 @@ class TestReadProcCmdline:
         """Test successful cmdline reading with null bytes."""
         mock_client = MagicMock()
         mock_file = MagicMock()
-        mock_file.read.return_value = (
-            "python3\x00/usr/bin/script.py\x00--arg1\x00--arg2\x00"
-        )
+        mock_file.read.return_value = "python3\x00/usr/bin/script.py\x00--arg1\x00--arg2\x00"
         mock_client.pull.return_value.__enter__.return_value = mock_file
 
         from src.pebble_shell.utils.proc_reader import read_proc_cmdline

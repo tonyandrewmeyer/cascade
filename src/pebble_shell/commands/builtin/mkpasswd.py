@@ -25,9 +25,7 @@ class MkpasswdCommand(Command):
     help = "Generate password hash"
     category = "Built-in Commands"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ) -> int:
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]) -> int:
         """Execute the mkpasswd command to generate password hashes."""
         if handle_help_flag(self, args):
             return 0
@@ -74,9 +72,7 @@ class MkpasswdCommand(Command):
             if len(positional_args) > 1:
                 salt = positional_args[1]
         else:
-            self.console.print(
-                get_theme().error_text("mkpasswd: no password specified")
-            )
+            self.console.print(get_theme().error_text("mkpasswd: no password specified"))
             return 1
 
         try:
@@ -138,9 +134,7 @@ class MkpasswdCommand(Command):
                 return 1
 
         except ImportError:
-            self.console.print(
-                get_theme().error_text("mkpasswd: crypt module not available")
-            )
+            self.console.print(get_theme().error_text("mkpasswd: crypt module not available"))
             return 1
         except Exception as e:
             self.console.print(get_theme().error_text(f"mkpasswd: {e}"))

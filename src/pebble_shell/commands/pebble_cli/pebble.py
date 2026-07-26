@@ -29,14 +29,15 @@ class PebbleCommand(Command):
             # Get all commands from the shell that are pebble subcommands
             for cmd_name, cmd_instance in self.shell.commands.items():
                 # Look for commands that belong to pebble_cli package
-                if hasattr(cmd_instance, '__module__') and 'pebble_cli' in cmd_instance.__module__:
-                    # Skip the pebble command itself
-                    if cmd_name != 'pebble':
-                        PebbleCommand._subcommands[cmd_name] = cmd_instance
+                # Skip the pebble command itself.
+                if (
+                    hasattr(cmd_instance, "__module__")
+                    and "pebble_cli" in cmd_instance.__module__
+                    and cmd_name != "pebble"
+                ):
+                    PebbleCommand._subcommands[cmd_name] = cmd_instance
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the pebble command or dispatch to subcommand."""
         if handle_help_flag(self, args):
             return 0
@@ -93,9 +94,9 @@ class PebbleCommand(Command):
             self.console.print("Available subcommands:")
             for subcmd in sorted(self._subcommands.keys()):
                 cmd_instance = self._subcommands[subcmd]
-                help_text = getattr(cmd_instance, 'help', 'No description available')
+                help_text = getattr(cmd_instance, "help", "No description available")
                 # Remove the "pebble-" prefix from help text if present
-                help_text = help_text.replace('pebble-', '')
+                help_text = help_text.replace("pebble-", "")
                 self.console.print(f"  {subcmd:20} {help_text}")
         else:
             self.console.print("Examples:")

@@ -140,15 +140,11 @@ class ShellParser:
                 parts.append((current.strip(), ";"))
                 current = ""
                 i += 1
-            elif (
-                char == "&" and i + 1 < len(command_line) and command_line[i + 1] == "&"
-            ):
+            elif char == "&" and i + 1 < len(command_line) and command_line[i + 1] == "&":
                 parts.append((current.strip(), "&&"))
                 current = ""
                 i += 2
-            elif (
-                char == "|" and i + 1 < len(command_line) and command_line[i + 1] == "|"
-            ):
+            elif char == "|" and i + 1 < len(command_line) and command_line[i + 1] == "|":
                 parts.append((current.strip(), "||"))
                 current = ""
                 i += 2
@@ -241,9 +237,7 @@ class ShellParser:
 
         return parts
 
-    def _parse_redirections(
-        self, command: str
-    ) -> tuple[str, CommandType | None, str | None]:
+    def _parse_redirections(self, command: str) -> tuple[str, CommandType | None, str | None]:
         """Parse redirection operators in a command."""
         # Simple redirection parsing
         redirect_patterns = [
@@ -363,9 +357,7 @@ class ShellParser:
                         else:
                             # $VAR syntax
                             var_name = ""
-                            while i < len(text) and (
-                                text[i].isalnum() or text[i] in "_?"
-                            ):
+                            while i < len(text) and (text[i].isalnum() or text[i] in "_?"):
                                 var_name += text[i]
                                 i += 1
                             if var_name:

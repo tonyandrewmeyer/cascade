@@ -85,11 +85,7 @@ def test_execute_binary_file_analysis(
             lines = output.strip().split("\n")
             for line in lines:
                 # Each line should be a printable string
-                assert all(
-                    ord(char) >= 32 and ord(char) <= 126
-                    for char in line
-                    if line.strip()
-                )
+                assert all(ord(char) >= 32 and ord(char) <= 126 for char in line if line.strip())
     else:
         # Should fail if file doesn't exist or access denied
         assert result == 1
@@ -262,9 +258,7 @@ def test_execute_nonexistent_file(
     # Should fail with file not found error
     assert result == 1
     output = capture.get()
-    assert any(
-        msg in output for msg in ["No such file", "cannot open", "error", "not found"]
-    )
+    assert any(msg in output for msg in ["No such file", "cannot open", "error", "not found"])
 
 
 def test_execute_permission_denied_file(
@@ -343,9 +337,7 @@ def test_execute_library_file_analysis(
 ):
     # Test analyzing library file
     with command.shell.console.capture() as capture:
-        result = command.execute(
-            client=client, args=["/lib/x86_64-linux-gnu/libc.so.6"]
-        )
+        result = command.execute(client=client, args=["/lib/x86_64-linux-gnu/libc.so.6"])
 
     # Should either succeed or fail gracefully if file doesn't exist
     if result == 0:

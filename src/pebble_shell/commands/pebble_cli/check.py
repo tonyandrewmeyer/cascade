@@ -23,9 +23,7 @@ class CheckCommand(Command):
     help = "Get details of a specific health check"
     category = "Pebble Management"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute the check command."""
         if handle_help_flag(self, args):
             return 0
@@ -46,20 +44,14 @@ class CheckCommand(Command):
         self._show_check_details(check_info, check)
         return 0
 
-    def _show_check_details(
-        self, check_info: ops.pebble.CheckInfo, check: ops.pebble.Check
-    ):
+    def _show_check_details(self, check_info: ops.pebble.CheckInfo, check: ops.pebble.Check):
         """Display check details in a Rich table."""
         table = create_details_table()
 
         table.add_row("Check Name", str(check.name))
-        table.add_row(
-            "Status", str(check_info.status) if check_info.status else "unknown"
-        )
+        table.add_row("Status", str(check_info.status) if check_info.status else "unknown")
         table.add_row("Level", str(check_info.level) if check_info.level else "")
-        table.add_row(
-            "Failures", str(check_info.failures) if check_info.failures else "0"
-        )
+        table.add_row("Failures", str(check_info.failures) if check_info.failures else "0")
 
         if check_info.threshold:
             table.add_row("Threshold", str(check_info.threshold))

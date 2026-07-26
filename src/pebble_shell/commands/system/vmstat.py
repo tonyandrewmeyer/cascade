@@ -29,9 +29,7 @@ class VmstatCommand(Command):
     help = "Display virtual memory statistics. Optional: interval (seconds) and count (number of reports)"
     category = "System"
 
-    def execute(
-        self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]
-    ):
+    def execute(self, client: ops.pebble.Client | shimmer.PebbleCliClient, args: list[str]):
         """Execute vmstat command."""
         if handle_help_flag(self, args):
             return 0
